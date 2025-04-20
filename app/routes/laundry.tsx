@@ -324,9 +324,14 @@ export default function Laundry() {
                 time_left: 10
             });
             newData.dryer.push({
-                number: -1,
+                number: 998,
                 available: false,
-                time_left: 400
+                time_left: 4000
+            });
+            newData.dryer.push({
+                number: 997,
+                available: false,
+                time_left: 2000
             });
             
             setLocalData(newData);
@@ -431,7 +436,7 @@ export default function Laundry() {
                                 disabled={addedTestMachine || !localData}
                                 className="px-6 bg-[#ec7f32] hover:bg-[#f08c47]"
                             >
-                                Add Test Machine (1 min)
+                                Add Test Machine
                             </Button>
                         </div>
                     </CardFooter>
@@ -461,32 +466,6 @@ export default function Laundry() {
                             </div>
 
                         </CardHeader>
-
-                        {/* View toggle */}
-                        <div className="flex w-full justify-end space-x-2">
-                            <Button
-                                variant="ghost"
-                                className={cn(
-                                    "w-9 h-9 p-0 rounded-full",
-                                    viewMode === 'list' && "bg-zinc-800 text-[#ec7f32]"
-                                )}
-                                aria-label="List view"
-                                onClick={() => setViewMode('list')}
-                            >
-                                <BsListUl className="w-6 h-6" />
-                            </Button>
-                            <Button
-                                variant="ghost"
-                                className={cn(
-                                    "w-9 h-9 p-0 rounded-full",
-                                    viewMode === 'grid' && "bg-zinc-800 text-[#ec7f32]"
-                                )}
-                                aria-label="Grid view"
-                                onClick={() => setViewMode('grid')}
-                            >
-                                <BsGridFill className="w-4 h-4" />
-                            </Button>
-                        </div>
 
                         <CardContent className="py-4">
                             {/* Machines container */}

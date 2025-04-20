@@ -46,52 +46,54 @@ export default function App() {
   return (
     <div className="min-h-screen">
       <header className="py-4 px-6 bg-card-bg shadow-md">
-        <div className="container mx-auto flex justify-between items-center">
-          <NavLink to="/" className="text-2xl font-bold text-text-primary flex items-center">
-            <img 
-              src="https://epsbubz.stripocdn.email/content/guids/CABINET_882ea3df7cd154211d1b97eac5876cf77c8c0bab12620e24b042e4c3c07d9421/images/untitled111_i5s.png" 
-              alt="Transat Logo" 
-              className="w-8 h-8 mr-2"
-            />
-            Transat
-          </NavLink>
-          <nav>
-            <ul className="flex space-x-6">
-              <li>
-                <NavLink 
-                  to="/" 
-                  className={({ isActive }) => 
-                    isActive 
-                      ? "text-accent font-medium" 
-                      : "text-text-primary hover:text-accent transition-colors"
-                  }
-                >
-                  Home
-                </NavLink>
-              </li>
-              <li>
-                <NavLink 
-                  to="/statistics" 
-                  className={({ isActive }) => 
-                    isActive 
-                      ? "text-accent font-medium" 
-                      : "text-text-primary hover:text-accent transition-colors"
-                  }
-                >
-                  Statistics
-                </NavLink>
-              </li>
-            </ul>
-          </nav>
+        <div className="container mx-auto max-w-screen-xl px-4">
+          <div className="flex justify-between items-center">
+            <NavLink to="/" className="text-2xl font-bold text-text-primary flex items-center">
+              <img 
+                src="https://epsbubz.stripocdn.email/content/guids/CABINET_882ea3df7cd154211d1b97eac5876cf77c8c0bab12620e24b042e4c3c07d9421/images/icon.png"
+                alt="Transat Logo" 
+                className="w-8 h-8 mr-2"
+              />
+              Transat
+            </NavLink>
+            <nav>
+              <ul className="flex space-x-6">
+                {/*<li>*/}
+                {/*  <NavLink */}
+                {/*    to="/restaurant" */}
+                {/*    className={({ isActive }) => */}
+                {/*      isActive */}
+                {/*        ? "text-accent font-medium" */}
+                {/*        : "text-text-primary hover:text-accent transition-colors"*/}
+                {/*    }*/}
+                {/*  >*/}
+                {/*    Restaurant*/}
+                {/*  </NavLink>*/}
+                {/*</li>*/}
+                <li>
+                  <NavLink 
+                    to="/statistics" 
+                    className={({ isActive }) => 
+                      isActive 
+                        ? "text-accent font-medium" 
+                        : "text-text-primary hover:text-accent transition-colors"
+                    }
+                  >
+                    Statistics
+                  </NavLink>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </header>
       
-      <main className="container mx-auto px-4 py-8">
+      <main className="container mx-auto px-4 py-8 max-w-screen-xl">
         <Outlet />
       </main>
       
       <footer className="py-6 bg-card-bg mt-12">
-        <div className="container mx-auto px-4 text-center">
+        <div className="container mx-auto px-4 max-w-screen-xl text-center">
           <div className="flex justify-center items-center mb-4">
             <img 
               src="https://epsbubz.stripocdn.email/content/guids/CABINET_882ea3df7cd154211d1b97eac5876cf77c8c0bab12620e24b042e4c3c07d9421/images/untitled111_i5s.png" 
@@ -124,7 +126,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
   return (
     <div className="pt-16 p-4 container mx-auto">
-      <div className="card">
+      <div className="card stats-card">
         <h1 className="card-title text-center text-3xl">{message}</h1>
         <p className="text-center mb-4">{details}</p>
         {stack && (

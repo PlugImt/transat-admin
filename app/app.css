@@ -34,6 +34,18 @@ body {
   border-radius: 0.5rem;
   padding: 1.5rem;
   margin-bottom: 1rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Home page card specific styling */
+.home-card {
+  max-width: 500px; 
+}
+
+/* Statistics page card specific styling */
+.stats-card {
+  max-width: 750px;
 }
 
 .card-title {
@@ -49,4 +61,28 @@ body {
   color: #ffe6cc;
   margin-bottom: 2rem;
   text-align: center;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-out forwards;
+  opacity: 0;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .home-card, .stats-card {
+    width: 100%;
+  }
 }

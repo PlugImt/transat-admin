@@ -181,7 +181,7 @@ export default function Statistics() {
       <h1 className="section-title">API Statistics</h1>
       
       {/* Server Status */}
-      <div className="card mb-8">
+      <div className="card stats-card mb-8">
         <h2 className="card-title flex items-center">
           <span role="img" aria-label="Server status" className="mr-2">
             {serverStatus.status === "online" ? "🟢" : "🔴"}
@@ -221,7 +221,7 @@ export default function Statistics() {
       
       {/* Error display */}
       {error && (
-        <div className="card bg-red-900 text-white mb-8">
+        <div className="card stats-card bg-red-900 text-white mb-8">
           <h2 className="card-title">Error</h2>
           <p>{error}</p>
         </div>
@@ -229,7 +229,7 @@ export default function Statistics() {
       
       {/* Loading indicator */}
       {loading && (
-        <div className="card mb-8">
+        <div className="card stats-card mb-8">
           <div className="text-center py-8">
             <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-accent"></div>
             <p className="mt-4">Loading statistics...</p>
@@ -239,7 +239,7 @@ export default function Statistics() {
       
       {/* Global Statistics */}
       {!loading && globalStats && (
-        <div className="card mb-8">
+        <div className="card stats-card mb-8">
           <h2 className="card-title">Global Statistics</h2>
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
@@ -280,7 +280,7 @@ export default function Statistics() {
       
       {/* Endpoint Statistics */}
       {!loading && endpointStats.length > 0 && (
-        <div className="card">
+        <div className="card stats-card">
           <h2 className="card-title">Endpoint Statistics</h2>
           
           <div className="overflow-x-auto">

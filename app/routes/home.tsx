@@ -8,11 +8,16 @@ export function meta({}: Route.MetaArgs) {
   ];
 }
 
+// Animation delay utility
+const getAnimationDelay = (index: number) => {
+  return `${index * 0.1}s`;
+};
+
 export default function Home() {
   return (
     <div className="space-y-8">
       {/* Hero section */}
-      <section className="text-center mb-12">
+      <section className="text-center mb-12 animate-fadeIn" style={{ animationDelay: "0.1s" }}>
         <h1 className="text-4xl font-bold mb-4 text-text-primary">
           <span role="img" aria-label="Waving hand emoji" className="mr-2">👋</span>
           Welcome to Transat
@@ -25,7 +30,10 @@ export default function Home() {
       {/* Services grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {/* Laundry card */}
-        <div className="card">
+        <div 
+          className="card home-card animate-fadeIn transform transition-all duration-300 hover:scale-[1.02]" 
+          style={{ animationDelay: getAnimationDelay(0) }}
+        >
           <div className="flex items-start mb-4">
             <div className="flex-1">
               <h2 className="card-title">Laundry</h2>
@@ -47,7 +55,10 @@ export default function Home() {
         </div>
 
         {/* Restaurant card */}
-        <div className="card">
+        <div 
+          className="card home-card animate-fadeIn transform transition-all duration-300 hover:scale-[1.02]" 
+          style={{ animationDelay: getAnimationDelay(1) }}
+        >
           <div className="flex items-start mb-4">
             <div className="flex-1">
               <h2 className="card-title">Restaurant</h2>
@@ -64,12 +75,15 @@ export default function Home() {
             </div>
           </div>
           <div className="text-center">
-            <button className="btn-primary">View Menu</button>
+            <Link to="/restaurant" className="btn-primary">View Menu</Link>
           </div>
         </div>
 
         {/* Statistics card */}
-        <div className="card">
+        <div 
+          className="card home-card animate-fadeIn transform transition-all duration-300 hover:scale-[1.02]" 
+          style={{ animationDelay: getAnimationDelay(2) }}
+        >
           <div className="flex items-start mb-4">
             <div className="flex-1">
               <h2 className="card-title">Statistics</h2>
@@ -92,7 +106,10 @@ export default function Home() {
       </div>
 
       {/* Coming soon section */}
-      <div className="card mt-8">
+      <div 
+        className="card home-card animate-fadeIn transform transition-all duration-300 hover:scale-[1.02]" 
+        style={{ animationDelay: getAnimationDelay(3) }}
+      >
         <div className="flex items-start">
           <div className="flex-1">
             <h2 className="card-title">Coming Soon</h2>

@@ -355,87 +355,89 @@ export default function Laundry() {
                 )}
 
                 {/* Machine type tabs */}
-                <Card
-                    className="bg-zinc-900 animate-fadeIn w-full mx-auto"
-                    style={{boxShadow: "0 4px 12px rgba(0,0,0,0.2)"}}
-                >
-                    <CardHeader className="pb-3">
-                        <CardTitle className="text-2xl font-bold">Laundry <span
-                            className="text-[#ec7f32]">Machines</span></CardTitle>
-                    </CardHeader>
-                    <CardContent className="py-4">
-                        <Stack direction="horizontal" spacing="sm" justify="center" className="mb-6">
-                            <Button
-                                variant={activeTab === 'all' ? 'primary' : 'outline'}
-                                onClick={() => setActiveTab('all')}
-                                className={activeTab === 'all' ? 'bg-[#0049a8] hover:bg-[#0062e1]' : ''}
-                            >
-                                All Machines
-                            </Button>
-                            <Button
-                                variant={activeTab === 'washers' ? 'primary' : 'outline'}
-                                onClick={() => setActiveTab('washers')}
-                                leftIcon={<GiWashingMachine/>}
-                                className={activeTab === 'washers' ? 'bg-[#0049a8] hover:bg-[#0062e1]' : ''}
-                            >
-                                Washers
-                            </Button>
-                            <Button
-                                variant={activeTab === 'dryers' ? 'primary' : 'outline'}
-                                onClick={() => setActiveTab('dryers')}
-                                leftIcon={<GiClothes/>}
-                                className={activeTab === 'dryers' ? 'bg-[#0049a8] hover:bg-[#0062e1]' : ''}
-                            >
-                                Dryers
-                            </Button>
-                        </Stack>
+                {!loading && localData && (
+                    <Card
+                        className="bg-zinc-900 animate-fadeIn w-full mx-auto"
+                        style={{boxShadow: "0 4px 12px rgba(0,0,0,0.2)"}}
+                    >
+                        <CardHeader className="pb-3">
+                            <CardTitle className="text-2xl font-bold">Laundry <span
+                                className="text-[#ec7f32]">Machines</span></CardTitle>
+                        </CardHeader>
+                        <CardContent className="py-4">
+                            <Stack direction="horizontal" spacing="sm" justify="center" className="mb-6">
+                                <Button
+                                    variant={activeTab === 'all' ? 'primary' : 'outline'}
+                                    onClick={() => setActiveTab('all')}
+                                    className={activeTab === 'all' ? 'bg-[#0049a8] hover:bg-[#0062e1]' : ''}
+                                >
+                                    All Machines
+                                </Button>
+                                <Button
+                                    variant={activeTab === 'washers' ? 'primary' : 'outline'}
+                                    onClick={() => setActiveTab('washers')}
+                                    leftIcon={<GiWashingMachine/>}
+                                    className={activeTab === 'washers' ? 'bg-[#0049a8] hover:bg-[#0062e1]' : ''}
+                                >
+                                    Washers
+                                </Button>
+                                <Button
+                                    variant={activeTab === 'dryers' ? 'primary' : 'outline'}
+                                    onClick={() => setActiveTab('dryers')}
+                                    leftIcon={<GiClothes/>}
+                                    className={activeTab === 'dryers' ? 'bg-[#0049a8] hover:bg-[#0062e1]' : ''}
+                                >
+                                    Dryers
+                                </Button>
+                            </Stack>
 
-                        {/* Machines grid */}
-                        {localData && (
-                            <Grid cols={{sm: 1, md: 2, lg: 3}} gap="md">
-                                {/* Washing machines */}
-                                {(activeTab === 'all' || activeTab === 'washers') &&
-                                    localData.washing_machine.map(machine => (
-                                        <div
-                                            key={`washer-${machine.number}`}
-                                            ref={setMachineRef(machine.number)}
-                                        >
-                                            <LaundryMachine
-                                                id={machine.number}
-                                                name={`Washer ${machine.number}`}
-                                                type="washer"
-                                                status={getMachineStatus(machine)}
-                                                timeRemaining={machine.time_left}
-                                                animate
-                                                animationDelay={machine.number * 100}
-                                            />
-                                        </div>
-                                    ))
-                                }
+                            {/* Machines grid */}
+                            {localData && (
+                                <Grid cols={{sm: 1, md: 2, lg: 3}} gap="md">
+                                    {/* Washing machines */}
+                                    {(activeTab === 'all' || activeTab === 'washers') &&
+                                        localData.washing_machine.map(machine => (
+                                            <div
+                                                key={`washer-${machine.number}`}
+                                                ref={setMachineRef(machine.number)}
+                                            >
+                                                <LaundryMachine
+                                                    id={machine.number}
+                                                    name={`Washer ${machine.number}`}
+                                                    type="washer"
+                                                    status={getMachineStatus(machine)}
+                                                    timeRemaining={machine.time_left}
+                                                    animate
+                                                    animationDelay={machine.number * 100}
+                                                />
+                                            </div>
+                                        ))
+                                    }
 
-                                {/* Dryers */}
-                                {(activeTab === 'all' || activeTab === 'dryers') &&
-                                    localData.dryer.map(machine => (
-                                        <div
-                                            key={`dryer-${machine.number}`}
-                                            ref={setMachineRef(machine.number)}
-                                        >
-                                            <LaundryMachine
-                                                id={machine.number}
-                                                name={`Dryer ${machine.number}`}
-                                                type="dryer"
-                                                status={getMachineStatus(machine)}
-                                                timeRemaining={machine.time_left}
-                                                animate
-                                                animationDelay={machine.number * 100}
-                                            />
-                                        </div>
-                                    ))
-                                }
-                            </Grid>
-                        )}
-                    </CardContent>
-                </Card>
+                                    {/* Dryers */}
+                                    {(activeTab === 'all' || activeTab === 'dryers') &&
+                                        localData.dryer.map(machine => (
+                                            <div
+                                                key={`dryer-${machine.number}`}
+                                                ref={setMachineRef(machine.number)}
+                                            >
+                                                <LaundryMachine
+                                                    id={machine.number}
+                                                    name={`Dryer ${machine.number}`}
+                                                    type="dryer"
+                                                    status={getMachineStatus(machine)}
+                                                    timeRemaining={machine.time_left}
+                                                    animate
+                                                    animationDelay={machine.number * 100}
+                                                />
+                                            </div>
+                                        ))
+                                    }
+                                </Grid>
+                            )}
+                        </CardContent>
+                    </Card>
+                )}
 
                 {/* Notes/disclaimer */}
                 <Card

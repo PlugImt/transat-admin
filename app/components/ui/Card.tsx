@@ -79,7 +79,7 @@ export const CardTitle: React.FC<{
           className = ''
       }) => {
     return (
-        <h3 className={`text-xl font-bold text-foreground ${className}`}>
+        <h3 className={`text-3xl font-bold text-foreground text-center ${className}`}>
             {children}
         </h3>
     );

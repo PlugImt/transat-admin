@@ -8,7 +8,6 @@ import {
     CardHeader,
     CardTitle,
     Container,
-    Grid,
     Spinner,
     Stack,
     Text
@@ -221,9 +220,77 @@ export default function Statistics() {
                     </Card>
                 )}
 
+                {/* Server Status Card */}
+                <Card
+                    className="bg-zinc-900  animate-fadeIn max-w-[1000px] mx-auto"
+                    style={{boxShadow: "0 4px 12px rgba(0,0,0,0.2)"}}
+                >
+                    <CardHeader className="pb-3">
+                        <div className="flex items-center w-full justify-between">
+                            <div className="flex-1">
+            <span className="inline-flex items-center justify-center relative">
+                <div
+                    className="text-2xl relative"
+                    role="img" aria-label="Server status">
+                    {serverStatus.status === "online" ? "🟢" : "🔴"}
+                </div>
+                {serverStatus.status === "online" && (
+                    <span className="absolute inset-0 rounded-full bg-green-500/20 blur-md animate-pulse"
+                          style={{width: '32px', height: '32px', margin: '-4px', zIndex: -1}}></span>
+                )}
+            </span>
+                            </div>
+                            <CardTitle className="text-[#ffe6cc] flex-grow text-center">
+                                Server <span className="text-[#ec7f32]">Status</span>
+                            </CardTitle>
+                            <div className="flex-1"></div>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="py-6">
+                        <div className="flex flex-row flex-wrap gap-4 justify-center">
+                            <div className="flex flex-col items-center p-4 flex-1 min-w-[180px]">
+                                <Text size="sm" color="muted" className="mb-2">Status</Text>
+                                <Text size="3xl" weight="bold"
+                                      color={serverStatus.status === "online" ? "primary" : "error"}
+                                      className="text-[#0049a8]">
+                                    {serverStatus.status === "online" ? "Online" : "Offline"}
+                                </Text>
+                            </div>
+
+                            <div className="flex flex-col items-center p-4 flex-1 min-w-[180px]">
+                                <Text size="sm" color="muted" className="mb-2">Latency</Text>
+                                <Text size="3xl" weight="bold" color="primary" className="text-[#0049a8]">
+                                    {serverStatus.latency}<span className="text-sm text-zinc-400">ms</span>
+                                </Text>
+                            </div>
+
+                            <div className="flex flex-col items-center p-4 flex-1 min-w-[180px]">
+                                <Text size="sm" color="muted" className="mb-2">Last Checked</Text>
+                                <Text size="xl" weight="bold" className="text-center">
+                                    {formatDate(serverStatus.timestamp)}
+                                </Text>
+                            </div>
+                        </div>
+                    </CardContent>
+
+                    <CardFooter className="justify-center pt-4 border-t border-zinc-800">
+                        <Button
+                            variant="primary"
+                            onClick={handleRefresh}
+                            disabled={refreshing || loading}
+                            isLoading={refreshing}
+                            className="px-6 bg-[#0049a8] hover:bg-[#0062e1]"
+                        >
+                            {refreshing ? 'Refreshing...' : 'Refresh Data'}
+                        </Button>
+                    </CardFooter>
+                </Card>
+
+
+
                 {/* Loading indicator */}
                 {loading && (
-                    <Card className="animate-fadeIn">
+                    <Card className="bg-zinc-900 animate-fadeIn max-w-[1000px] mx-auto">
                         <CardContent className="py-12 flex flex-col items-center justify-center">
                             <Spinner size="lg" color="primary" className="mb-4"/>
                             <Text color="muted">Loading statistics...</Text>
@@ -231,88 +298,28 @@ export default function Statistics() {
                     </Card>
                 )}
 
-                {/* Server Status Card */}
-                <Card
-                    className="bg-zinc-900 border border-zinc-800 animate-fadeIn"
-                    style={{boxShadow: "0 4px 12px rgba(0,0,0,0.2)"}}
-                >
-                    <CardHeader className="border-b border-zinc-800 pb-3">
-                        <Stack direction="horizontal" align="center">
-                            <div
-                                className={`mr-2 text-2xl ${serverStatus.status === "online" ? "animate-pulseGlow" : ""}`}
-                                role="img" aria-label="Server status">
-                                {serverStatus.status === "online" ? "🟢" : "🔴"}
-                            </div>
-                            <CardTitle className="text-2xl font-bold">Server Status</CardTitle>
-                        </Stack>
-                    </CardHeader>
-
-                    <CardContent className="py-6">
-                        <Grid cols={{sm: 1, md: 3}} gap="lg">
-                            <div className="flex flex-col items-center p-4">
-                                <Text size="sm" color="muted" className="mb-2">Status</Text>
-                                <Text size="3xl" weight="bold"
-                                      color={serverStatus.status === "online" ? "primary" : "error"}
-                                      className="text-[#ec7f32]">
-                                    {serverStatus.status === "online" ? "Online" : "Offline"}
-                                </Text>
-                            </div>
-
-                            <div className="flex flex-col items-center p-4">
-                                <Text size="sm" color="muted" className="mb-2">Latency</Text>
-                                <Text size="3xl" weight="bold" color="primary" className="text-[#ec7f32]">
-                                    {serverStatus.latency}<span className="text-sm text-zinc-400">ms</span>
-                                </Text>
-                            </div>
-
-                            <div className="flex flex-col items-center p-4">
-                                <Text size="sm" color="muted" className="mb-2">Last Checked</Text>
-                                <Text size="xl" weight="bold" className="text-center">
-                                    {formatDate(serverStatus.timestamp)}
-                                </Text>
-                            </div>
-                        </Grid>
-                    </CardContent>
-
-                    <CardFooter className="justify-center border-t border-zinc-800 pt-4">
-                        <Button
-                            variant="primary"
-                            onClick={handleRefresh}
-                            disabled={refreshing || loading}
-                            isLoading={refreshing}
-                            className="px-6 bg-[#ec7f32] hover:bg-[#d06a24]"
-                        >
-                            {refreshing ? 'Refreshing...' : 'Refresh Data'}
-                        </Button>
-                    </CardFooter>
-                </Card>
 
                 {/* Global Statistics Card */}
                 {!loading && globalStats && (
                     <Card
-                        className="bg-zinc-900 border border-zinc-800 animate-fadeIn"
+                        className="bg-zinc-900 animate-fadeIn max-w-[1000px] mx-auto"
                         style={{boxShadow: "0 4px 12px rgba(0,0,0,0.2)"}}
                     >
-                        <CardHeader className="border-b border-zinc-800 pb-3">
-                            <Stack direction="horizontal" align="center">
-                                <div className="mr-2 text-2xl" style={{color: BRAND_COLORS.primary}} role="img"
-                                     aria-label="Statistics">📊
-                                </div>
-                                <CardTitle className="text-2xl font-bold">Global Statistics</CardTitle>
-                            </Stack>
+                        <CardHeader className="pb-3">
+                            <CardTitle className="text-2xl font-bold">Global <span className="text-[#ec7f32]">Statistics</span></CardTitle>
                         </CardHeader>
 
                         <CardContent className="py-6">
                             {/* Key metrics row */}
-                            <Grid cols={{sm: 2, md: 4}} gap="lg" className="mb-8">
-                                <div className="flex flex-col items-center p-4">
+                            <div className="flex flex-row flex-wrap gap-4 justify-center mb-8">
+                                <div className="flex flex-col items-center p-4 flex-1 min-w-[180px]">
                                     <Text size="sm" color="muted" className="mb-2">Total Requests</Text>
-                                    <Text size="3xl" weight="bold" color="primary" className="text-[#ec7f32]">
+                                    <Text size="3xl" weight="bold" color="primary" className="text-[#0049a8]">
                                         {globalStats.total_request_count}
                                     </Text>
                                 </div>
 
-                                <div className="flex flex-col items-center p-4">
+                                <div className="flex flex-col items-center p-4 flex-1 min-w-[180px]">
                                     <Text size="sm" color="muted" className="mb-2">Success Rate</Text>
                                     <Text size="3xl" weight="bold"
                                           color={globalStats.global_success_rate_percent > 95 ? "success" :
@@ -321,15 +328,15 @@ export default function Statistics() {
                                     </Text>
                                 </div>
 
-                                <div className="flex flex-col items-center p-4">
+                                <div className="flex flex-col items-center p-4 flex-1 min-w-[180px]">
                                     <Text size="sm" color="muted" className="mb-2">Avg Response Time</Text>
-                                    <Text size="3xl" weight="bold" color="primary" className="text-[#ec7f32]">
+                                    <Text size="3xl" weight="bold" color="primary" className="text-[#0049a8]">
                                         {globalStats.global_avg_duration_ms.toFixed(1)}<span
                                         className="text-sm text-zinc-400">ms</span>
                                     </Text>
                                 </div>
 
-                                <div className="flex flex-col items-center p-4">
+                                <div className="flex flex-col items-center p-4 flex-1 min-w-[180px]">
                                     <Text size="sm" color="muted" className="mb-2">Max Response Time</Text>
                                     <Text size="3xl" weight="bold"
                                           color={globalStats.global_max_duration_ms < 500 ? "warning" : "error"}>
@@ -337,24 +344,26 @@ export default function Statistics() {
                                         className="text-sm text-zinc-400">ms</span>
                                     </Text>
                                 </div>
-                            </Grid>
+                            </div>
 
                             {/* Success/Error Count */}
-                            <Grid cols={{sm: 1, md: 2}} gap="lg" className="mb-6">
-                                <div className="flex flex-col items-center p-4 bg-zinc-800/30 rounded-lg">
+                            <div className="flex flex-row flex-wrap gap-4 justify-center mb-6">
+                                <div
+                                    className="flex flex-col items-center p-4 bg-zinc-800/30 rounded-lg flex-1 min-w-[250px]">
                                     <Text size="sm" color="muted" className="mb-2">Successful Requests</Text>
                                     <Text size="3xl" weight="bold" color="success">
                                         {globalStats.success_count}
                                     </Text>
                                 </div>
 
-                                <div className="flex flex-col items-center p-4 bg-zinc-800/30 rounded-lg">
+                                <div
+                                    className="flex flex-col items-center p-4 bg-zinc-800/30 rounded-lg flex-1 min-w-[250px]">
                                     <Text size="sm" color="muted" className="mb-2">Error Requests</Text>
                                     <Text size="3xl" weight="bold" color="error">
                                         {globalStats.error_count}
                                     </Text>
                                 </div>
-                            </Grid>
+                            </div>
 
                             {/* First Request */}
                             <div className="flex flex-col items-center mt-6 text-center">

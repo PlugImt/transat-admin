@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Route, MenuItem, MenuResponse, ProcessedMenuData } from "./+types/restaurant";
+import type { Route, MenuItem, MenuResponse, GroupedMenu } from "./+types/restaurant";
 
 export function meta({}: Route.MetaArgs) {
   return [

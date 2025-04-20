@@ -1,0 +1,109 @@
+{
+  "app": {
+    "title": "Transat",
+    "slogan": "Votre plateforme tout-en-un pour les services du campus de l'IMT Atlantique"
+  },
+  "nav": {
+    "home": "Accueil",
+    "restaurant": "Restaurant",
+    "statistics": "Statistiques"
+  },
+  "home": {
+    "welcome": "Bienvenue sur Transat",
+    "description": "Transat est votre plateforme de référence pour accéder à divers services à l'IMT Atlantique. Que ce soit pour vérifier la disponibilité des machines à laver ou consulter le menu du restaurant, nous avons tout ce qu'il vous faut.",
+    "services": {
+      "explore": "Je check ça",
+      "title": "Services",
+        "comingSoon": "Bientôt disponible",
+      "laundry": {
+        "title": "Laverie",
+        "description": "Vérifiez l'état des machines à laver et des sèche-linge sur le campus.",
+        "action": "Vérifier l'état"
+      },
+      "restaurant": {
+        "title": "Restaurant",
+        "description": "Consultez le menu du jour et les repas à venir au restaurant du campus.",
+        "action": "Voir le menu"
+      },
+      "statistics": {
+        "title": "Statistiques",
+        "description": "Consultez les statistiques d'utilisation des services Transat et les performances de l'API.",
+        "action": "Voir les statistiques"
+      }
+    },
+    "comingSoon": {
+      "title": "Bientôt disponible",
+      "description": "Nous travaillons constamment à l'amélioration de Transat avec de nouvelles fonctionnalités. Restez à l'écoute pour les prochains services et améliorations !"
+    }
+  },
+  "restaurant": {
+    "title": "Menu du jour",
+    "menuFor": "Menu du {{date}}",
+    "lunch": "Déjeuner",
+    "dinner": "Dîner",
+    "vegetarian": "Végétarien",
+    "categories": {
+      "grillades": "Grillades",
+      "accompagnements": "Accompagnements",
+      "migrateurs": "Migrateurs",
+      "cibo": "Végétarien"
+    },
+    "noMenu": {
+      "lunch": "Le menu du déjeuner n'est pas encore disponible pour aujourd'hui.",
+      "dinner": "Le menu du dîner n'est pas encore disponible pour aujourd'hui.",
+      "switchTo": "Passer au {{mealtime}}"
+    },
+    "providedBy": "Données de menu fournies par le RU IMT Atlantique"
+  },
+  "statistics": {
+    "title": "Statistiques de l'API",
+    "serverStatus": {
+      "title": "État du serveur",
+      "status": "État",
+      "latency": "Latence",
+      "lastChecked": "Dernière vérification",
+      "online": "En ligne",
+      "offline": "Hors ligne",
+      "refreshData": "Actualiser les données",
+      "refreshing": "Actualisation..."
+    },
+    "error": "Erreur",
+    "loading": "Chargement des statistiques...",
+    "globalStats": {
+      "title": "Statistiques globales",
+      "totalRequests": "Requêtes totales",
+      "successRate": "Taux de succès",
+      "avgResponse": "Temps de réponse moyen",
+      "maxResponse": "Temps de réponse max",
+      "successful": "Requêtes réussies",
+      "errors": "Requêtes en erreur",
+      "firstRequest": "Première requête"
+    },
+    "endpoints": {
+      "title": "Statistiques des endpoints",
+      "endpoint": "Endpoint",
+      "method": "Méthode",
+      "count": "Nombre",
+      "successRate": "Taux de succès",
+      "avgTime": "Temps moyen"
+    },
+    "lastLoaded": "Statistiques chargées le : {{date}}"
+  },
+  "footer": {
+    "links": {
+      "about": "À propos",
+      "privacy": "Politique de confidentialité",
+      "terms": "Conditions d'utilisation",
+      "contact": "Contact"
+    },
+    "language": "Langue",
+    "copyright": "© 2025 Transat - IMT Atlantique",
+    "allRightsReserved": "Tous droits réservés."
+  },
+  "errors": {
+    "404": "404",
+    "pageNotFound": "La page demandée est introuvable.",
+    "unexpectedError": "Une erreur inattendue s'est produite.",
+    "returnHome": "Retour à l'accueil"
+  }
+} 

@@ -1,0 +1,109 @@
+{
+  "app": {
+    "title": "Transat",
+    "slogan": "Your all-in-one platform for campus services at IMT Atlantique"
+  },
+  "nav": {
+    "home": "Home",
+    "restaurant": "Restaurant",
+    "statistics": "Statistics"
+  },
+  "home": {
+    "welcome": "Welcome to Transat",
+    "description": "Transat is your go-to platform for accessing various services at IMT Atlantique. From checking laundry availability to viewing the restaurant menu, we've got you covered.",
+    "services": {
+      "explore": "Explore More",
+      "title": "Services",
+      "comingSoon": "Coming Soon",
+      "laundry": {
+        "title": "Laundry",
+        "description": "Check the status of washing machines and dryers on campus.",
+        "action": "Check Status"
+      },
+      "restaurant": {
+        "title": "Restaurant",
+        "description": "View today's menu and upcoming meals at the campus restaurant.",
+        "action": "View Menu"
+      },
+      "statistics": {
+        "title": "Statistics",
+        "description": "View usage statistics for Transat services and API performance.",
+        "action": "View Statistics"
+      }
+    },
+    "comingSoon": {
+      "title": "Coming Soon",
+      "description": "We're constantly working to improve Transat with new features. Stay tuned for upcoming services and enhancements!"
+    }
+  },
+  "restaurant": {
+    "title": "Today's Menu",
+    "menuFor": "Menu for {{date}}",
+    "lunch": "Lunch",
+    "dinner": "Dinner",
+    "vegetarian": "Vegetarian",
+    "categories": {
+      "grillades": "Grilled Dishes",
+      "accompagnements": "Side Dishes",
+      "migrateurs": "Migrateurs",
+      "cibo": "Vegetarian"
+    },
+    "noMenu": {
+      "lunch": "The lunch menu for today is not available yet.",
+      "dinner": "The dinner menu for today is not available yet.",
+      "switchTo": "Switch to {{mealtime}}"
+    },
+    "providedBy": "Menu data provided by RU IMT Atlantique"
+  },
+  "statistics": {
+    "title": "API Statistics",
+    "serverStatus": {
+      "title": "Server Status",
+      "status": "Status",
+      "latency": "Latency",
+      "lastChecked": "Last Checked",
+      "online": "Online",
+      "offline": "Offline",
+      "refreshData": "Refresh Data",
+      "refreshing": "Refreshing..."
+    },
+    "error": "Error",
+    "loading": "Loading statistics...",
+    "globalStats": {
+      "title": "Global Statistics",
+      "totalRequests": "Total Requests",
+      "successRate": "Success Rate",
+      "avgResponse": "Avg Response Time",
+      "maxResponse": "Max Response Time",
+      "successful": "Successful Requests",
+      "errors": "Error Requests",
+      "firstRequest": "First Request"
+    },
+    "endpoints": {
+      "title": "Endpoint Statistics",
+      "endpoint": "Endpoint",
+      "method": "Method",
+      "count": "Count",
+      "successRate": "Success Rate",
+      "avgTime": "Avg Time"
+    },
+    "lastLoaded": "Statistics last loaded: {{date}}"
+  },
+  "footer": {
+    "links": {
+      "about": "About",
+      "privacy": "Privacy Policy",
+      "terms": "Terms of Service",
+      "contact": "Contact"
+    },
+    "language": "Language",
+    "copyright": "© 2025 Transat - IMT Atlantique",
+    "allRightsReserved": "All rights reserved."
+  },
+  "errors": {
+    "404": "404",
+    "pageNotFound": "The requested page could not be found.",
+    "unexpectedError": "An unexpected error occurred.",
+    "returnHome": "Return Home"
+  }
+} 

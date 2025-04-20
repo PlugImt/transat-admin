@@ -1,6 +1,18 @@
 import {useEffect, useState} from "react";
 import type {Route} from "../+types/root";
-import {Badge, Button, Card, CardContent, CardHeader, CardTitle, Container, Section, Stack, Text} from "../components";
+import {
+    Badge,
+    Button,
+    Card,
+    CardContent,
+    CardFooter,
+    CardHeader,
+    CardTitle,
+    Container,
+    Spinner,
+    Stack,
+    Text
+} from "../components";
 
 export const meta: Route.MetaFunction = () => {
     return [
@@ -124,42 +136,10 @@ const processMenuData = (menuResponse: MenuResponse): GroupedMenu => {
 
 // Skeleton loaders for different sections
 const LoadingSkeleton = () => (
-    <Card className="mb-8">
-        <CardContent>
-            <div className="animate-fadeIn py-8" style={{animationDelay: "0.1s"}}>
-                {/* Title skeleton */}
-                <div className="flex items-center mb-6">
-                    <div className="skeleton-loader w-10 h-10 rounded-full mr-3"></div>
-                    <div className="skeleton-loader h-8 w-48"></div>
-                </div>
-
-                {/* Mealtime selector skeleton */}
-                <div className="flex justify-center gap-6 mb-8">
-                    <div className="skeleton-loader h-10 w-32 rounded-full"></div>
-                    <div className="skeleton-loader h-10 w-32 rounded-full"></div>
-                </div>
-
-                {/* Category blocks skeleton */}
-                {[...Array(3)].map((_, i) => (
-                    <div
-                        key={i}
-                        className="mb-8 skeleton-loader p-4 rounded-lg"
-                        style={{animationDelay: `${i * 0.15}s`}}
-                    >
-                        <div className="flex items-center mb-4">
-                            <div className="skeleton-loader w-8 h-8 rounded-full mr-2"></div>
-                            <div className="skeleton-loader h-6 w-48"></div>
-                        </div>
-
-                        {/* Menu items skeleton */}
-                        <div className="pl-10">
-                            {[...Array(3)].map((_, j) => (
-                                <div key={j} className="skeleton-loader h-4 w-3/4 mb-3"></div>
-                            ))}
-                        </div>
-                    </div>
-                ))}
-            </div>
+    <Card className="bg-zinc-900 animate-fadeIn w-full mx-auto">
+        <CardContent className="py-12 flex flex-col items-center justify-center">
+            <Spinner size="lg" color="primary" className="mb-4"/>
+            <Text color="muted">Loading menu...</Text>
         </CardContent>
     </Card>
 );
@@ -169,38 +149,48 @@ export default function Restaurant() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [selectedMealtime, setSelectedMealtime] = useState<'lunch' | 'dinner'>('lunch');
+    const [refreshing, setRefreshing] = useState(false);
+    const [menuLastLoaded, setMenuLastLoaded] = useState<string>(new Date().toISOString());
+
+    const fetchMenu = async () => {
+        setLoading(prev => prev === true);
+        setError(null);
+
+        try {
+            const response = await fetch(`${API_BASE_URL}/api/restaurant`, {
+                method: "GET",
+                mode: "cors",
+                headers: {
+                    "Accept": "application/json"
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch menu: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            // Process the menu data
+            const processedData = processMenuData(data);
+
+            setMenuData(processedData);
+            setMenuLastLoaded(new Date().toISOString());
+            setLoading(false);
+        } catch (err) {
+            setLoading(false);
+            setError(`Failed to fetch menu: ${err instanceof Error ? err.message : String(err)}`);
+        }
+    };
+
+    // Refresh data
+    const handleRefresh = async () => {
+        setRefreshing(true);
+        await fetchMenu();
+        setRefreshing(false);
+    };
 
     useEffect(() => {
-        const fetchMenu = async () => {
-            setLoading(true);
-            setError(null);
-
-            try {
-                const response = await fetch(`${API_BASE_URL}/api/restaurant`, {
-                    method: "GET",
-                    mode: "cors",
-                    headers: {
-                        "Accept": "application/json"
-                    }
-                });
-
-                if (!response.ok) {
-                    throw new Error(`Failed to fetch menu: ${response.status}`);
-                }
-
-                const data = await response.json();
-
-                // Process the menu data
-                const processedData = processMenuData(data);
-
-                setMenuData(processedData);
-                setLoading(false);
-            } catch (err) {
-                setLoading(false);
-                setError(`Failed to fetch menu: ${err instanceof Error ? err.message : String(err)}`);
-            }
-        };
-
         fetchMenu();
     }, []);
 
@@ -210,7 +200,9 @@ export default function Restaurant() {
             weekday: 'long',
             year: 'numeric',
             month: 'long',
-            day: 'numeric'
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
         };
         return new Date(dateString).toLocaleDateString(undefined, options);
     };
@@ -224,26 +216,16 @@ export default function Restaurant() {
     };
 
     return (
-        <Container>
-            <Section
-                title="Today's Menu"
-                subtitle={menuData ? `Menu for ${formatDate(menuData.date)}` : undefined}
-                spacing="lg"
-            >
-                {/* Header image */}
-                <div className="flex justify-center mb-6">
-                    <img
-                        src="https://epsbubz.stripocdn.email/content/guids/CABINET_882ea3df7cd154211d1b97eac5876cf77c8c0bab12620e24b042e4c3c07d9421/images/restaurant.png"
-                        alt="Restaurant icon"
-                        className="w-16 h-16"
-                    />
-                </div>
-
+        <Container className="max-w-5xl py-8">
+            <div className="flex flex-col gap-8 max-w-[800px] mx-auto">
                 {/* Error display */}
                 {error && (
-                    <Card className="mb-8 bg-error/20">
-                        <CardHeader>
-                            <CardTitle>Error</CardTitle>
+                    <Card className="border-l-4 border-error animate-fadeIn">
+                        <CardHeader className="pb-2">
+                            <Stack direction="horizontal" align="center">
+                                <div className="mr-2" role="img" aria-label="Error">⚠️</div>
+                                <CardTitle>Error</CardTitle>
+                            </Stack>
                         </CardHeader>
                         <CardContent>
                             <Text color="error">{error}</Text>
@@ -251,36 +233,64 @@ export default function Restaurant() {
                     </Card>
                 )}
 
-                {/* Loading skeleton */}
+                {/* Restaurant Header Card */}
+                <Card
+                    className="bg-zinc-900 animate-fadeIn w-full mx-auto"
+                    style={{boxShadow: "0 4px 12px rgba(0,0,0,0.2)"}}
+                >
+                    <CardHeader className="pb-3">
+                        <div className="flex items-center w-full justify-center">
+
+                            <CardTitle className="text-[#ffe6cc] flex-grow text-center">
+                                Today's <span className="text-[#ec7f32]">Menu</span>
+                            </CardTitle>
+                        </div>
+                    </CardHeader>
+                    <CardContent className="py-6">
+                        {/* Date Display */}
+                        {menuData && (
+                            <div className="flex flex-col items-center mb-6 text-center">
+                                <Text size="sm" color="muted" className="mb-2">Menu Date</Text>
+                                <Text size="lg" weight="medium">
+                                    {formatDate(menuData.date)}
+                                </Text>
+                            </div>
+                        )}
+
+                        {/* Mealtime selector */}
+                        <div className="flex flex-row flex-wrap justify-center gap-4 mt-4">
+                            <Button
+                                variant={selectedMealtime === 'lunch' ? 'primary' : 'outline'}
+                                onClick={() => setSelectedMealtime('lunch')}
+                                leftIcon="☀️"
+                                className={selectedMealtime === 'lunch' ? "bg-[#0049a8] hover:bg-[#0062e1]" : ""}
+                            >
+                                Lunch
+                            </Button>
+                            <Button
+                                variant={selectedMealtime === 'dinner' ? 'primary' : 'outline'}
+                                onClick={() => setSelectedMealtime('dinner')}
+                                leftIcon="🌙"
+                                className={selectedMealtime === 'dinner' ? "bg-[#0049a8] hover:bg-[#0062e1]" : ""}
+                            >
+                                Dinner
+                            </Button>
+                        </div>
+                    </CardContent>
+
+
+                </Card>
+
+                {/* Loading indicator */}
                 {loading && <LoadingSkeleton/>}
 
                 {/* Menu display */}
                 {!loading && menuData && (
                     <>
-                        {/* Mealtime selector */}
-                        <div className="mb-8">
-                            <Stack direction="horizontal" justify="center" spacing="md">
-                                <Button
-                                    variant={selectedMealtime === 'lunch' ? 'primary' : 'outline'}
-                                    onClick={() => setSelectedMealtime('lunch')}
-                                    leftIcon="☀️"
-                                >
-                                    Lunch
-                                </Button>
-                                <Button
-                                    variant={selectedMealtime === 'dinner' ? 'primary' : 'outline'}
-                                    onClick={() => setSelectedMealtime('dinner')}
-                                    leftIcon="🌙"
-                                >
-                                    Dinner
-                                </Button>
-                            </Stack>
-                        </div>
-
                         {/* No items message */}
                         {getCurrentMealtimeItemCount() === 0 ? (
-                            <Card className="py-8">
-                                <CardContent className="text-center">
+                            <Card className="bg-zinc-900 animate-fadeIn w-full mx-auto">
+                                <CardContent className="py-12 flex flex-col items-center justify-center">
                                     <Text size="xl" color="muted">
                                         No menu items available
                                         for {selectedMealtime === 'lunch' ? 'lunch' : 'dinner'} today.
@@ -289,51 +299,64 @@ export default function Restaurant() {
                             </Card>
                         ) : (
                             /* Menu categories */
-                            <div className="space-y-8">
-                                {Object.entries(menuData[selectedMealtime]).map(([categoryKey, category], index) => (
-                                    <Card
-                                        key={categoryKey}
-                                        bordered
-                                        elevated
-                                        className="overflow-hidden"
-                                    >
-                                        <div
-                                            className="border-b-2 bg-gradient-to-r from-primary/10 to-transparent"
-                                            style={{borderColor: category.color}}
-                                        >
-                                            <CardHeader className="flex items-center">
-                                                <div className="text-2xl mr-2">{category.icon}</div>
-                                                <CardTitle>{category.title}</CardTitle>
-                                            </CardHeader>
-                                        </div>
+                            <Card
+                                className="bg-zinc-900 animate-fadeIn w-full mx-auto"
+                                style={{boxShadow: "0 4px 12px rgba(0,0,0,0.2)"}}
+                            >
+                                <CardHeader className="pb-3">
+                                    <CardTitle className="text-2xl font-bold">
+                                        {selectedMealtime === 'lunch' ? 'Lunch' : 'Dinner'} <span
+                                        className="text-[#ec7f32]">Menu</span>
+                                    </CardTitle>
+                                </CardHeader>
 
-                                        <CardContent>
-                                            <ul className="pl-4 space-y-2">
-                                                {category.items.map((item, itemIndex) => (
-                                                    <li
-                                                        key={`${categoryKey}-${itemIndex}`}
-                                                        className="animate-fadeInLeft text-lg"
-                                                        style={{animationDelay: `${itemIndex * 0.1}s`}}
-                                                    >
-                                                        <Text>{item}</Text>
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </CardContent>
-                                    </Card>
-                                ))}
-                            </div>
+                                <CardContent className="py-6">
+                                    <div className="space-y-8">
+                                        {Object.entries(menuData[selectedMealtime]).map(([categoryKey, category], index) => (
+                                            <div key={categoryKey}
+                                                 className="border-t border-zinc-800 pt-6 first:border-0 first:pt-0">
+                                                <div className="flex items-center mb-4">
+                                                    <div className="text-2xl mr-2">{category.icon}</div>
+                                                    <Text size="xl" weight="bold" color="primary"
+                                                          className="text-[#0049a8]">
+                                                        {category.title}
+                                                    </Text>
+                                                </div>
+
+                                                <div className="pl-10">
+                                                    <ul className="space-y-3">
+                                                        {category.items.map((item, itemIndex) => (
+                                                            <li
+                                                                key={`${categoryKey}-${itemIndex}`}
+                                                                className="animate-fadeInLeft text-lg"
+                                                                style={{animationDelay: `${itemIndex * 0.1}s`}}
+                                                            >
+                                                                <Text>{item}</Text>
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </CardContent>
+
+                                <CardFooter className="justify-center border-t border-zinc-800 pt-4 text-center">
+                                    <Badge variant="secondary" size="sm">
+                                        Menu items may vary based on availability
+                                    </Badge>
+                                </CardFooter>
+                            </Card>
                         )}
-
-                        {/* Disclaimer */}
-                        <div className="mt-8 text-center">
-                            <Badge variant="secondary" size="sm">
-                                Menu items may vary based on availability
-                            </Badge>
-                        </div>
                     </>
                 )}
-            </Section>
+
+                {!loading && menuData && (
+                    <div className="text-center text-zinc-500 text-sm">
+                        Menu last loaded: {formatDate(menuLastLoaded)}
+                    </div>
+                )}
+            </div>
         </Container>
     );
 } 

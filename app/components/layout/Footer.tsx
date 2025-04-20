@@ -1,7 +1,6 @@
 import React from 'react';
 import {useTranslation} from 'react-i18next';
-import {Container, Grid, Text} from '../ui';
-import LanguageSelector from '../LanguageSelector';
+import {Container, Text} from '../ui';
 
 export interface FooterProps {
     className?: string;

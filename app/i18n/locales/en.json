@@ -44,6 +44,7 @@
     "dryers": "Dryers",
     "available": "Available",
     "inUse": "In Use",
+    "finished": "Finished",
     "timeLeft": "Time Left",
     "refresh": "Refresh",
     "refreshing": "Refreshing...",

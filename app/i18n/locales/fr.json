@@ -44,6 +44,7 @@
     "dryers": "Sèche-linge",
     "available": "Disponible",
     "inUse": "En cours d'utilisation",
+    "finished": "Terminé",
     "timeLeft": "Temps restant",
     "refresh": "Actualiser",
     "refreshing": "Actualisation...",

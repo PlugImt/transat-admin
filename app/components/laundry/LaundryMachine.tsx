@@ -84,7 +84,7 @@ const LaundryMachine: React.FC<LaundryMachineProps> = ({
                     // List vs grid view
                     isListView 
                         ? 'flex flex-row items-center h-20 mb-3' 
-                        : 'flex flex-col h-[200px]',
+                        : 'flex flex-col h-[220px] backdrop-blur-sm',
                     // Available vs in-use
                     isAvailable
                         ? 'border-l-4 hover:translate-x-1'
@@ -93,10 +93,14 @@ const LaundryMachine: React.FC<LaundryMachineProps> = ({
                     isAvailable && (isWasher ? 'border-l-blue-500' : 'border-l-orange-500'),
                     // Animation
                     animate && 'animate-fadeIn',
+                    // Enhanced styles for grid view
+                    !isListView && 'shadow-lg rounded-xl border border-zinc-800',
+                    !isListView && isWasher && 'bg-gradient-to-br from-blue-950/40 to-zinc-950',
+                    !isListView && !isWasher && 'bg-gradient-to-br from-orange-950/40 to-zinc-950',
                     className
                 )}
                 style={animate ? { animationDelay: `${animationDelay}ms` } : {}}
-                bgColor="bg-[#ffffff0a]"
+                bgColor={isListView ? "bg-[#ffffff0a]" : undefined}
             >
                 {/* Dynamic progress background for in-use machines */}
                 {!isAvailable && (
@@ -104,19 +108,31 @@ const LaundryMachine: React.FC<LaundryMachineProps> = ({
                         <div 
                             ref={progressBarRef}
                             className={cn(
-                                "absolute inset-0 h-full bg-gradient-to-r border-r-2 transition-all duration-[1000ms] ease-linear",
-                                progressColor
+                                "absolute inset-0 h-full transition-all duration-[1000ms] ease-linear",
+                                isListView 
+                                    ? "bg-gradient-to-r border-r-2" 
+                                    : "bg-gradient-to-t border-t-2",
+                                isWasher 
+                                    ? "from-blue-500/10 to-blue-600/20 border-blue-500" 
+                                    : "from-orange-500/10 to-orange-600/20 border-orange-500"
                             )}
-                            style={{ width: `${progressPercentage}%` }}
+                            style={{ 
+                                width: isListView ? `${progressPercentage}%` : '100%',
+                                height: isListView ? '100%' : `${progressPercentage}%`,
+                                bottom: 0,
+                                top: isListView ? 0 : 'auto'
+                            }}
                         />
                         {/* Pulsing edge */}
                         <div 
                             className={cn(
-                                "absolute top-0 bottom-0 w-2 animate-pulse duration-[2s]",
+                                "absolute animate-pulse duration-[2s]",
+                                isListView ? "top-0 bottom-0 w-2" : "left-0 right-0 h-2",
                                 isWasher ? "bg-blue-500/70" : "bg-orange-500/70"
                             )}
                             style={{ 
-                                left: `calc(${progressPercentage}% - 2px)`,
+                                left: isListView ? `calc(${progressPercentage}% - 2px)` : 0,
+                                bottom: !isListView ? `calc(${progressPercentage}% - 2px)` : 'auto',
                                 opacity: progressPercentage > 0 ? 0.7 : 0
                             }}
                         />
@@ -125,7 +141,8 @@ const LaundryMachine: React.FC<LaundryMachineProps> = ({
 
                 {/* Status badge */}
                 <div className={cn(
-                    "absolute top-2 right-2 px-2 py-1 rounded-md text-xs font-semibold z-10",
+                    "absolute px-2 py-1 rounded-md text-xs font-semibold z-10",
+                    isListView ? "top-2 right-2" : "top-3 right-3",
                     isAvailable 
                         ? isWasher ? "bg-blue-500/20 text-blue-400" : "bg-orange-500/20 text-orange-400"
                         : isWasher ? "bg-blue-500/30 text-blue-300" : "bg-orange-500/30 text-orange-300"
@@ -136,60 +153,106 @@ const LaundryMachine: React.FC<LaundryMachineProps> = ({
                 {/* Content container with proper z-index */}
                 <div className={cn(
                     "relative z-10 flex",
-                    isListView ? "flex-row items-center w-full px-4" : "flex-col p-4 h-full"
+                    isListView 
+                        ? "flex-row items-center w-full px-4" 
+                        : "flex-col p-5 h-full justify-between"
                 )}>
-                    {/* Machine icon */}
-                    <div className={cn(
-                        "flex items-center justify-center text-xl rounded-full",
-                        isListView 
-                            ? "w-12 h-12 mr-4 flex-shrink-0" 
-                            : "w-12 h-12 mb-4",
-                        isWasher ? "bg-blue-500/10" : "bg-orange-500/10"
-                    )}>
-                        {typeIcon}
-                    </div>
+                    {/* Top section (Grid view) */}
+                    {!isListView && (
+                        <div className="flex items-start mb-4 w-full">
+                            {/* Machine icon */}
+                            <div className={cn(
+                                "flex items-center justify-center text-2xl rounded-full w-12 h-12 mr-3",
+                                isWasher ? "bg-blue-500/10 text-blue-400" : "bg-orange-500/10 text-orange-400"
+                            )}>
+                                {typeIcon}
+                            </div>
+                            
+                            <div>
+                                <CardTitle className="text-base font-bold mb-0.5 text-white">
+                                    {name}
+                                </CardTitle>
+                                <Text className="text-xs text-zinc-400">
+                                    ID: {id}
+                                </Text>
+                            </div>
+                        </div>
+                    )}
+                    
+                    {/* List view content */}
+                    {isListView && (
+                        <>
+                            {/* Machine icon */}
+                            <div className={cn(
+                                "flex items-center justify-center text-xl rounded-full w-12 h-12 mr-4 flex-shrink-0",
+                                isWasher ? "bg-blue-500/10" : "bg-orange-500/10"
+                            )}>
+                                {typeIcon}
+                            </div>
 
-                    {/* Machine info */}
-                    <div className={isListView ? "flex-grow" : ""}>
-                        <CardTitle className="text-base font-bold mb-0.5 text-white">
-                            {name}
-                        </CardTitle>
-                        <Text className="text-xs text-zinc-400">
-                            ID: {id}
-                        </Text>
-                    </div>
+                            {/* Machine info */}
+                            <div className="flex-grow">
+                                <CardTitle className="text-base font-bold mb-0.5 text-white">
+                                    {name}
+                                </CardTitle>
+                                <Text className="text-xs text-zinc-400">
+                                    ID: {id}
+                                </Text>
+                            </div>
+                        </>
+                    )}
 
                     {/* Time remaining and progress info for in-use machines */}
                     {!isAvailable && timeRemaining !== undefined && (
                         <div className={cn(
                             "flex flex-col",
-                            isListView ? "ml-auto items-end" : "mt-auto pt-2"
+                            isListView ? "ml-auto" : "w-full"
                         )}>
-                            <Text className="text-xs text-zinc-400 mb-0.5">
-                                Time Remaining:
-                            </Text>
-                            <Text
-                                className={cn(
-                                    "font-mono text-lg font-bold tabular-nums tracking-tight",
-                                    isWasher ? "text-blue-400" : "text-orange-400"
-                                )}
-                            >
-                                {formatTime(timeRemaining)}
-                            </Text>
-
-                            <Text className="text-xs text-zinc-500 mt-1">
-                                {Math.round(progressPercentage)}% complete
-                            </Text>
-
-                            {!isListView && (
-                                <div className="w-full h-1.5 bg-zinc-800 rounded-full mt-2 overflow-hidden">
-                                    <div
+                            {isListView ? (
+                                // List view time display - centered
+                                <div className="flex flex-col items-center">
+                                    <Text className="text-xs text-zinc-400 mb-0.5">
+                                        Time Left:
+                                    </Text>
+                                    <Text
                                         className={cn(
-                                            "h-full rounded-full",
-                                            isWasher ? "bg-blue-500" : "bg-orange-500"
+                                            "font-mono text-xl font-bold tabular-nums tracking-tight",
+                                            isWasher ? "text-blue-400" : "text-orange-400"
                                         )}
-                                        style={{ width: `${progressPercentage}%` }}
-                                    />
+                                    >
+                                        {formatTime(timeRemaining)}
+                                    </Text>
+                                </div>
+                            ) : (
+                                // Grid view time display
+                                <div className="w-full">
+                                    <div className="flex justify-between items-center mb-2">
+                                        <Text className="text-xs text-zinc-400">
+                                            Time Remaining:
+                                        </Text>
+                                        <Text className="text-xs text-zinc-500">
+                                            {Math.round(progressPercentage)}% complete
+                                        </Text>
+                                    </div>
+                                    
+                                    <Text
+                                        className={cn(
+                                            "font-mono text-2xl font-bold tabular-nums tracking-tight mb-2",
+                                            isWasher ? "text-blue-400" : "text-orange-400"
+                                        )}
+                                    >
+                                        {formatTime(timeRemaining)}
+                                    </Text>
+
+                                    <div className="w-full h-2 bg-zinc-800/60 rounded-full overflow-hidden backdrop-blur-sm">
+                                        <div
+                                            className={cn(
+                                                "h-full rounded-full",
+                                                isWasher ? "bg-blue-500" : "bg-orange-500"
+                                            )}
+                                            style={{ width: `${progressPercentage}%` }}
+                                        />
+                                    </div>
                                 </div>
                             )}
                         </div>

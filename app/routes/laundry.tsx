@@ -58,7 +58,6 @@ export default function Laundry() {
     const [showConfetti, setShowConfetti] = useState<number | null>(null);
     const [finishedMachines, setFinishedMachines] = useState<number[]>([]);
     const machineRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
-    const [activeTab, setActiveTab] = useState<'all' | 'washers' | 'dryers'>('all');
     const [refreshing, setRefreshing] = useState(false);
     const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
     const [addedTestMachine, setAddedTestMachine] = useState(false);
@@ -448,72 +447,48 @@ export default function Laundry() {
                     </Card>
                 )}
 
-                {/* Machine type tabs */}
+                {/* Machines display */}
                 {!loading && localData && (
                     <Card
                         className="bg-zinc-900 animate-fadeIn w-full mx-auto"
                         style={{boxShadow: "0 4px 12px rgba(0,0,0,0.2)"}}
                     >
                         <CardHeader className="pb-3">
-                            <div className="flex items-center justify-between">
+                            <div className="flex w-full justify-center">
                                 <CardTitle className="text-2xl font-bold">Laundry <span
                                     className="text-[#ec7f32]">Machines</span>
                                 </CardTitle>
-                                
-                                {/* View toggle */}
-                                <div className="flex items-center space-x-2">
-                                    <Button 
-                                        variant="ghost" 
-                                        className={cn(
-                                            "w-9 h-9 p-0 rounded-full", 
-                                            viewMode === 'list' && "bg-zinc-800 text-[#ec7f32]"
-                                        )}
-                                        aria-label="List view"
-                                        onClick={() => setViewMode('list')}
-                                    >
-                                        <BsListUl className="w-4 h-4" />
-                                    </Button>
-                                    <Button 
-                                        variant="ghost" 
-                                        className={cn(
-                                            "w-9 h-9 p-0 rounded-full", 
-                                            viewMode === 'grid' && "bg-zinc-800 text-[#ec7f32]"
-                                        )}
-                                        aria-label="Grid view"
-                                        onClick={() => setViewMode('grid')}
-                                    >
-                                        <BsGridFill className="w-4 h-4" />
-                                    </Button>
-                                </div>
                             </div>
-                        </CardHeader>
-                        <CardContent className="py-4">
-                            <Stack direction="horizontal" spacing="sm" justify="center" className="mb-6">
-                                <Button
-                                    variant={activeTab === 'all' ? 'primary' : 'outline'}
-                                    onClick={() => setActiveTab('all')}
-                                    className={activeTab === 'all' ? 'bg-[#0049a8] hover:bg-[#0062e1]' : ''}
-                                >
-                                    All Machines
-                                </Button>
-                                <Button
-                                    variant={activeTab === 'washers' ? 'primary' : 'outline'}
-                                    onClick={() => setActiveTab('washers')}
-                                    leftIcon={<GiWashingMachine/>}
-                                    className={activeTab === 'washers' ? 'bg-[#0049a8] hover:bg-[#0062e1]' : ''}
-                                >
-                                    Washers
-                                </Button>
-                                <Button
-                                    variant={activeTab === 'dryers' ? 'primary' : 'outline'}
-                                    onClick={() => setActiveTab('dryers')}
-                                    leftIcon={<GiClothes/>}
-                                    className={activeTab === 'dryers' ? 'bg-[#0049a8] hover:bg-[#0062e1]' : ''}
-                                >
-                                    Dryers
-                                </Button>
-                            </Stack>
 
+                        </CardHeader>
+
+                        {/* View toggle */}
+                        <div className="flex w-full justify-end space-x-2">
+                            <Button
+                                variant="ghost"
+                                className={cn(
+                                    "w-9 h-9 p-0 rounded-full",
+                                    viewMode === 'list' && "bg-zinc-800 text-[#ec7f32]"
+                                )}
+                                aria-label="List view"
+                                onClick={() => setViewMode('list')}
+                            >
+                                <BsListUl className="w-6 h-6" />
+                            </Button>
+                            <Button
+                                variant="ghost"
+                                className={cn(
+                                    "w-9 h-9 p-0 rounded-full",
+                                    viewMode === 'grid' && "bg-zinc-800 text-[#ec7f32]"
+                                )}
+                                aria-label="Grid view"
+                                onClick={() => setViewMode('grid')}
+                            >
+                                <BsGridFill className="w-4 h-4" />
+                            </Button>
+                        </div>
+
+                        <CardContent className="py-4">
                             {/* Machines container */}
                             {localData && (
                                 <div className={cn(
@@ -521,44 +496,40 @@ export default function Laundry() {
                                     viewMode === 'grid' && 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
                                 )}>
                                     {/* Washing machines */}
-                                    {(activeTab === 'all' || activeTab === 'washers') &&
-                                        localData.washing_machine.map(machine => (
-                                            <div
-                                                key={`washer-${machine.number}`}
-                                                ref={setMachineRef(machine.number)}
-                                            >
-                                                <LaundryMachine
-                                                    id={machine.number}
-                                                    name={`Washer ${machine.number}`}
-                                                    type="washer"
-                                                    status={getMachineStatus(machine)}
-                                                    timeRemaining={machine.time_left}
-                                                    animate
-                                                    view={viewMode}
-                                                />
-                                            </div>
-                                        ))
-                                    }
+                                    {localData.washing_machine.map(machine => (
+                                        <div
+                                            key={`washer-${machine.number}`}
+                                            ref={setMachineRef(machine.number)}
+                                        >
+                                            <LaundryMachine
+                                                id={machine.number}
+                                                name={`Washer ${machine.number}`}
+                                                type="washer"
+                                                status={getMachineStatus(machine)}
+                                                timeRemaining={machine.time_left}
+                                                animate
+                                                view={viewMode}
+                                            />
+                                        </div>
+                                    ))}
 
                                     {/* Dryers */}
-                                    {(activeTab === 'all' || activeTab === 'dryers') &&
-                                        localData.dryer.map(machine => (
-                                            <div
-                                                key={`dryer-${machine.number}`}
-                                                ref={setMachineRef(machine.number)}
-                                            >
-                                                <LaundryMachine
-                                                    id={machine.number}
-                                                    name={`Dryer ${machine.number}`}
-                                                    type="dryer"
-                                                    status={getMachineStatus(machine)}
-                                                    timeRemaining={machine.time_left}
-                                                    animate
-                                                    view={viewMode}
-                                                />
-                                            </div>
-                                        ))
-                                    }
+                                    {localData.dryer.map(machine => (
+                                        <div
+                                            key={`dryer-${machine.number}`}
+                                            ref={setMachineRef(machine.number)}
+                                        >
+                                            <LaundryMachine
+                                                id={machine.number}
+                                                name={`Dryer ${machine.number}`}
+                                                type="dryer"
+                                                status={getMachineStatus(machine)}
+                                                timeRemaining={machine.time_left}
+                                                animate
+                                                view={viewMode}
+                                            />
+                                        </div>
+                                    ))}
                                 </div>
                             )}
                         </CardContent>

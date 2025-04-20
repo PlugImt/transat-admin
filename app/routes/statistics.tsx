@@ -228,17 +228,17 @@ export default function Statistics() {
                     <CardHeader className="pb-3">
                         <div className="flex items-center w-full justify-between">
                             <div className="flex-1">
-            <span className="inline-flex items-center justify-center relative">
-                <div
-                    className="text-2xl relative"
-                    role="img" aria-label="Server status">
-                    {serverStatus.status === "online" ? "🟢" : "🔴"}
-                </div>
-                {serverStatus.status === "online" && (
-                    <span className="absolute inset-0 rounded-full bg-green-500/20 blur-md animate-pulse"
-                          style={{width: '32px', height: '32px', margin: '-4px', zIndex: -1}}></span>
-                )}
-            </span>
+                                <span className="inline-flex items-center justify-center relative">
+                                    <div
+                                        className="text-2xl relative"
+                                        role="img" aria-label="Server status">
+                                        {serverStatus.status === "online" ? "🟢" : "🔴"}
+                                    </div>
+                                    {serverStatus.status === "online" && (
+                                        <span className="absolute inset-0 rounded-full bg-green-500/20 blur-md animate-pulse"
+                                              style={{width: '32px', height: '32px', margin: '-4px', zIndex: -1}}></span>
+                                    )}
+                                </span>
                             </div>
                             <CardTitle className="text-[#ffe6cc] flex-grow text-center">
                                 Server <span className="text-[#ec7f32]">Status</span>

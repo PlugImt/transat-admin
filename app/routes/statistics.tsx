@@ -149,7 +149,7 @@ export default function Statistics() {
       
       const endpointData = await endpointResponse.json();
       setEndpointStats(endpointData.statistics);
-      
+
       setLoading(false);
     } catch (err) {
       setLoading(false);
@@ -197,225 +197,179 @@ export default function Statistics() {
         title="API Statistics" 
         spacing="lg"
       >
-        {/* Server Status */}
-        <Card 
-          className="mb-8"
-          bordered
+       {/* Server Status */}
+        <Card
+          className="mb-8 stats-card animate-fadeIn"
           elevated
         >
-          <CardHeader>
-            <Stack direction="horizontal" align="center">
-              <div className="mr-2" role="img" aria-label="Server status">
+          <CardHeader className="border-b border-primary/20">
+            <Stack direction="horizontal" align="center" className="animate-fadeInLeft">
+              <div className={`mr-2 ${serverStatus.status === "online" ? "animate-pulseGlow" : ""}`} role="img" aria-label="Server status">
                 {serverStatus.status === "online" ? "🟢" : "🔴"}
               </div>
               <CardTitle>Server Status</CardTitle>
+              <Badge
+                className="ml-auto"
+                variant={serverStatus.status === "online" ? "success" : "error"}
+              >
+                {serverStatus.status === "online" ? "Online" : "Offline"}
+              </Badge>
             </Stack>
           </CardHeader>
-          
+
           <CardContent>
             <Grid cols={{ sm: 1, md: 3 }} gap="md" className="mb-4">
-              <div className="text-center">
-                <Text size="sm" color="muted" className="mb-1">Status</Text>
-                <Text size="lg" weight="bold">
-                  {serverStatus.status === "online" ? "Online" : "Offline"}
+              <div className="text-center p-4 rounded bg-card hover:bg-cardHover transition-all animate-fadeInUp animate-delay-100">
+                <Text size="sm" color="muted" className="mb-2">Latency</Text>
+                <Text size="xl" weight="bold" color="primary">
+                  {serverStatus.latency} <span className="text-foreground text-sm">ms</span>
                 </Text>
               </div>
-              
-              <div className="text-center">
-                <Text size="sm" color="muted" className="mb-1">Latency</Text>
-                <Text size="lg" weight="bold">
-                  {serverStatus.latency}ms
-                </Text>
-              </div>
-              
-              <div className="text-center">
-                <Text size="sm" color="muted" className="mb-1">Last Checked</Text>
+
+              <div className="text-center p-4 rounded bg-card hover:bg-cardHover transition-all animate-fadeInUp animate-delay-200">
+                <Text size="sm" color="muted" className="mb-2">Last Checked</Text>
                 <Text size="lg" weight="bold">
                   {formatDate(serverStatus.timestamp)}
                 </Text>
               </div>
+
+              <div className="text-center p-4 rounded bg-card hover:bg-cardHover transition-all animate-fadeInUp animate-delay-300">
+                <Text size="sm" color="muted" className="mb-2">Initial Load</Text>
+                <Text size="lg" weight="bold">
+                  {formatDate(initialLoadTime)}
+                </Text>
+              </div>
             </Grid>
           </CardContent>
-          
-          <CardFooter className="justify-center">
-            <Button 
+
+          <CardFooter className="justify-center border-t border-primary/20 pt-4">
+            <Button
               variant="primary"
               onClick={handleRefresh}
               disabled={refreshing || loading}
               isLoading={refreshing}
+              className="px-6 animate-fadeInUp animate-delay-400"
             >
               {refreshing ? 'Refreshing...' : 'Refresh Data'}
             </Button>
           </CardFooter>
         </Card>
-        
+
         {/* Error display */}
         {error && (
-          <Card className="mb-8 bg-error/20">
-            <CardHeader>
-              <CardTitle>Error</CardTitle>
+          <Card className="mb-8 border-l-4 border-error animate-fadeIn">
+            <CardHeader className="pb-2">
+              <Stack direction="horizontal" align="center">
+                <div className="mr-2" role="img" aria-label="Error">⚠️</div>
+                <CardTitle>Error</CardTitle>
+              </Stack>
             </CardHeader>
             <CardContent>
               <Text color="error">{error}</Text>
             </CardContent>
           </Card>
         )}
-        
+
         {/* Loading indicator */}
         {loading && (
-          <Card className="mb-8">
-            <CardContent className="py-8 flex flex-col items-center justify-center">
+          <Card className="mb-8 animate-fadeIn">
+            <CardContent className="py-12 flex flex-col items-center justify-center">
               <Spinner size="lg" color="primary" className="mb-4" />
-              <Text>Loading statistics...</Text>
+              <Text color="muted">Loading statistics...</Text>
             </CardContent>
           </Card>
         )}
-        
+
         {/* Global Statistics */}
         {!loading && globalStats && (
-          <Card className="mb-8" bordered>
-            <CardHeader>
-              <CardTitle>Global Statistics</CardTitle>
+          <Card className="mb-8 stats-card animate-fadeIn animate-delay-300">
+            <CardHeader className="border-b border-primary/20">
+              <Stack direction="horizontal" align="center">
+                <div className="mr-2 text-primary" role="img" aria-label="Statistics">📊</div>
+                <CardTitle>Global Statistics</CardTitle>
+                <Badge
+                  className="ml-auto"
+                  variant={globalStats.global_success_rate_percent > 95 ? "success" :
+                         globalStats.global_success_rate_percent > 80 ? "warning" : "error"}
+                >
+                  {globalStats.global_success_rate_percent.toFixed(1)}% Success Rate
+                </Badge>
+              </Stack>
             </CardHeader>
-            
+
             <CardContent>
+              {/* Key metrics row */}
               <Grid cols={{ sm: 2, md: 4 }} gap="md" className="mb-6">
-                <div className="text-center">
-                  <Text size="sm" color="muted" className="mb-1">Total Requests</Text>
-                  <Text size="2xl" weight="bold">{globalStats.total_request_count}</Text>
+                <div className="text-center p-4 rounded bg-card hover:bg-cardHover transition-all animate-fadeInUp animate-delay-100">
+                  <Text size="sm" color="muted" className="mb-2">Total Requests</Text>
+                  <Text size="2xl" weight="bold" color="primary">{globalStats.total_request_count.toLocaleString()}</Text>
                 </div>
-                
-                <div className="text-center">
-                  <Text size="sm" color="muted" className="mb-1">Success Rate</Text>
-                  <Text 
-                    size="2xl" 
-                    weight="bold" 
-                    color={globalStats.global_success_rate_percent > 90 ? 'success' : 'warning'}
-                  >
-                    {globalStats.global_success_rate_percent.toFixed(1)}%
+
+                <div className="text-center p-4 rounded bg-card hover:bg-cardHover transition-all animate-fadeInUp animate-delay-200">
+                  <Text size="sm" color="muted" className="mb-2">Success / Error</Text>
+                  <Stack direction="horizontal" className="justify-center gap-2">
+                    <Text size="lg" weight="bold" color="success">{globalStats.success_count.toLocaleString()}</Text>
+                    <Text size="lg" weight="bold" color="foreground">/</Text>
+                    <Text size="lg" weight="bold" color="error">{globalStats.error_count.toLocaleString()}</Text>
+                  </Stack>
+                </div>
+
+                <div className="text-center p-4 rounded bg-card hover:bg-cardHover transition-all animate-fadeInUp animate-delay-300">
+                  <Text size="sm" color="muted" className="mb-2">Avg Response</Text>
+                  <Text size="2xl" weight="bold" color={globalStats.global_avg_duration_ms < 100 ? "success" : "warning"}>
+                    {globalStats.global_avg_duration_ms.toFixed(1)}<span className="text-sm text-foreground">ms</span>
                   </Text>
                 </div>
-                
-                <div className="text-center">
-                  <Text size="sm" color="muted" className="mb-1">Avg Response Time</Text>
-                  <Text size="2xl" weight="bold">{globalStats.global_avg_duration_ms.toFixed(2)}ms</Text>
-                </div>
-                
-                <div className="text-center">
-                  <Text size="sm" color="muted" className="mb-1">Max Response Time</Text>
-                  <Text size="2xl" weight="bold">{globalStats.global_max_duration_ms.toFixed(2)}ms</Text>
+
+                <div className="text-center p-4 rounded bg-card hover:bg-cardHover transition-all animate-fadeInUp animate-delay-400">
+                  <Text size="sm" color="muted" className="mb-2">Max Response</Text>
+                  <Text size="2xl" weight="bold" color={globalStats.global_max_duration_ms < 500 ? "warning" : "error"}>
+                    {globalStats.global_max_duration_ms.toFixed(0)}<span className="text-sm text-foreground">ms</span>
+                  </Text>
                 </div>
               </Grid>
-              
-              <Grid cols={{ sm: 1, md: 2 }} gap="md">
-                <div>
-                  <Text size="sm" color="muted" className="mb-1">First Request</Text>
-                  <Text>{formatDate(globalStats.first_request)}</Text>
-                </div>
-                
-                <div>
-                  <Text size="sm" color="muted" className="mb-1">Last Request</Text>
-                  <Text>{formatDate(globalStats.last_request)}</Text>
-                </div>
-                
-                <div>
-                  <Text size="sm" color="muted" className="mb-1">Success Count</Text>
-                  <Text color="success">{globalStats.success_count}</Text>
-                </div>
-                
-                <div>
-                  <Text size="sm" color="muted" className="mb-1">Error Count</Text>
-                  <Text color="error">{globalStats.error_count}</Text>
-                </div>
-              </Grid>
-            </CardContent>
-          </Card>
-        )}
-        
-        {/* Endpoint Statistics */}
-        {!loading && endpointStats.length > 0 && (
-          <Card bordered>
-            <CardHeader>
-              <CardTitle>Endpoint Statistics</CardTitle>
-            </CardHeader>
-            
-            <CardContent>
-              <div className="space-y-6">
-                {endpointStats.map((stat, index) => (
-                  <Card 
-                    key={`${stat.endpoint}-${stat.method}`}
-                    className="overflow-hidden"
-                    bordered
-                    padding="sm"
-                  >
-                    <CardHeader className="bg-card/10 px-4 py-2 flex justify-between items-center">
-                      <div>
-                        <Badge 
-                          variant={
-                            stat.method === 'GET' ? 'primary' : 
-                            stat.method === 'POST' ? 'success' : 
-                            stat.method === 'PUT' ? 'warning' : 
-                            stat.method === 'DELETE' ? 'error' : 'default'
-                          }
-                          size="sm"
-                          className="mr-2"
-                        >
-                          {stat.method}
-                        </Badge>
-                        <Text as="span" weight="medium" className="break-all">{stat.endpoint}</Text>
-                      </div>
-                      <Badge 
-                        variant={stat.success_rate_percent > 90 ? 'success' : 'warning'} 
-                        size="sm"
-                      >
-                        {stat.success_rate_percent.toFixed(1)}% Success
-                      </Badge>
-                    </CardHeader>
-                    
-                    <CardContent>
-                      <Grid cols={{ sm: 1, md: 2, lg: 4 }} gap="sm" className="mb-2">
-                        <div>
-                          <Text size="sm" color="muted" className="mb-1">Requests</Text>
-                          <Text weight="bold">{stat.request_count}</Text>
-                        </div>
-                        
-                        <div>
-                          <Text size="sm" color="muted" className="mb-1">Avg Response</Text>
-                          <Text weight="bold">{stat.avg_duration_ms.toFixed(2)}ms</Text>
-                        </div>
-                        
-                        <div>
-                          <Text size="sm" color="muted" className="mb-1">Min Response</Text>
-                          <Text weight="bold">{stat.min_duration_ms.toFixed(2)}ms</Text>
-                        </div>
-                        
-                        <div>
-                          <Text size="sm" color="muted" className="mb-1">Max Response</Text>
-                          <Text weight="bold">{stat.max_duration_ms.toFixed(2)}ms</Text>
-                        </div>
-                      </Grid>
-                      
-                      <div className="flex flex-wrap gap-4 text-sm">
-                        <div>
-                          <Text size="xs" color="muted">First: {formatDate(stat.first_request)}</Text>
-                        </div>
-                        <div>
-                          <Text size="xs" color="muted">Last: {formatDate(stat.last_request)}</Text>
-                        </div>
-                        <div>
-                          <Text size="xs" color="success">Success: {stat.success_count}</Text>
-                        </div>
-                        <div>
-                          <Text size="xs" color="error">Errors: {stat.error_count}</Text>
-                        </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
+
+              {/* Timeline information */}
+              <div className="border-t border-primary/10 pt-4 mt-2">
+                <Text size="md" weight="medium" color="primary" className="mb-3">Request Timeline</Text>
+                <Grid cols={{ sm: 1, md: 2 }} gap="md" className="animate-fadeInUp animate-delay-500">
+                  <div className="p-3 rounded bg-card hover:bg-cardHover transition-all">
+                    <Text size="sm" color="muted" className="mb-1">First Request</Text>
+                    <Text weight="medium">{formatDate(globalStats.first_request)}</Text>
+                  </div>
+
+                  <div className="p-3 rounded bg-card hover:bg-cardHover transition-all">
+                    <Text size="sm" color="muted" className="mb-1">Last Request</Text>
+                    <Text weight="medium">{formatDate(globalStats.last_request)}</Text>
+                  </div>
+                </Grid>
+              </div>
+
+              {/* Performance metrics */}
+              <div className="border-t border-primary/10 pt-4 mt-4">
+                <Text size="md" weight="medium" color="primary" className="mb-3">Performance Details</Text>
+                <Grid cols={{ sm: 2, md: 3 }} gap="md" className="animate-fadeInUp animate-delay-600">
+                  <div className="p-3 rounded bg-card hover:bg-cardHover transition-all">
+                    <Text size="sm" color="muted" className="mb-1">Min Response Time</Text>
+                    <Text weight="bold">{globalStats.global_min_duration_ms.toFixed(2)}ms</Text>
+                  </div>
+
+                  <div className="p-3 rounded bg-card hover:bg-cardHover transition-all">
+                    <Text size="sm" color="muted" className="mb-1">Avg Response Time</Text>
+                    <Text weight="bold">{globalStats.global_avg_duration_ms.toFixed(2)}ms</Text>
+                  </div>
+
+                  <div className="p-3 rounded bg-card hover:bg-cardHover transition-all">
+                    <Text size="sm" color="muted" className="mb-1">Max Response Time</Text>
+                    <Text weight="bold">{globalStats.global_max_duration_ms.toFixed(2)}ms</Text>
+                  </div>
+                </Grid>
               </div>
             </CardContent>
           </Card>
         )}
+        
+
       </Section>
     </Container>
   );

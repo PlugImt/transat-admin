@@ -4,31 +4,23 @@ export default {
   theme: {
     extend: {
       colors: {
-        // Main theme colors
-        'background': '#070402',
-        'foreground': '#ffe6cc',
-        'card': '#1e1515',
-        'primary': '#ec7f32',
-        'secondary': '#0049a8',
-        'muted': '#494949',
-        'success': '#28a745',
-        'warning': '#ffc107',
-        'error': '#dc3545',
-        'info': '#17a2b8',
+        background: '#0D0505',
+        foreground: '#ffe6cc',
+        'card-bg': '#181010',
+        primary: '#ec7f32',
+        secondary: '#0049a8',
+        muted: '#494949',
+        success: '#28a745',
+        warning: '#ffc107',
+        error: '#dc3545',
+        info: '#17a2b8',
         'primary-hover': '#d06a1f',
         'secondary-hover': '#00367e',
         'card-hover': '#2a1c1c',
         'overlay': 'rgba(7, 4, 2, 0.8)',
-        
-        // Keep backward compatibility with old color names
-        'dark-bg': '#070402',
-        'card-bg': '#1e1515',
-        'text-primary': '#ffe6cc',
-        'accent': '#ec7f32',
-        'accent-hover': '#d06a1f',
       },
       fontFamily: {
-        'roboto': ['Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        sans: ['Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
       },
       fontSize: {
         'xs': '0.75rem',
@@ -43,6 +35,7 @@ export default {
         'sm': '0.25rem',
         'md': '0.5rem',
         'lg': '1rem',
+        'xl': '1.5rem',
         'full': '9999px',
       },
       spacing: {
@@ -59,11 +52,6 @@ export default {
         'lg': '0 10px 15px rgba(0, 0, 0, 0.1)',
         'xl': '0 20px 25px rgba(0, 0, 0, 0.1)',
       },
-      transitionDuration: {
-        'fast': '150ms',
-        'normal': '300ms',
-        'slow': '500ms',
-      },
       zIndex: {
         'dropdown': 1000,
         'sticky': 1100,
@@ -77,6 +65,8 @@ export default {
         md: '8px',
         lg: '12px',
         xl: '16px',
+        '2xl': '24px',
+        '3xl': '32px',
       },
       keyframes: {
         fadeIn: {

@@ -19,10 +19,9 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
   
   // Navigation items
   const navItems: NavItem[] = [
-    { label: t('nav.home'), path: '/' },
+    { label: t('nav.laundry'), path: '/laundry' },
     { label: t('nav.restaurant'), path: '/restaurant' },
     { label: t('nav.statistics'), path: '/statistics' },
-    { label: t('nav.laundry'), path: '/laundry' },
   ];
   
   // Handle scroll effect
@@ -43,11 +42,12 @@ const Header: React.FC<HeaderProps> = ({ className = '' }) => {
   return (
     <header 
       className={`
+       w-full max-w-screen-xl px-4 mx-auto 
         fixed z-sticky px-4 py-3 mx-4 my-2 rounded-lg z-50
         transition-all duration-normal backdrop-blur-2xl
         ${isScrolled 
-          ? 'bg-[#1e1515]/70 shadow-lg' 
-          : 'bg-[#1e1515]/1'
+          ? 'bg-[#181010]/60 shadow-lg' 
+          : 'bg-[#181010]/20'
         }
         ${className}
       `}

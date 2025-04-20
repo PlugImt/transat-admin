@@ -1,8 +1,8 @@
 export const theme = {
   colors: {
-    background: "#070402",
+    background: "#0D0505",
     foreground: "#ffe6cc",
-    card: "#1e1515",
+    card: "#181010",
     primary: "#ec7f32",
     secondary: "#0049a8",
     muted: "#494949",

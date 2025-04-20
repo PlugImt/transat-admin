@@ -35,11 +35,8 @@ const Card: React.FC<CardProps> = ({
 
   return (
     <div 
-      className={`bg-[#1e1515] ${borderClass} ${shadowClass} ${className}`}
-      style={{
-        ...style,
-        backgroundColor: '#1e1515' // Explicit background color as fallback
-      }}
+      className={`bg-card ${borderClass} ${shadowClass} ${className}`}
+      style={style}
     >
       {header && (
         <div className={`border-b border-primary/20 ${paddingClasses[padding]}`}>

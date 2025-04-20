@@ -6,7 +6,7 @@
 
 html,
 body {
-  background-color: #070402;
+  background-color: #0D0505;
   color: #ffe6cc;
   font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
   color-scheme: dark;
@@ -274,4 +274,8 @@ select,
   .home-card, .stats-card {
     width: 100%;
   }
+}
+
+.bg-card{
+    background-color: #181010;
 }

@@ -33,8 +33,8 @@ export default function Home() {
         <h2 className="text-2xl font-bold mb-6 text-text-primary">{t('home.services.title')}</h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {/* Laundry Card */}
-          <div className="card service-card max-w-[500px] group">
-            <div className="card-content">
+          <div className="card service-card max-w-[500px] group hover:shadow-lg transition-all">
+            <Link to="/laundry" className="card-content block">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 rounded-full bg-accent bg-opacity-10 flex items-center justify-center text-accent group-hover:bg-accent group-hover:text-white transition-all">
                   <img
@@ -49,9 +49,14 @@ export default function Home() {
                 {t('home.services.laundry.description')}
               </p>
               <div className="mt-6">
-                <span className="text-accent font-medium">{t('home.services.comingSoon')}</span>
+                <span className="text-accent inline-flex items-center font-medium">
+                  {t('home.services.explore')} 
+                  <svg className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </span>
               </div>
-            </div>
+            </Link>
           </div>
 
           {/* Restaurant Card */}

@@ -6,7 +6,8 @@
   "nav": {
     "home": "Home",
     "restaurant": "Restaurant",
-    "statistics": "Statistics"
+    "statistics": "Statistics",
+    "laundry": "Laundry"
   },
   "home": {
     "welcome": "Welcome to Transat",
@@ -35,6 +36,19 @@
       "title": "Coming Soon",
       "description": "We're constantly working to improve Transat with new features. Stay tuned for upcoming services and enhancements!"
     }
+  },
+  "laundry": {
+    "title": "Laundry Service",
+    "description": "Check real-time availability of washing machines and dryers on campus.",
+    "washingMachines": "Washing Machines",
+    "dryers": "Dryers",
+    "available": "Available",
+    "inUse": "In Use",
+    "timeLeft": "Time Left",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing...",
+    "lastUpdated": "Last updated",
+    "tryAgain": "Try Again"
   },
   "restaurant": {
     "title": "Today's Menu",

@@ -107,6 +107,18 @@ export default function App() {
                     {t('nav.statistics')}
                   </NavLink>
                 </li>
+                <li>
+                  <NavLink 
+                    to="/laundry" 
+                    className={({ isActive }) => 
+                      isActive 
+                        ? "text-accent font-medium" 
+                        : "text-text-primary hover:text-accent transition-colors"
+                    }
+                  >
+                    {t('nav.laundry')}
+                  </NavLink>
+                </li>
               </ul>
             </nav>
           </div>

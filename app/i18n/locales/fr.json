@@ -6,7 +6,8 @@
   "nav": {
     "home": "Accueil",
     "restaurant": "Restaurant",
-    "statistics": "Statistiques"
+    "statistics": "Statistiques",
+    "laundry": "Laverie"
   },
   "home": {
     "welcome": "Bienvenue sur Transat",
@@ -35,6 +36,19 @@
       "title": "Bientôt disponible",
       "description": "Nous travaillons constamment à l'amélioration de Transat avec de nouvelles fonctionnalités. Restez à l'écoute pour les prochains services et améliorations !"
     }
+  },
+  "laundry": {
+    "title": "Service de Laverie",
+    "description": "Vérifiez en temps réel la disponibilité des machines à laver et des sèche-linge sur le campus.",
+    "washingMachines": "Machines à Laver",
+    "dryers": "Sèche-linge",
+    "available": "Disponible",
+    "inUse": "En cours d'utilisation",
+    "timeLeft": "Temps restant",
+    "refresh": "Actualiser",
+    "refreshing": "Actualisation...",
+    "lastUpdated": "Dernière mise à jour",
+    "tryAgain": "Réessayer"
   },
   "restaurant": {
     "title": "Menu du jour",

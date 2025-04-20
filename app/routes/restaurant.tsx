@@ -1,15 +1,49 @@
 import { useState, useEffect } from "react";
-import type { Route, MenuItem, MenuResponse, GroupedMenu } from "./+types/restaurant";
+import type { Route } from "../+types/root";
+import { 
+  Badge,
+  Button, 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle, 
+  CardDescription,
+  Container, 
+  Grid, 
+  Section, 
+  Spinner, 
+  Stack, 
+  Text 
+} from "../components";
 
-export function meta({}: Route.MetaArgs) {
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "Restaurant - Transat" },
     { name: "description", content: "View today's menu at the campus restaurant" },
   ];
-}
+};
 
 // Define API base URL
 const API_BASE_URL = "https://transat.destimt.fr";
+
+// MenuItem interface
+interface MenuItem {
+  name: string;
+  description?: string;
+  allergens?: string[];
+  price?: string;
+}
+
+// API response interface
+interface MenuResponse {
+  grilladesMidi?: string[];
+  migrateurs?: string[];
+  cibo?: string[];
+  accompMidi?: string[];
+  grilladesSoir?: string[];
+  accompSoir?: string[];
+  updatedDate?: string;
+}
 
 // Define meal categories with icons and colors
 const categoryInfo: Record<string, { title: string, icon: string, color: string, mealtime: 'lunch' | 'dinner' }> = {
@@ -49,11 +83,6 @@ const categoryInfo: Record<string, { title: string, icon: string, color: string,
     color: "#854d0e", // yellow
     mealtime: 'dinner'
   }
-};
-
-// Animation delay utility
-const getAnimationDelay = (index: number) => {
-  return `${index * 0.05}s`;
 };
 
 // Group menu items by category within each mealtime
@@ -109,42 +138,44 @@ const processMenuData = (menuResponse: MenuResponse): GroupedMenu => {
 
 // Skeleton loaders for different sections
 const LoadingSkeleton = () => (
-  <div className="card stats-card mb-8">
-    <div className="animate-fadeIn" style={{ animationDelay: "0.1s" }}>
-      {/* Title skeleton */}
-      <div className="flex items-center mb-6">
-        <div className="skeleton-loader w-10 h-10 rounded-full mr-3"></div>
-        <div className="skeleton-loader h-8 w-48"></div>
-      </div>
-      
-      {/* Mealtime selector skeleton */}
-      <div className="flex justify-center gap-6 mb-8">
-        <div className="skeleton-loader h-10 w-32 rounded-full"></div>
-        <div className="skeleton-loader h-10 w-32 rounded-full"></div>
-      </div>
-      
-      {/* Category blocks skeleton */}
-      {[...Array(3)].map((_, i) => (
-        <div 
-          key={i}
-          className="mb-8 skeleton-loader p-4 rounded-lg"
-          style={{ animationDelay: `${i * 0.15}s` }}
-        >
-          <div className="flex items-center mb-4">
-            <div className="skeleton-loader w-8 h-8 rounded-full mr-2"></div>
-            <div className="skeleton-loader h-6 w-48"></div>
-          </div>
-          
-          {/* Menu items skeleton */}
-          <div className="pl-10">
-            {[...Array(3)].map((_, j) => (
-              <div key={j} className="skeleton-loader h-4 w-3/4 mb-3"></div>
-            ))}
-          </div>
+  <Card className="mb-8">
+    <CardContent>
+      <div className="animate-fadeIn py-8" style={{ animationDelay: "0.1s" }}>
+        {/* Title skeleton */}
+        <div className="flex items-center mb-6">
+          <div className="skeleton-loader w-10 h-10 rounded-full mr-3"></div>
+          <div className="skeleton-loader h-8 w-48"></div>
         </div>
-      ))}
-    </div>
-  </div>
+        
+        {/* Mealtime selector skeleton */}
+        <div className="flex justify-center gap-6 mb-8">
+          <div className="skeleton-loader h-10 w-32 rounded-full"></div>
+          <div className="skeleton-loader h-10 w-32 rounded-full"></div>
+        </div>
+        
+        {/* Category blocks skeleton */}
+        {[...Array(3)].map((_, i) => (
+          <div 
+            key={i}
+            className="mb-8 skeleton-loader p-4 rounded-lg"
+            style={{ animationDelay: `${i * 0.15}s` }}
+          >
+            <div className="flex items-center mb-4">
+              <div className="skeleton-loader w-8 h-8 rounded-full mr-2"></div>
+              <div className="skeleton-loader h-6 w-48"></div>
+            </div>
+            
+            {/* Menu items skeleton */}
+            <div className="pl-10">
+              {[...Array(3)].map((_, j) => (
+                <div key={j} className="skeleton-loader h-4 w-3/4 mb-3"></div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </CardContent>
+  </Card>
 );
 
 export default function Restaurant() {
@@ -207,144 +238,115 @@ export default function Restaurant() {
   };
 
   return (
-    <div>
-      <h1 className="section-title flex items-center justify-center">
-        <img 
-          src="https://epsbubz.stripocdn.email/content/guids/CABINET_882ea3df7cd154211d1b97eac5876cf77c8c0bab12620e24b042e4c3c07d9421/images/restaurant.png" 
-          alt="Restaurant icon" 
-          className="w-12 h-12 mr-3"
-        />
-        Today's Menu
-      </h1>
-      
-      {menuData && (
-        <p className="text-center mb-8 text-text-primary opacity-80">
-          Menu for {formatDate(menuData.date)}
-        </p>
-      )}
-      
-      {/* Error display */}
-      {error && (
-        <div className="card stats-card bg-red-900 text-white mb-8">
-          <h2 className="card-title">Error</h2>
-          <p>{error}</p>
+    <Container>
+      <Section
+        title="Today's Menu"
+        subtitle={menuData ? `Menu for ${formatDate(menuData.date)}` : undefined}
+        spacing="lg"
+      >
+        {/* Header image */}
+        <div className="flex justify-center mb-6">
+          <img 
+            src="https://epsbubz.stripocdn.email/content/guids/CABINET_882ea3df7cd154211d1b97eac5876cf77c8c0bab12620e24b042e4c3c07d9421/images/restaurant.png" 
+            alt="Restaurant icon" 
+            className="w-16 h-16"
+          />
         </div>
-      )}
-      
-      {/* Loading skeleton */}
-      {loading && <LoadingSkeleton />}
-      
-      {/* Menu display */}
-      {!loading && menuData && (
-        <div>
-          {/* Mealtime selector */}
-          <div className="flex justify-center gap-6 mb-8">
-            <button
-              className={`px-6 py-3 rounded-full transition-all duration-300 flex items-center border-2 ${
-                selectedMealtime === 'lunch'
-                  ? 'bg-accent text-white border-accent'
-                  : 'bg-transparent text-text-primary border-accent-hover hover:bg-accent hover:text-white'
-              }`}
-              onClick={() => setSelectedMealtime('lunch')}
-            >
-              <span className="mr-2">☀️</span>
-              Lunch
-            </button>
-            <button
-              className={`px-6 py-3 rounded-full transition-all duration-300 flex items-center border-2 ${
-                selectedMealtime === 'dinner'
-                  ? 'bg-accent text-white border-accent'
-                  : 'bg-transparent text-text-primary border-accent-hover hover:bg-accent hover:text-white'
-              }`}
-              onClick={() => setSelectedMealtime('dinner')}
-            >
-              <span className="mr-2">🌙</span>
-              Dinner
-            </button>
-          </div>
-          
-          {/* Menu categories */}
-          {Object.keys(menuData[selectedMealtime]).length > 0 ? (
-            <div className="space-y-6">
-              {Object.entries(menuData[selectedMealtime]).map(([categoryKey, category], index) => (
-                <div 
-                  key={categoryKey}
-                  className="card stats-card animate-fadeIn"
-                  style={{ 
-                    animationDelay: getAnimationDelay(index),
-                    borderLeft: `4px solid ${category.color}`
-                  }}
+        
+        {/* Error display */}
+        {error && (
+          <Card className="mb-8 bg-error/20">
+            <CardHeader>
+              <CardTitle>Error</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Text color="error">{error}</Text>
+            </CardContent>
+          </Card>
+        )}
+        
+        {/* Loading skeleton */}
+        {loading && <LoadingSkeleton />}
+        
+        {/* Menu display */}
+        {!loading && menuData && (
+          <>
+            {/* Mealtime selector */}
+            <div className="mb-8">
+              <Stack direction="horizontal" justify="center" spacing="md">
+                <Button
+                  variant={selectedMealtime === 'lunch' ? 'primary' : 'outline'}
+                  onClick={() => setSelectedMealtime('lunch')}
+                  leftIcon="☀️"
                 >
-                  <div className="flex items-center mb-4">
-                    <span 
-                      className="w-10 h-10 flex items-center justify-center rounded-full mr-3 text-xl"
-                      style={{ backgroundColor: `${category.color}30` }}
+                  Lunch
+                </Button>
+                <Button
+                  variant={selectedMealtime === 'dinner' ? 'primary' : 'outline'}
+                  onClick={() => setSelectedMealtime('dinner')}
+                  leftIcon="🌙"
+                >
+                  Dinner
+                </Button>
+              </Stack>
+            </div>
+            
+            {/* No items message */}
+            {getCurrentMealtimeItemCount() === 0 ? (
+              <Card className="py-8">
+                <CardContent className="text-center">
+                  <Text size="xl" color="muted">
+                    No menu items available for {selectedMealtime === 'lunch' ? 'lunch' : 'dinner'} today.
+                  </Text>
+                </CardContent>
+              </Card>
+            ) : (
+              /* Menu categories */
+              <div className="space-y-8">
+                {Object.entries(menuData[selectedMealtime]).map(([categoryKey, category], index) => (
+                  <Card 
+                    key={categoryKey}
+                    bordered
+                    elevated
+                    className="overflow-hidden"
+                  >
+                    <div 
+                      className="border-b-2 bg-gradient-to-r from-primary/10 to-transparent"
+                      style={{ borderColor: category.color }}
                     >
-                      {category.icon}
-                    </span>
-                    <h2 className="card-title mb-0">{category.title}</h2>
-                    {categoryKey === 'cibo' && (
-                      <span className="ml-2 px-2 py-1 bg-green-900 text-green-100 text-xs rounded-full">
-                        Végétarien
-                      </span>
-                    )}
-                  </div>
-                  
-                  <div className="pl-12 space-y-2">
-                    {category.items.map((item, itemIndex) => (
-                      <div 
-                        key={itemIndex} 
-                        className="animate-fadeIn" 
-                        style={{ animationDelay: getAnimationDelay(index + itemIndex + 1) }}
-                      >
-                        <p className="text-text-primary">{item}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              ))}
+                      <CardHeader className="flex items-center">
+                        <div className="text-2xl mr-2">{category.icon}</div>
+                        <CardTitle>{category.title}</CardTitle>
+                      </CardHeader>
+                    </div>
+                    
+                    <CardContent>
+                      <ul className="pl-4 space-y-2">
+                        {category.items.map((item, itemIndex) => (
+                          <li 
+                            key={`${categoryKey}-${itemIndex}`}
+                            className="animate-fadeInLeft text-lg"
+                            style={{ animationDelay: `${itemIndex * 0.1}s` }}
+                          >
+                            <Text>{item}</Text>
+                          </li>
+                        ))}
+                      </ul>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+            
+            {/* Disclaimer */}
+            <div className="mt-8 text-center">
+              <Badge variant="secondary" size="sm">
+                Menu items may vary based on availability
+              </Badge>
             </div>
-          ) : (
-            <div className="card stats-card text-center py-8">
-              <h3 className="text-xl mb-2">No menu items found</h3>
-              <p>
-                {selectedMealtime === 'lunch' 
-                  ? "The lunch menu for today is not available yet."
-                  : "The dinner menu for today is not available yet."
-                }
-              </p>
-              <button 
-                className="btn-primary mt-4"
-                onClick={() => setSelectedMealtime(selectedMealtime === 'lunch' ? 'dinner' : 'lunch')}
-              >
-                Switch to {selectedMealtime === 'lunch' ? 'Dinner' : 'Lunch'}
-              </button>
-            </div>
-          )}
-          
-          {getCurrentMealtimeItemCount() === 0 && (
-            <div className="card stats-card text-center py-8 mt-6">
-              <h3 className="text-xl mb-2">No menu items found</h3>
-              <p>
-                {selectedMealtime === 'lunch' 
-                  ? "The lunch menu for today is not available yet."
-                  : "The dinner menu for today is not available yet."
-                }
-              </p>
-              <button 
-                className="btn-primary mt-4"
-                onClick={() => setSelectedMealtime(selectedMealtime === 'lunch' ? 'dinner' : 'lunch')}
-              >
-                Switch to {selectedMealtime === 'lunch' ? 'Dinner' : 'Lunch'}
-              </button>
-            </div>
-          )}
-        </div>
-      )}
-      
-      <div className="text-center text-sm text-text-primary opacity-70 mt-8">
-        Menu data provided by RU IMT Atlantique
-      </div>
-    </div>
+          </>
+        )}
+      </Section>
+    </Container>
   );
 } 

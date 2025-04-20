@@ -7,6 +7,14 @@ export namespace Route {
     }[];
   }
 
+  export interface MetaFunction {
+    (): {
+      title?: string;
+      name?: string;
+      content?: string;
+    }[];
+  }
+
   export interface ErrorBoundaryProps {
     error: any;
   }

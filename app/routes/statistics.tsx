@@ -1,5 +1,20 @@
 import { useState, useEffect } from "react";
-import type { Route } from "./+types/statistics";
+import type { Route } from "../+types/root";
+import { 
+  Badge,
+  Button, 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle, 
+  CardFooter,
+  Container, 
+  Grid, 
+  Section, 
+  Spinner, 
+  Stack, 
+  Text 
+} from "../components";
 
 // Types for the statistics data
 interface EndpointStatistic {
@@ -37,12 +52,12 @@ interface ServerStatus {
 // Define API base URL
 const API_BASE_URL = "https://transat.destimt.fr";
 
-export function meta({}: Route.MetaArgs) {
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "Statistics - Transat" },
     { name: "description", content: "View statistics for Transat services" },
   ];
-}
+};
 
 export default function Statistics() {
   const [initialLoadTime] = useState(new Date().toISOString());
@@ -151,12 +166,12 @@ export default function Statistics() {
 
   // Fetch data on component mount
   useEffect(() => {
-    fetchStatistics();
+    fetchStatistics().then(r => r);
     
     // Set up periodic status checks
     const statusCheckInterval = setInterval(() => {
-      checkServerStatus();
-    }, 30000); // Check every 30 seconds
+      checkServerStatus().then(r => r);
+    }, 5000); // Check every 5 seconds
     
     return () => {
       clearInterval(statusCheckInterval);
@@ -177,161 +192,231 @@ export default function Statistics() {
   };
 
   return (
-    <div>
-      <h1 className="section-title">API Statistics</h1>
-      
-      {/* Server Status */}
-      <div className="card stats-card mb-8">
-        <h2 className="card-title flex items-center">
-          <span role="img" aria-label="Server status" className="mr-2">
-            {serverStatus.status === "online" ? "🟢" : "🔴"}
-          </span>
-          Server Status
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-          <div className="text-center">
-            <p className="text-sm text-text-primary opacity-70 mb-1">Status</p>
-            <p className="text-lg font-bold">
-              {serverStatus.status === "online" ? "Online" : "Offline"}
-            </p>
-          </div>
-          <div className="text-center">
-            <p className="text-sm text-text-primary opacity-70 mb-1">Latency</p>
-            <p className="text-lg font-bold">
-              {serverStatus.latency}ms
-            </p>
-          </div>
-          <div className="text-center">
-            <p className="text-sm text-text-primary opacity-70 mb-1">Last Checked</p>
-            <p className="text-lg font-bold">
-              {formatDate(serverStatus.timestamp)}
-            </p>
-          </div>
-        </div>
-        <div className="text-center mt-4">
-          <button 
-            className="btn-primary"
-            onClick={handleRefresh}
-            disabled={refreshing || loading}
-          >
-            {refreshing ? 'Refreshing...' : 'Refresh Data'}
-          </button>
-        </div>
-      </div>
-      
-      {/* Error display */}
-      {error && (
-        <div className="card stats-card bg-red-900 text-white mb-8">
-          <h2 className="card-title">Error</h2>
-          <p>{error}</p>
-        </div>
-      )}
-      
-      {/* Loading indicator */}
-      {loading && (
-        <div className="card stats-card mb-8">
-          <div className="text-center py-8">
-            <div className="inline-block animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-accent"></div>
-            <p className="mt-4">Loading statistics...</p>
-          </div>
-        </div>
-      )}
-      
-      {/* Global Statistics */}
-      {!loading && globalStats && (
-        <div className="card stats-card mb-8">
-          <h2 className="card-title">Global Statistics</h2>
+    <Container>
+      <Section 
+        title="API Statistics" 
+        spacing="lg"
+      >
+        {/* Server Status */}
+        <Card 
+          className="mb-8"
+          bordered
+          elevated
+        >
+          <CardHeader>
+            <Stack direction="horizontal" align="center">
+              <div className="mr-2" role="img" aria-label="Server status">
+                {serverStatus.status === "online" ? "🟢" : "🔴"}
+              </div>
+              <CardTitle>Server Status</CardTitle>
+            </Stack>
+          </CardHeader>
           
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
-            <div className="text-center">
-              <p className="text-sm text-text-primary opacity-70 mb-1">Total Requests</p>
-              <p className="text-2xl font-bold">{globalStats.total_request_count}</p>
-            </div>
-            <div className="text-center">
-              <p className="text-sm text-text-primary opacity-70 mb-1">Success Rate</p>
-              <p className="text-2xl font-bold">{globalStats.global_success_rate_percent.toFixed(1)}%</p>
-            </div>
-            <div className="text-center">
-              <p className="text-sm text-text-primary opacity-70 mb-1">Avg Response Time</p>
-              <p className="text-2xl font-bold">{globalStats.global_avg_duration_ms.toFixed(1)}ms</p>
-            </div>
-            <div className="text-center">
-              <p className="text-sm text-text-primary opacity-70 mb-1">Max Response Time</p>
-              <p className="text-2xl font-bold">{globalStats.global_max_duration_ms}ms</p>
-            </div>
-          </div>
+          <CardContent>
+            <Grid cols={{ sm: 1, md: 3 }} gap="md" className="mb-4">
+              <div className="text-center">
+                <Text size="sm" color="muted" className="mb-1">Status</Text>
+                <Text size="lg" weight="bold">
+                  {serverStatus.status === "online" ? "Online" : "Offline"}
+                </Text>
+              </div>
+              
+              <div className="text-center">
+                <Text size="sm" color="muted" className="mb-1">Latency</Text>
+                <Text size="lg" weight="bold">
+                  {serverStatus.latency}ms
+                </Text>
+              </div>
+              
+              <div className="text-center">
+                <Text size="sm" color="muted" className="mb-1">Last Checked</Text>
+                <Text size="lg" weight="bold">
+                  {formatDate(serverStatus.timestamp)}
+                </Text>
+              </div>
+            </Grid>
+          </CardContent>
           
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="text-center">
-              <p className="text-sm text-text-primary opacity-70 mb-1">Successful Requests</p>
-              <p className="text-lg font-bold text-green-400">{globalStats.success_count}</p>
-            </div>
-            <div className="text-center">
-              <p className="text-sm text-text-primary opacity-70 mb-1">Error Requests</p>
-              <p className="text-lg font-bold text-red-400">{globalStats.error_count}</p>
-            </div>
-            <div className="text-center">
-              <p className="text-sm text-text-primary opacity-70 mb-1">First Request</p>
-              <p className="text-lg font-bold">{formatDate(globalStats.first_request)}</p>
-            </div>
-          </div>
-        </div>
-      )}
-      
-      {/* Endpoint Statistics */}
-      {/*{!loading && endpointStats.length > 0 && (*/}
-      {/*  <div className="card stats-card">*/}
-      {/*    <h2 className="card-title">Endpoint Statistics</h2>*/}
-      {/*    */}
-      {/*    <div className="overflow-x-auto">*/}
-      {/*      <table className="w-full text-left">*/}
-      {/*        <thead>*/}
-      {/*          <tr className="border-b border-accent-hover">*/}
-      {/*            <th className="py-2 px-4">Endpoint</th>*/}
-      {/*            <th className="py-2 px-4">Method</th>*/}
-      {/*            <th className="py-2 px-4">Count</th>*/}
-      {/*            <th className="py-2 px-4">Success Rate</th>*/}
-      {/*            <th className="py-2 px-4">Avg Time</th>*/}
-      {/*          </tr>*/}
-      {/*        </thead>*/}
-      {/*        <tbody>*/}
-      {/*          {endpointStats.map((stat, index) => (*/}
-      {/*            <tr key={`${stat.endpoint}-${stat.method}`} className={index % 2 === 0 ? 'bg-black' : ''}>*/}
-      {/*              <td className="py-2 px-4 font-mono text-sm">{stat.endpoint}</td>*/}
-      {/*              <td className="py-2 px-4">*/}
-      {/*                <span className={`px-2 py-1 rounded text-xs font-bold*/}
-      {/*                  ${stat.method === 'GET' ? 'bg-blue-900 text-blue-200' : ''}*/}
-      {/*                  ${stat.method === 'POST' ? 'bg-green-900 text-green-200' : ''}*/}
-      {/*                  ${stat.method === 'PUT' ? 'bg-yellow-900 text-yellow-200' : ''}*/}
-      {/*                  ${stat.method === 'DELETE' ? 'bg-red-900 text-red-200' : ''}*/}
-      {/*                `}>*/}
-      {/*                  {stat.method}*/}
-      {/*                </span>*/}
-      {/*              </td>*/}
-      {/*              <td className="py-2 px-4">{stat.request_count}</td>*/}
-      {/*              <td className="py-2 px-4">*/}
-      {/*                <div className="flex items-center">*/}
-      {/*                  <div className="w-16 h-2 bg-black rounded-full mr-2">*/}
-      {/*                    <div */}
-      {/*                      className="h-full rounded-full bg-accent" */}
-      {/*                      style={{ width: `${stat.success_rate_percent}%` }}*/}
-      {/*                    ></div>*/}
-      {/*                  </div>*/}
-      {/*                  <span>{stat.success_rate_percent.toFixed(1)}%</span>*/}
-      {/*                </div>*/}
-      {/*              </td>*/}
-      {/*              <td className="py-2 px-4">{stat.avg_duration_ms.toFixed(1)}ms</td>*/}
-      {/*            </tr>*/}
-      {/*          ))}*/}
-      {/*        </tbody>*/}
-      {/*      </table>*/}
-      {/*    </div>*/}
-      {/*  </div>*/}
-      {/*)}*/}
-      
-      <div className="text-center text-sm text-text-primary opacity-70 mt-8">
-        Statistics last loaded: {formatDate(initialLoadTime)}
-      </div>
-    </div>
+          <CardFooter className="justify-center">
+            <Button 
+              variant="primary"
+              onClick={handleRefresh}
+              disabled={refreshing || loading}
+              isLoading={refreshing}
+            >
+              {refreshing ? 'Refreshing...' : 'Refresh Data'}
+            </Button>
+          </CardFooter>
+        </Card>
+        
+        {/* Error display */}
+        {error && (
+          <Card className="mb-8 bg-error/20">
+            <CardHeader>
+              <CardTitle>Error</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Text color="error">{error}</Text>
+            </CardContent>
+          </Card>
+        )}
+        
+        {/* Loading indicator */}
+        {loading && (
+          <Card className="mb-8">
+            <CardContent className="py-8 flex flex-col items-center justify-center">
+              <Spinner size="lg" color="primary" className="mb-4" />
+              <Text>Loading statistics...</Text>
+            </CardContent>
+          </Card>
+        )}
+        
+        {/* Global Statistics */}
+        {!loading && globalStats && (
+          <Card className="mb-8" bordered>
+            <CardHeader>
+              <CardTitle>Global Statistics</CardTitle>
+            </CardHeader>
+            
+            <CardContent>
+              <Grid cols={{ sm: 2, md: 4 }} gap="md" className="mb-6">
+                <div className="text-center">
+                  <Text size="sm" color="muted" className="mb-1">Total Requests</Text>
+                  <Text size="2xl" weight="bold">{globalStats.total_request_count}</Text>
+                </div>
+                
+                <div className="text-center">
+                  <Text size="sm" color="muted" className="mb-1">Success Rate</Text>
+                  <Text 
+                    size="2xl" 
+                    weight="bold" 
+                    color={globalStats.global_success_rate_percent > 90 ? 'success' : 'warning'}
+                  >
+                    {globalStats.global_success_rate_percent.toFixed(1)}%
+                  </Text>
+                </div>
+                
+                <div className="text-center">
+                  <Text size="sm" color="muted" className="mb-1">Avg Response Time</Text>
+                  <Text size="2xl" weight="bold">{globalStats.global_avg_duration_ms.toFixed(2)}ms</Text>
+                </div>
+                
+                <div className="text-center">
+                  <Text size="sm" color="muted" className="mb-1">Max Response Time</Text>
+                  <Text size="2xl" weight="bold">{globalStats.global_max_duration_ms.toFixed(2)}ms</Text>
+                </div>
+              </Grid>
+              
+              <Grid cols={{ sm: 1, md: 2 }} gap="md">
+                <div>
+                  <Text size="sm" color="muted" className="mb-1">First Request</Text>
+                  <Text>{formatDate(globalStats.first_request)}</Text>
+                </div>
+                
+                <div>
+                  <Text size="sm" color="muted" className="mb-1">Last Request</Text>
+                  <Text>{formatDate(globalStats.last_request)}</Text>
+                </div>
+                
+                <div>
+                  <Text size="sm" color="muted" className="mb-1">Success Count</Text>
+                  <Text color="success">{globalStats.success_count}</Text>
+                </div>
+                
+                <div>
+                  <Text size="sm" color="muted" className="mb-1">Error Count</Text>
+                  <Text color="error">{globalStats.error_count}</Text>
+                </div>
+              </Grid>
+            </CardContent>
+          </Card>
+        )}
+        
+        {/* Endpoint Statistics */}
+        {!loading && endpointStats.length > 0 && (
+          <Card bordered>
+            <CardHeader>
+              <CardTitle>Endpoint Statistics</CardTitle>
+            </CardHeader>
+            
+            <CardContent>
+              <div className="space-y-6">
+                {endpointStats.map((stat, index) => (
+                  <Card 
+                    key={`${stat.endpoint}-${stat.method}`}
+                    className="overflow-hidden"
+                    bordered
+                    padding="sm"
+                  >
+                    <CardHeader className="bg-card/10 px-4 py-2 flex justify-between items-center">
+                      <div>
+                        <Badge 
+                          variant={
+                            stat.method === 'GET' ? 'primary' : 
+                            stat.method === 'POST' ? 'success' : 
+                            stat.method === 'PUT' ? 'warning' : 
+                            stat.method === 'DELETE' ? 'error' : 'default'
+                          }
+                          size="sm"
+                          className="mr-2"
+                        >
+                          {stat.method}
+                        </Badge>
+                        <Text as="span" weight="medium" className="break-all">{stat.endpoint}</Text>
+                      </div>
+                      <Badge 
+                        variant={stat.success_rate_percent > 90 ? 'success' : 'warning'} 
+                        size="sm"
+                      >
+                        {stat.success_rate_percent.toFixed(1)}% Success
+                      </Badge>
+                    </CardHeader>
+                    
+                    <CardContent>
+                      <Grid cols={{ sm: 1, md: 2, lg: 4 }} gap="sm" className="mb-2">
+                        <div>
+                          <Text size="sm" color="muted" className="mb-1">Requests</Text>
+                          <Text weight="bold">{stat.request_count}</Text>
+                        </div>
+                        
+                        <div>
+                          <Text size="sm" color="muted" className="mb-1">Avg Response</Text>
+                          <Text weight="bold">{stat.avg_duration_ms.toFixed(2)}ms</Text>
+                        </div>
+                        
+                        <div>
+                          <Text size="sm" color="muted" className="mb-1">Min Response</Text>
+                          <Text weight="bold">{stat.min_duration_ms.toFixed(2)}ms</Text>
+                        </div>
+                        
+                        <div>
+                          <Text size="sm" color="muted" className="mb-1">Max Response</Text>
+                          <Text weight="bold">{stat.max_duration_ms.toFixed(2)}ms</Text>
+                        </div>
+                      </Grid>
+                      
+                      <div className="flex flex-wrap gap-4 text-sm">
+                        <div>
+                          <Text size="xs" color="muted">First: {formatDate(stat.first_request)}</Text>
+                        </div>
+                        <div>
+                          <Text size="xs" color="muted">Last: {formatDate(stat.last_request)}</Text>
+                        </div>
+                        <div>
+                          <Text size="xs" color="success">Success: {stat.success_count}</Text>
+                        </div>
+                        <div>
+                          <Text size="xs" color="error">Errors: {stat.error_count}</Text>
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
+      </Section>
+    </Container>
   );
 } 

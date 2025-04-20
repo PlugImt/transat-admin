@@ -6,7 +6,35 @@ import { GiWashingMachine, GiClothes } from 'react-icons/gi';
 import { RiWaterFlashFill } from 'react-icons/ri';
 import confetti from 'canvas-confetti';
 
-import type { Route, Machine, LaundryData } from "./+types/laundry";
+import type { Route } from "../+types/root";
+import { 
+  Badge, 
+  Button, 
+  Card, 
+  CardContent, 
+  CardHeader, 
+  CardTitle, 
+  Container, 
+  Grid, 
+  Section, 
+  Spinner, 
+  Stack, 
+  Text,
+  LaundryMachine
+} from "../components";
+
+// Machine type
+interface Machine {
+  number: number;
+  available: boolean;
+  time_left: number;
+}
+
+// API response data type
+interface LaundryData {
+  washing_machine: Machine[];
+  dryer: Machine[];
+}
 
 // Brand colors
 const colors = {
@@ -18,7 +46,7 @@ const colors = {
   muted: "#494949",
 };
 
-export function meta({}: Route.MetaArgs) {
+export const meta: Route.MetaFunction = () => {
   return [
     { title: "Transat - Laundry" },
     { name: "description", content: "Check the availability of washing machines and dryers" },
@@ -36,6 +64,7 @@ export default function Laundry() {
   const [showConfetti, setShowConfetti] = useState<number | null>(null);
   const [finishedMachines, setFinishedMachines] = useState<number[]>([]);
   const machineRefs = useRef<{[key: number]: HTMLDivElement | null}>({});
+  const [activeTab, setActiveTab] = useState<'all' | 'washers' | 'dryers'>('all');
 
   const triggerConfetti = (machineNumber: number) => {
     setShowConfetti(machineNumber);
@@ -161,7 +190,7 @@ export default function Laundry() {
     return () => clearInterval(interval);
   }, []);
 
-  // Format time left in minutes and seconds
+  // Format time for display
   const formatTimeLeft = (seconds: number) => {
     if (seconds <= 0) return '-';
     
@@ -176,587 +205,247 @@ export default function Laundry() {
     return `${minutes}:${remainingSeconds.toString().padStart(2, '0')}`;
   };
 
-  // Calculate progress percentage based on estimated total times
-  const calculateProgress = (machine: Machine) => {
-    if (machine.available || machine.time_left <= 0) return 100;
+  // Get machine status
+  const getMachineStatus = (machine: Machine): 'available' | 'in-use' | 'maintenance' | 'reserved' => {
+    if (machine.available) return 'available';
+    if (machine.time_left <= 0) return 'maintenance';
+    return 'in-use';
+  };
+
+  // Calculate statistics
+  const getStatistics = () => {
+    if (!localData) return null;
     
-    // Standard durations in seconds
-    const WASHING_DURATION = 40 * 60; // 40 minutes for washing machine
-    const DRYING_DURATION = 60 * 60;  // 60 minutes for dryer
+    const washers = localData.washing_machine || [];
+    const dryers = localData.dryer || [];
     
-    // Determine max duration based on machine type
-    const maxDuration = machine.number < 15 ? WASHING_DURATION : DRYING_DURATION;
-    
-    // Calculate percentage completed
-    return ((maxDuration - machine.time_left) / maxDuration) * 100;
+    return {
+      washers: {
+        total: washers.length,
+        available: washers.filter(m => m.available).length,
+        inUse: washers.filter(m => !m.available && m.time_left > 0).length,
+        maintenance: washers.filter(m => !m.available && m.time_left <= 0).length,
+      },
+      dryers: {
+        total: dryers.length,
+        available: dryers.filter(m => m.available).length,
+        inUse: dryers.filter(m => !m.available && m.time_left > 0).length,
+        maintenance: dryers.filter(m => !m.available && m.time_left <= 0).length,
+      }
+    };
   };
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { 
-        staggerChildren: 0.08
-      }
-    }
-  };
-  
-  const itemVariants = {
-    hidden: { opacity: 0, x: -50 },
-    visible: { 
-      opacity: 1, 
-      x: 0,
-      transition: { 
-        type: "spring", 
-        stiffness: 400, 
-        damping: 20
-      }
-    },
-    exit: {
-      opacity: 0,
-      x: 50,
-      transition: {
-        duration: 0.5
-      }
-    }
-  };
+  const stats = getStatistics();
 
-  const waterDropVariants = {
-    start: { 
-      y: -10, 
-      opacity: 0 
-    },
-    animate: { 
-      y: 20, 
-      opacity: [0, 1, 0],
-      transition: {
-        repeat: Infinity,
-        repeatType: "loop",
-        duration: 2,
-        ease: "easeInOut"
-      }
-    }
-  };
-
-  const bubbleVariants = {
-    start: { scale: 0.5, opacity: 0.7 },
-    animate: {
-      scale: [0.5, 1.2, 0.8],
-      opacity: [0.7, 1, 0],
-      transition: {
-        repeat: Infinity,
-        repeatType: "loop",
-        duration: 3,
-        ease: "easeInOut"
-      }
-    }
-  };
-
-  const pulseAnimation = {
-    scale: [1, 1.05, 1],
-    transition: { 
-      repeat: Infinity, 
-      repeatType: "reverse" as const,
-      duration: 1.5
-    }
-  };
-
-  const shakeVariants = {
-    start: { rotate: 0 },
-    animate: {
-      rotate: [0, -1, 2, -2, 1, 0],
-      transition: {
-        repeat: Infinity,
-        repeatType: "loop",
-        duration: 2,
-        repeatDelay: 1
-      }
-    }
+  // Fix the ref callbacks by properly handling type
+  const setMachineRef = (machineNumber: number) => (el: HTMLDivElement | null) => {
+    machineRefs.current[machineNumber] = el;
   };
 
   return (
-    <div className="max-w-5xl mx-auto relative">
-      {/* Header */}
-      <motion.section 
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="mb-8"
+    <Container>
+      <Section
+        title="Laundry Status"
+        subtitle="Real-time status of washing machines and dryers"
+        spacing="lg"
       >
-        <div className="card stats-card max-w-screen-lg mx-auto mb-6" style={{ backgroundColor: colors.card }}>
-          <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center" style={{ color: colors.foreground }}>
-            {t('laundry.title')}
-          </h1>
-          <p className="opacity-80 text-center max-w-2xl mx-auto" style={{ color: colors.foreground }}>
-            {t('laundry.description')}
-          </p>
+        {/* Header image */}
+        <div className="flex justify-center mb-6">
+          <GiWashingMachine className="text-primary w-16 h-16" />
         </div>
-
-        <div className="flex justify-between items-center mb-2 px-2">
-          {lastUpdated && (
-            <p className="text-sm opacity-70" style={{ color: colors.foreground }}>
-              {t('laundry.lastUpdated')}: {lastUpdated.toLocaleTimeString()}
-            </p>
-          )}
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ 
-              scale: 1.05, 
-              backgroundColor: `${colors.primary}33` 
-            }}
-            onClick={fetchLaundryData}
-            className="flex items-center gap-2 transition-colors px-4 py-2 rounded-full"
-            disabled={loading}
-            style={{ color: colors.primary }}
-          >
-            <FiRefreshCw className={`${loading ? 'animate-spin' : ''}`} />
-            {loading ? t('laundry.refreshing') : t('laundry.refresh')}
-          </motion.button>
+        
+        {/* Last updated and refresh button */}
+        <Card className="mb-6">
+          <CardContent>
+            <Stack direction="horizontal" justify="between" align="center">
+              <Text color="muted" size="sm">
+                Last updated: {lastUpdated ? new Date(lastUpdated).toLocaleTimeString() : '-'}
+              </Text>
+              <Button 
+                variant="outline" 
+                size="sm" 
+                onClick={fetchLaundryData} 
+                isLoading={loading}
+                leftIcon={<FiRefreshCw className={loading ? '' : 'animate-spin'} />}
+              >
+                Refresh
+              </Button>
+            </Stack>
+          </CardContent>
+        </Card>
+        
+        {/* Error state */}
+        {error && (
+          <Card className="mb-6 bg-error/20">
+            <CardHeader>
+              <CardTitle>Error</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Text color="error">{error}</Text>
+            </CardContent>
+          </Card>
+        )}
+        
+        {/* Loading state */}
+        {loading && !localData && (
+          <Card className="py-16">
+            <CardContent className="flex flex-col items-center justify-center">
+              <Spinner size="lg" color="primary" className="mb-4" />
+              <Text>Loading laundry status...</Text>
+            </CardContent>
+          </Card>
+        )}
+        
+        {/* Stats cards */}
+        {stats && (
+          <Grid cols={{ sm: 1, md: 2 }} gap="md" className="mb-6">
+            {/* Washers stats */}
+            <Card bordered elevated>
+              <CardHeader>
+                <Stack direction="horizontal" align="center">
+                  <GiWashingMachine className="text-primary mr-2" />
+                  <CardTitle>Washing Machines</CardTitle>
+                </Stack>
+              </CardHeader>
+              <CardContent>
+                <Grid cols={2} gap="sm">
+                  <div>
+                    <Text size="sm" color="muted" className="mb-1">Available</Text>
+                    <Text size="xl" weight="bold" color={stats.washers.available > 0 ? 'success' : 'muted'}>
+                      {stats.washers.available} / {stats.washers.total}
+                    </Text>
+                  </div>
+                  <div>
+                    <Text size="sm" color="muted" className="mb-1">In Use</Text>
+                    <Text size="xl" weight="bold">{stats.washers.inUse}</Text>
+                  </div>
+                </Grid>
+              </CardContent>
+            </Card>
+            
+            {/* Dryers stats */}
+            <Card bordered elevated>
+              <CardHeader>
+                <Stack direction="horizontal" align="center">
+                  <GiClothes className="text-primary mr-2" />
+                  <CardTitle>Dryers</CardTitle>
+                </Stack>
+              </CardHeader>
+              <CardContent>
+                <Grid cols={2} gap="sm">
+                  <div>
+                    <Text size="sm" color="muted" className="mb-1">Available</Text>
+                    <Text size="xl" weight="bold" color={stats.dryers.available > 0 ? 'success' : 'muted'}>
+                      {stats.dryers.available} / {stats.dryers.total}
+                    </Text>
+                  </div>
+                  <div>
+                    <Text size="sm" color="muted" className="mb-1">In Use</Text>
+                    <Text size="xl" weight="bold">{stats.dryers.inUse}</Text>
+                  </div>
+                </Grid>
+              </CardContent>
+            </Card>
+          </Grid>
+        )}
+        
+        {/* Machine type tabs */}
+        <div className="mb-6">
+          <Stack direction="horizontal" spacing="sm" justify="center">
+            <Button 
+              variant={activeTab === 'all' ? 'primary' : 'outline'}
+              onClick={() => setActiveTab('all')}
+            >
+              All Machines
+            </Button>
+            <Button 
+              variant={activeTab === 'washers' ? 'primary' : 'outline'}
+              onClick={() => setActiveTab('washers')}
+              leftIcon={<GiWashingMachine />}
+            >
+              Washers
+            </Button>
+            <Button 
+              variant={activeTab === 'dryers' ? 'primary' : 'outline'}
+              onClick={() => setActiveTab('dryers')}
+              leftIcon={<GiClothes />}
+            >
+              Dryers
+            </Button>
+          </Stack>
         </div>
-      </motion.section>
-
-      {error && (
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="card bg-opacity-20 mb-8"
-          style={{ backgroundColor: `${colors.primary}22`, color: colors.primary }}
-        >
-          <p>{error}</p>
-          <button 
-            onClick={fetchLaundryData}
-            className="mt-4 hover:underline"
-            style={{ color: colors.primary }}
-          >
-            {t('laundry.tryAgain')}
-          </button>
-        </motion.div>
-      )}
-
-      {loading && !localData ? (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="card" style={{ backgroundColor: colors.card }}>
-            <div className="skeleton-loader h-8 w-48 mb-6"></div>
-            <div className="space-y-4">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="skeleton-loader h-16 rounded-lg"></div>
-              ))}
-            </div>
-          </div>
-          <div className="card" style={{ backgroundColor: colors.card }}>
-            <div className="skeleton-loader h-8 w-48 mb-6"></div>
-            <div className="space-y-4">
-              {[...Array(4)].map((_, i) => (
-                <div key={i} className="skeleton-loader h-16 rounded-lg"></div>
-              ))}
-            </div>
-          </div>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          {/* Washing Machines */}
-          <motion.div 
-            className="card relative overflow-hidden"
-            style={{ backgroundColor: colors.card }}
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-          >
-            {/* Background water drops for washing machines */}
-            <div className="absolute inset-0 overflow-hidden opacity-20 pointer-events-none">
-              {[...Array(20)].map((_, i) => (
-                <motion.div
-                  key={`drop-${i}`}
-                  className="absolute"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                    color: colors.primary
-                  }}
-                  variants={waterDropVariants}
-                  initial="start"
-                  animate="animate"
-                  custom={i}
+        
+        {/* Machines grid */}
+        {localData && (
+          <Grid cols={{ sm: 1, md: 2, lg: 3 }} gap="md">
+            {/* Washing machines */}
+            {(activeTab === 'all' || activeTab === 'washers') && 
+              localData.washing_machine.map(machine => (
+                <div
+                  key={`washer-${machine.number}`}
+                  ref={setMachineRef(machine.number)}
                 >
-                  <RiWaterFlashFill size={10 + Math.random() * 8} />
-                </motion.div>
-              ))}
-            </div>
+                  <LaundryMachine
+                    id={machine.number}
+                    name={`Washer ${machine.number}`}
+                    type="washer"
+                    status={getMachineStatus(machine)}
+                    timeRemaining={machine.time_left}
+                    animate
+                    animationDelay={machine.number * 100}
+                  />
+                </div>
+              ))
+            }
             
-            <div className="flex items-center mb-6 relative z-10">
-              <motion.div
-                variants={shakeVariants}
-                initial="start"
-                animate="animate"
-              >
-                <GiWashingMachine style={{ color: colors.primary }} className="text-2xl mr-3" />
-              </motion.div>
-              <h2 className="text-2xl font-bold" style={{ color: colors.foreground }}>
-                {t('laundry.washingMachines')}
-              </h2>
-            </div>
-            
-            <div className="space-y-4">
-              <AnimatePresence>
-                {localData?.washing_machine.map((machine) => {
-                  const isInUse = !machine.available && machine.time_left > 0;
-                  const progressPercent = calculateProgress(machine);
-                  const justFinished = showConfetti === machine.number;
-                  
-                  return (
-                    <motion.div 
-                      key={machine.number}
-                      variants={itemVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
-                      whileHover={{ scale: 1.02, y: -5 }}
-                      className="relative overflow-hidden rounded-lg"
-                      style={{ 
-                        borderWidth: '2px',
-                        borderColor: machine.available 
-                          ? colors.secondary 
-                          : machine.time_left === 0 
-                            ? colors.primary
-                            : colors.muted
-                      }}
-                      ref={el => machineRefs.current[machine.number] = el}
-                    >
-                      {/* Background progress bar */}
-                      <div 
-                        className="absolute inset-0 rounded-lg opacity-20"
-                        style={{ 
-                          backgroundColor: machine.available 
-                            ? colors.secondary
-                            : machine.time_left === 0
-                              ? colors.primary
-                              : colors.muted
-                        }}
-                      ></div>
-                      
-                      {/* Animated progress indicator */}
-                      {!machine.available && (
-                        <motion.div 
-                          className="absolute top-0 bottom-0 left-0 rounded-l-lg"
-                          style={{ backgroundColor: colors.primary, opacity: 0.3 }}
-                          initial={{ width: '0%' }}
-                          animate={{ width: `${progressPercent}%` }}
-                          transition={{ duration: 1, ease: "easeOut" }}
-                        />
-                      )}
-                      
-                      {/* Bubbles animation for active machines */}
-                      {isInUse && (
-                        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                          {[...Array(8)].map((_, i) => (
-                            <motion.div
-                              key={`bubble-${machine.number}-${i}`}
-                              className="absolute rounded-full"
-                              style={{
-                                left: `${20 + Math.random() * 60}%`,
-                                top: `${Math.random() * 100}%`,
-                                backgroundColor: colors.foreground,
-                                width: 4 + Math.random() * 10,
-                                height: 4 + Math.random() * 10,
-                                opacity: 0.4
-                              }}
-                              variants={bubbleVariants}
-                              initial="start"
-                              animate="animate"
-                              custom={i}
-                            />
-                          ))}
-                        </div>
-                      )}
-                      
-                      {/* Content */}
-                      <div className="relative z-10 flex items-center justify-between p-5 rounded-lg">
-                        <div className="flex items-center">
-                          <motion.div 
-                            className="flex items-center justify-center w-12 h-12 rounded-full font-bold text-lg"
-                            style={{ 
-                              backgroundColor: machine.available 
-                                ? colors.secondary 
-                                : machine.time_left === 0
-                                  ? colors.primary
-                                  : colors.muted,
-                              color: colors.background
-                            }}
-                            animate={isInUse ? { y: [0, -3, 0] } : {}}
-                            transition={{
-                              repeat: isInUse ? Infinity : 0,
-                              duration: 1,
-                              repeatType: "reverse"
-                            }}
-                          >
-                            {machine.number}
-                          </motion.div>
-                          <div className="ml-4">
-                            <motion.span 
-                              className="px-3 py-1 rounded-full text-xs font-bold"
-                              style={{ 
-                                backgroundColor: machine.available 
-                                  ? colors.secondary 
-                                  : machine.time_left === 0
-                                    ? colors.primary
-                                    : colors.muted,
-                                color: colors.background
-                              }}
-                              animate={justFinished ? { scale: [1, 1.5, 1] } : {}}
-                              transition={{ duration: 0.5 }}
-                            >
-                              {machine.available 
-                                ? t('laundry.available') 
-                                : machine.time_left === 0
-                                  ? "✨ " + t('laundry.finished') + " ✨"
-                                  : t('laundry.inUse')
-                              }
-                            </motion.span>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center">
-                          {isInUse ? (
-                            <motion.div 
-                              animate={pulseAnimation}
-                              className="flex items-center"
-                              style={{ color: colors.primary }}
-                            >
-                              <FiClock className="mr-2" />
-                              <span className="font-mono text-xl font-bold" style={{ color: colors.foreground }}>
-                                {formatTimeLeft(machine.time_left)}
-                              </span>
-                            </motion.div>
-                          ) : (
-                            <motion.span 
-                              className="font-mono text-xl font-bold"
-                              style={{ 
-                                color: machine.available 
-                                  ? colors.secondary 
-                                  : colors.primary
-                              }}
-                              animate={justFinished ? { scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] } : {}}
-                              transition={{ duration: 0.5, repeat: justFinished ? 3 : 0 }}
-                            >
-                              {machine.available ? "Ready" : "Finished"}
-                            </motion.span>
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-          
-          {/* Dryers */}
-          <motion.div 
-            className="card relative overflow-hidden"
-            style={{ backgroundColor: colors.card }}
-            initial="hidden"
-            animate="visible"
-            variants={containerVariants}
-          >
-            {/* Background heat waves for dryers */}
-            <div className="absolute inset-0 overflow-hidden opacity-10 pointer-events-none">
-              {[...Array(8)].map((_, i) => (
-                <motion.div
-                  key={`wave-${i}`}
-                  className="absolute h-8 rounded-full opacity-50"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
-                    backgroundColor: colors.primary,
-                    width: 30 + Math.random() * 60,
-                  }}
-                  animate={{
-                    scale: [1, 1.2, 1],
-                    opacity: [0.1, 0.3, 0.1],
-                  }}
-                  transition={{
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    duration: 3 + Math.random() * 2,
-                    delay: Math.random() * 2
-                  }}
-                />
-              ))}
-            </div>
-            
-            <div className="flex items-center mb-6 relative z-10">
-              <motion.div
-                animate={{ rotate: [0, 5, -5, 0] }}
-                transition={{ repeat: Infinity, duration: 4 }}
-              >
-                <GiClothes style={{ color: colors.primary }} className="text-2xl mr-3" />
-              </motion.div>
-              <h2 className="text-2xl font-bold" style={{ color: colors.foreground }}>
-                {t('laundry.dryers')}
-              </h2>
-            </div>
-            
-            <div className="space-y-4">
-              <AnimatePresence>
-                {localData?.dryer.map((machine) => {
-                  const isInUse = !machine.available && machine.time_left > 0;
-                  const progressPercent = calculateProgress(machine);
-                  const justFinished = showConfetti === machine.number;
-                  
-                  return (
-                    <motion.div 
-                      key={machine.number}
-                      variants={itemVariants}
-                      initial="hidden"
-                      animate="visible"
-                      exit="exit"
-                      whileHover={{ scale: 1.02, y: -5 }}
-                      className="relative overflow-hidden rounded-lg"
-                      style={{ 
-                        borderWidth: '2px',
-                        borderColor: machine.available 
-                          ? colors.secondary 
-                          : machine.time_left === 0 
-                            ? colors.primary
-                            : colors.muted
-                      }}
-                      ref={el => machineRefs.current[machine.number] = el}
-                    >
-                      {/* Background progress bar */}
-                      <div 
-                        className="absolute inset-0 rounded-lg opacity-20"
-                        style={{ 
-                          backgroundColor: machine.available 
-                            ? colors.secondary
-                            : machine.time_left === 0
-                              ? colors.primary
-                              : colors.muted
-                        }}
-                      ></div>
-                      
-                      {/* Animated progress indicator */}
-                      {!machine.available && (
-                        <motion.div 
-                          className="absolute top-0 bottom-0 left-0 rounded-l-lg"
-                          style={{ backgroundColor: colors.primary, opacity: 0.3 }}
-                          initial={{ width: '0%' }}
-                          animate={{ width: `${progressPercent}%` }}
-                          transition={{ duration: 1, ease: "easeOut" }}
-                        />
-                      )}
-                      
-                      {/* Heat waves animation for active dryers */}
-                      {isInUse && (
-                        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-                          {[...Array(5)].map((_, i) => (
-                            <motion.div
-                              key={`heat-${machine.number}-${i}`}
-                              className="absolute rounded-full"
-                              style={{
-                                left: `${20 + Math.random() * 60}%`,
-                                bottom: 0,
-                                backgroundColor: colors.primary,
-                                width: 15 + Math.random() * 20,
-                                height: 4,
-                                opacity: 0.3
-                              }}
-                              animate={{
-                                y: [0, -20 - Math.random() * 40],
-                                opacity: [0.3, 0],
-                                width: [15 + Math.random() * 20, 5 + Math.random() * 10]
-                              }}
-                              transition={{
-                                repeat: Infinity,
-                                duration: 2 + Math.random() * 2,
-                                delay: Math.random() * 2
-                              }}
-                            />
-                          ))}
-                        </div>
-                      )}
-                      
-                      {/* Content */}
-                      <div className="relative z-10 flex items-center justify-between p-5 rounded-lg">
-                        <div className="flex items-center">
-                          <motion.div 
-                            className="flex items-center justify-center w-12 h-12 rounded-full font-bold text-lg"
-                            style={{ 
-                              backgroundColor: machine.available 
-                                ? colors.secondary 
-                                : machine.time_left === 0
-                                  ? colors.primary
-                                  : colors.muted,
-                              color: colors.background
-                            }}
-                            animate={isInUse ? { rotate: [0, 5, -5, 0] } : {}}
-                            transition={{
-                              repeat: isInUse ? Infinity : 0,
-                              duration: 3,
-                            }}
-                          >
-                            {machine.number}
-                          </motion.div>
-                          <div className="ml-4">
-                            <motion.span 
-                              className="px-3 py-1 rounded-full text-xs font-bold"
-                              style={{ 
-                                backgroundColor: machine.available 
-                                  ? colors.secondary 
-                                  : machine.time_left === 0
-                                    ? colors.primary
-                                    : colors.muted,
-                                color: colors.background
-                              }}
-                              animate={justFinished ? { scale: [1, 1.5, 1] } : {}}
-                              transition={{ duration: 0.5 }}
-                            >
-                              {machine.available 
-                                ? t('laundry.available') 
-                                : machine.time_left === 0
-                                  ? "✨ " + t('laundry.finished') + " ✨"
-                                  : t('laundry.inUse')
-                              }
-                            </motion.span>
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center">
-                          {isInUse ? (
-                            <motion.div 
-                              animate={pulseAnimation}
-                              className="flex items-center"
-                              style={{ color: colors.primary }}
-                            >
-                              <FiClock className="mr-2" />
-                              <span className="font-mono text-xl font-bold" style={{ color: colors.foreground }}>
-                                {formatTimeLeft(machine.time_left)}
-                              </span>
-                            </motion.div>
-                          ) : (
-                            <motion.span 
-                              className="font-mono text-xl font-bold"
-                              style={{ 
-                                color: machine.available 
-                                  ? colors.secondary 
-                                  : colors.primary
-                              }}
-                              animate={justFinished ? { scale: [1, 1.2, 1], rotate: [0, 5, -5, 0] } : {}}
-                              transition={{ duration: 0.5, repeat: justFinished ? 3 : 0 }}
-                            >
-                              {machine.available ? "Ready" : "Finished"}
-                            </motion.span>
-                          )}
-                        </div>
-                      </div>
-                    </motion.div>
-                  );
-                })}
-              </AnimatePresence>
-            </div>
-          </motion.div>
-        </div>
-      )}
-    </div>
+            {/* Dryers */}
+            {(activeTab === 'all' || activeTab === 'dryers') && 
+              localData.dryer.map(machine => (
+                <div
+                  key={`dryer-${machine.number}`}
+                  ref={setMachineRef(machine.number)}
+                >
+                  <LaundryMachine
+                    id={machine.number}
+                    name={`Dryer ${machine.number}`}
+                    type="dryer"
+                    status={getMachineStatus(machine)}
+                    timeRemaining={machine.time_left}
+                    animate
+                    animationDelay={machine.number * 100}
+                  />
+                </div>
+              ))
+            }
+          </Grid>
+        )}
+        
+        {/* Notes/disclaimer */}
+        <Card className="mt-8">
+          <CardContent>
+            <Stack spacing="md">
+              <Text weight="bold">Notes:</Text>
+              <ul className="list-disc pl-5 space-y-2">
+                <li>
+                  <Text size="sm">
+                    Time remaining is an estimate and may vary.
+                  </Text>
+                </li>
+                <li>
+                  <Text size="sm">
+                    Data refreshes automatically every 5 minutes.
+                  </Text>
+                </li>
+                <li>
+                  <Text size="sm">
+                    Machines showing "Available" may be in use if someone just started a cycle.
+                  </Text>
+                </li>
+              </ul>
+            </Stack>
+          </CardContent>
+        </Card>
+      </Section>
+    </Container>
   );
 } 

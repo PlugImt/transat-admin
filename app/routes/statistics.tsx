@@ -279,55 +279,55 @@ export default function Statistics() {
       )}
       
       {/* Endpoint Statistics */}
-      {!loading && endpointStats.length > 0 && (
-        <div className="card stats-card">
-          <h2 className="card-title">Endpoint Statistics</h2>
-          
-          <div className="overflow-x-auto">
-            <table className="w-full text-left">
-              <thead>
-                <tr className="border-b border-accent-hover">
-                  <th className="py-2 px-4">Endpoint</th>
-                  <th className="py-2 px-4">Method</th>
-                  <th className="py-2 px-4">Count</th>
-                  <th className="py-2 px-4">Success Rate</th>
-                  <th className="py-2 px-4">Avg Time</th>
-                </tr>
-              </thead>
-              <tbody>
-                {endpointStats.map((stat, index) => (
-                  <tr key={`${stat.endpoint}-${stat.method}`} className={index % 2 === 0 ? 'bg-black' : ''}>
-                    <td className="py-2 px-4 font-mono text-sm">{stat.endpoint}</td>
-                    <td className="py-2 px-4">
-                      <span className={`px-2 py-1 rounded text-xs font-bold
-                        ${stat.method === 'GET' ? 'bg-blue-900 text-blue-200' : ''}
-                        ${stat.method === 'POST' ? 'bg-green-900 text-green-200' : ''}
-                        ${stat.method === 'PUT' ? 'bg-yellow-900 text-yellow-200' : ''}
-                        ${stat.method === 'DELETE' ? 'bg-red-900 text-red-200' : ''}
-                      `}>
-                        {stat.method}
-                      </span>
-                    </td>
-                    <td className="py-2 px-4">{stat.request_count}</td>
-                    <td className="py-2 px-4">
-                      <div className="flex items-center">
-                        <div className="w-16 h-2 bg-black rounded-full mr-2">
-                          <div 
-                            className="h-full rounded-full bg-accent" 
-                            style={{ width: `${stat.success_rate_percent}%` }}
-                          ></div>
-                        </div>
-                        <span>{stat.success_rate_percent.toFixed(1)}%</span>
-                      </div>
-                    </td>
-                    <td className="py-2 px-4">{stat.avg_duration_ms.toFixed(1)}ms</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        </div>
-      )}
+      {/*{!loading && endpointStats.length > 0 && (*/}
+      {/*  <div className="card stats-card">*/}
+      {/*    <h2 className="card-title">Endpoint Statistics</h2>*/}
+      {/*    */}
+      {/*    <div className="overflow-x-auto">*/}
+      {/*      <table className="w-full text-left">*/}
+      {/*        <thead>*/}
+      {/*          <tr className="border-b border-accent-hover">*/}
+      {/*            <th className="py-2 px-4">Endpoint</th>*/}
+      {/*            <th className="py-2 px-4">Method</th>*/}
+      {/*            <th className="py-2 px-4">Count</th>*/}
+      {/*            <th className="py-2 px-4">Success Rate</th>*/}
+      {/*            <th className="py-2 px-4">Avg Time</th>*/}
+      {/*          </tr>*/}
+      {/*        </thead>*/}
+      {/*        <tbody>*/}
+      {/*          {endpointStats.map((stat, index) => (*/}
+      {/*            <tr key={`${stat.endpoint}-${stat.method}`} className={index % 2 === 0 ? 'bg-black' : ''}>*/}
+      {/*              <td className="py-2 px-4 font-mono text-sm">{stat.endpoint}</td>*/}
+      {/*              <td className="py-2 px-4">*/}
+      {/*                <span className={`px-2 py-1 rounded text-xs font-bold*/}
+      {/*                  ${stat.method === 'GET' ? 'bg-blue-900 text-blue-200' : ''}*/}
+      {/*                  ${stat.method === 'POST' ? 'bg-green-900 text-green-200' : ''}*/}
+      {/*                  ${stat.method === 'PUT' ? 'bg-yellow-900 text-yellow-200' : ''}*/}
+      {/*                  ${stat.method === 'DELETE' ? 'bg-red-900 text-red-200' : ''}*/}
+      {/*                `}>*/}
+      {/*                  {stat.method}*/}
+      {/*                </span>*/}
+      {/*              </td>*/}
+      {/*              <td className="py-2 px-4">{stat.request_count}</td>*/}
+      {/*              <td className="py-2 px-4">*/}
+      {/*                <div className="flex items-center">*/}
+      {/*                  <div className="w-16 h-2 bg-black rounded-full mr-2">*/}
+      {/*                    <div */}
+      {/*                      className="h-full rounded-full bg-accent" */}
+      {/*                      style={{ width: `${stat.success_rate_percent}%` }}*/}
+      {/*                    ></div>*/}
+      {/*                  </div>*/}
+      {/*                  <span>{stat.success_rate_percent.toFixed(1)}%</span>*/}
+      {/*                </div>*/}
+      {/*              </td>*/}
+      {/*              <td className="py-2 px-4">{stat.avg_duration_ms.toFixed(1)}ms</td>*/}
+      {/*            </tr>*/}
+      {/*          ))}*/}
+      {/*        </tbody>*/}
+      {/*      </table>*/}
+      {/*    </div>*/}
+      {/*  </div>*/}
+      {/*)}*/}
       
       <div className="text-center text-sm text-text-primary opacity-70 mt-8">
         Statistics last loaded: {formatDate(initialLoadTime)}

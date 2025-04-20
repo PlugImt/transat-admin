@@ -5,16 +5,37 @@ export namespace Route {
 }
 
 export interface MenuItem {
-  id: string;
   name: string;
-  description: string;
   category: string;
-  allergens: string[];
   isVegetarian: boolean;
 }
 
-export interface MenuData {
-  menuItems: MenuItem[];
+export interface MenuResponse {
+  grilladesMidi: string[];
+  migrateurs: string[];
+  cibo: string[];
+  accompMidi: string[];
+  grilladesSoir: string[];
+  accompSoir: string[];
+  updatedDate: string;
+}
+
+export interface GroupedMenu {
+  lunch: {
+    [category: string]: {
+      items: string[];
+      title: string;
+      icon: string;
+      color: string;
+    };
+  };
+  dinner: {
+    [category: string]: {
+      items: string[];
+      title: string;
+      icon: string;
+      color: string;
+    };
+  };
   date: string;
-  categories: string[];
 } 

@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import type { Route, MenuData, MenuItem } from "./+types/restaurant";
+import type { Route, MenuItem, MenuResponse, ProcessedMenuData } from "./+types/restaurant";
 
 export function meta({}: Route.MetaArgs) {
   return [
@@ -11,50 +11,44 @@ export function meta({}: Route.MetaArgs) {
 // Define API base URL
 const API_BASE_URL = "https://transat.destimt.fr";
 
-// Category icons mapping
-const categoryIcons: Record<string, { icon: string, color: string }> = {
-  "Entrée": { 
-    icon: "🥗", 
-    color: "#4ade80" // green
+// Define meal categories with icons and colors
+const categoryInfo: Record<string, { title: string, icon: string, color: string, mealtime: 'lunch' | 'dinner' }> = {
+  "grilladesMidi": { 
+    title: "Grillades",
+    icon: "🍖", 
+    color: "#b91c1c", // red
+    mealtime: 'lunch'
   },
-  "Plat": { 
-    icon: "🍲", 
-    color: "#f97316" // orange
+  "migrateurs": { 
+    title: "Migrateurs",
+    icon: "🌍", 
+    color: "#6366f1", // indigo
+    mealtime: 'lunch'
   },
-  "Dessert": { 
-    icon: "🍰", 
-    color: "#ec4899" // pink
-  },
-  "Accompagnement": { 
-    icon: "🥔", 
-    color: "#a16207" // amber
-  },
-  "Petit déjeuner": { 
-    icon: "☕", 
-    color: "#854d0e" // yellow
-  },
-  "Végétarien": { 
+  "cibo": { 
+    title: "Végétarien",
     icon: "🥦", 
-    color: "#16a34a" // green
+    color: "#16a34a", // green
+    mealtime: 'lunch'
   },
-  "Poisson": { 
-    icon: "🐟", 
-    color: "#0284c7" // blue
+  "accompMidi": { 
+    title: "Accompagnements",
+    icon: "🥔", 
+    color: "#a16207", // amber
+    mealtime: 'lunch'
   },
-  "Viande": { 
-    icon: "🍗", 
-    color: "#b91c1c" // red
+  "grilladesSoir": { 
+    title: "Grillades",
+    icon: "🥩", 
+    color: "#9f1239", // rose
+    mealtime: 'dinner'
   },
-  // Default for any other category
-  "default": { 
-    icon: "🍽️", 
-    color: "#6366f1" // indigo
+  "accompSoir": { 
+    title: "Accompagnements",
+    icon: "🍚", 
+    color: "#854d0e", // yellow
+    mealtime: 'dinner'
   }
-};
-
-// Get icon and color for a category
-const getCategoryInfo = (category: string) => {
-  return categoryIcons[category] || categoryIcons.default;
 };
 
 // Animation delay utility
@@ -62,11 +56,102 @@ const getAnimationDelay = (index: number) => {
   return `${index * 0.05}s`;
 };
 
+// Group menu items by category within each mealtime
+interface GroupedMenu {
+  lunch: {
+    [category: string]: {
+      items: string[];
+      title: string;
+      icon: string;
+      color: string;
+    };
+  };
+  dinner: {
+    [category: string]: {
+      items: string[];
+      title: string;
+      icon: string;
+      color: string;
+    };
+  };
+  date: string;
+}
+
+// Function to process the API response into a grouped format
+const processMenuData = (menuResponse: MenuResponse): GroupedMenu => {
+  const result: GroupedMenu = {
+    lunch: {},
+    dinner: {},
+    date: menuResponse.updatedDate || new Date().toISOString()
+  };
+  
+  // Process each category
+  Object.entries(menuResponse).forEach(([category, dishes]) => {
+    // Skip the updatedDate entry
+    if (category === 'updatedDate') return;
+    
+    // Check if this is a valid category and has items
+    if (categoryInfo[category] && Array.isArray(dishes) && dishes.length > 0) {
+      const { title, icon, color, mealtime } = categoryInfo[category];
+      
+      // Add to appropriate mealtime group
+      result[mealtime][category] = {
+        items: dishes,
+        title,
+        icon,
+        color
+      };
+    }
+  });
+  
+  return result;
+};
+
+// Skeleton loaders for different sections
+const LoadingSkeleton = () => (
+  <div className="card stats-card mb-8">
+    <div className="animate-fadeIn" style={{ animationDelay: "0.1s" }}>
+      {/* Title skeleton */}
+      <div className="flex items-center mb-6">
+        <div className="skeleton-loader w-10 h-10 rounded-full mr-3"></div>
+        <div className="skeleton-loader h-8 w-48"></div>
+      </div>
+      
+      {/* Mealtime selector skeleton */}
+      <div className="flex justify-center gap-6 mb-8">
+        <div className="skeleton-loader h-10 w-32 rounded-full"></div>
+        <div className="skeleton-loader h-10 w-32 rounded-full"></div>
+      </div>
+      
+      {/* Category blocks skeleton */}
+      {[...Array(3)].map((_, i) => (
+        <div 
+          key={i}
+          className="mb-8 skeleton-loader p-4 rounded-lg"
+          style={{ animationDelay: `${i * 0.15}s` }}
+        >
+          <div className="flex items-center mb-4">
+            <div className="skeleton-loader w-8 h-8 rounded-full mr-2"></div>
+            <div className="skeleton-loader h-6 w-48"></div>
+          </div>
+          
+          {/* Menu items skeleton */}
+          <div className="pl-10">
+            {[...Array(3)].map((_, j) => (
+              <div key={j} className="skeleton-loader h-4 w-3/4 mb-3"></div>
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+);
+
 export default function Restaurant() {
-  const [menuData, setMenuData] = useState<MenuData | null>(null);
+  const [menuData, setMenuData] = useState<GroupedMenu | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const [selectedMealtime, setSelectedMealtime] = useState<'lunch' | 'dinner'>('lunch');
 
   useEffect(() => {
     const fetchMenu = async () => {
@@ -89,24 +174,9 @@ export default function Restaurant() {
         const data = await response.json();
         
         // Process the menu data
-        const menuItems: MenuItem[] = data.MenuData.items || [];
+        const processedData = processMenuData(data);
         
-        // Extract unique categories
-        const categories = Array.from(
-          new Set(menuItems.map(item => item.category))
-        ).filter(category => category);
-        
-        setMenuData({
-          menuItems,
-          date: data.UpdatedDate || new Date().toISOString(),
-          categories
-        });
-        
-        // Set the first category as selected by default if available
-        if (categories.length > 0 && !selectedCategory) {
-          setSelectedCategory(categories[0]);
-        }
-        
+        setMenuData(processedData);
         setLoading(false);
       } catch (err) {
         setLoading(false);
@@ -128,10 +198,13 @@ export default function Restaurant() {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
-  // Filter menu items by selected category
-  const filteredItems = selectedCategory
-    ? menuData?.menuItems.filter(item => item.category === selectedCategory)
-    : menuData?.menuItems;
+  // Count items in current mealtime
+  const getCurrentMealtimeItemCount = () => {
+    if (!menuData) return 0;
+    
+    const categories = Object.values(menuData[selectedMealtime]);
+    return categories.reduce((sum, category) => sum + category.items.length, 0);
+  };
 
   return (
     <div>
@@ -158,131 +231,114 @@ export default function Restaurant() {
         </div>
       )}
       
-      {/* Loading indicator */}
-      {loading && (
-        <div className="card stats-card mb-8">
-          <div className="text-center py-16">
-            <div className="inline-block animate-spin rounded-full h-12 w-12 border-t-4 border-b-4 border-accent"></div>
-            <p className="mt-4 text-lg">Loading today's menu...</p>
-          </div>
-        </div>
-      )}
+      {/* Loading skeleton */}
+      {loading && <LoadingSkeleton />}
       
       {/* Menu display */}
       {!loading && menuData && (
         <div>
-          {/* Category filters */}
-          {menuData.categories.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-3 mb-8 transition-all duration-300">
+          {/* Mealtime selector */}
+          <div className="flex justify-center gap-6 mb-8">
+            <button
+              className={`px-6 py-3 rounded-full transition-all duration-300 flex items-center border-2 ${
+                selectedMealtime === 'lunch'
+                  ? 'bg-accent text-white border-accent'
+                  : 'bg-transparent text-text-primary border-accent-hover hover:bg-accent hover:text-white'
+              }`}
+              onClick={() => setSelectedMealtime('lunch')}
+            >
+              <span className="mr-2">☀️</span>
+              Lunch
+            </button>
+            <button
+              className={`px-6 py-3 rounded-full transition-all duration-300 flex items-center border-2 ${
+                selectedMealtime === 'dinner'
+                  ? 'bg-accent text-white border-accent'
+                  : 'bg-transparent text-text-primary border-accent-hover hover:bg-accent hover:text-white'
+              }`}
+              onClick={() => setSelectedMealtime('dinner')}
+            >
+              <span className="mr-2">🌙</span>
+              Dinner
+            </button>
+          </div>
+          
+          {/* Menu categories */}
+          {Object.keys(menuData[selectedMealtime]).length > 0 ? (
+            <div className="space-y-6">
+              {Object.entries(menuData[selectedMealtime]).map(([categoryKey, category], index) => (
+                <div 
+                  key={categoryKey}
+                  className="card stats-card animate-fadeIn"
+                  style={{ 
+                    animationDelay: getAnimationDelay(index),
+                    borderLeft: `4px solid ${category.color}`
+                  }}
+                >
+                  <div className="flex items-center mb-4">
+                    <span 
+                      className="w-10 h-10 flex items-center justify-center rounded-full mr-3 text-xl"
+                      style={{ backgroundColor: `${category.color}30` }}
+                    >
+                      {category.icon}
+                    </span>
+                    <h2 className="card-title mb-0">{category.title}</h2>
+                    {categoryKey === 'cibo' && (
+                      <span className="ml-2 px-2 py-1 bg-green-900 text-green-100 text-xs rounded-full">
+                        Végétarien
+                      </span>
+                    )}
+                  </div>
+                  
+                  <div className="pl-12 space-y-2">
+                    {category.items.map((item, itemIndex) => (
+                      <div 
+                        key={itemIndex} 
+                        className="animate-fadeIn" 
+                        style={{ animationDelay: getAnimationDelay(index + itemIndex + 1) }}
+                      >
+                        <p className="text-text-primary">{item}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="card stats-card text-center py-8">
+              <h3 className="text-xl mb-2">No menu items found</h3>
+              <p>
+                {selectedMealtime === 'lunch' 
+                  ? "The lunch menu for today is not available yet."
+                  : "The dinner menu for today is not available yet."
+                }
+              </p>
               <button 
-                className={`px-4 py-2 rounded-full transition-all duration-300 flex items-center border-2 ${
-                  selectedCategory === null 
-                    ? 'bg-accent text-white border-accent' 
-                    : 'bg-transparent text-text-primary border-accent-hover hover:bg-accent hover:text-white'
-                }`}
-                onClick={() => setSelectedCategory(null)}
+                className="btn-primary mt-4"
+                onClick={() => setSelectedMealtime(selectedMealtime === 'lunch' ? 'dinner' : 'lunch')}
               >
-                <span className="mr-2">🍽️</span>
-                All Items
+                Switch to {selectedMealtime === 'lunch' ? 'Dinner' : 'Lunch'}
               </button>
-              
-              {menuData.categories.map((category, index) => {
-                const { icon, color } = getCategoryInfo(category);
-                return (
-                  <button 
-                    key={category}
-                    style={{
-                      animationDelay: getAnimationDelay(index),
-                      borderColor: selectedCategory === category ? color : undefined,
-                    }}
-                    className={`px-4 py-2 rounded-full transition-all duration-300 flex items-center border-2 animate-fadeIn ${
-                      selectedCategory === category 
-                        ? 'bg-accent text-white' 
-                        : 'bg-transparent text-text-primary border-accent-hover hover:bg-accent hover:text-white'
-                    }`}
-                    onClick={() => setSelectedCategory(category)}
-                  >
-                    <span className="mr-2">{icon}</span>
-                    {category}
-                  </button>
-                );
-              })}
             </div>
           )}
           
-          {/* Menu items */}
-          <div className="grid grid-cols-1 gap-6">
-            {filteredItems && filteredItems.length > 0 ? (
-              filteredItems.map((item, index) => {
-                const { icon, color } = getCategoryInfo(item.category);
-                return (
-                  <div 
-                    key={item.id || index}
-                    className="card stats-card animate-fadeIn transform transition-all duration-300 hover:scale-[1.01] hover:shadow-lg"
-                    style={{ 
-                      animationDelay: getAnimationDelay(index),
-                      borderLeft: `4px solid ${color}`
-                    }}
-                  >
-                    <div className="flex items-start">
-                      <div className="flex-1">
-                        <div className="flex items-center mb-2">
-                          <span 
-                            className="w-8 h-8 flex items-center justify-center rounded-full mr-2 text-xl"
-                            style={{ backgroundColor: `${color}30` }}
-                          >
-                            {icon}
-                          </span>
-                          <h3 className="card-title mb-0">{item.name}</h3>
-                          {item.isVegetarian && (
-                            <span className="ml-2 px-2 py-1 bg-green-900 text-green-100 text-xs rounded-full">
-                              Veg
-                            </span>
-                          )}
-                        </div>
-                        
-                        {item.description && (
-                          <p className="ml-10 mb-4 text-text-primary opacity-80">
-                            {item.description}
-                          </p>
-                        )}
-                        
-                        {item.allergens && item.allergens.length > 0 && (
-                          <div className="ml-10">
-                            <p className="text-sm text-accent mb-1">Allergens:</p>
-                            <div className="flex flex-wrap gap-2">
-                              {item.allergens.map((allergen, i) => (
-                                <span 
-                                  key={i} 
-                                  className="px-2 py-1 bg-red-900 bg-opacity-30 text-red-100 text-xs rounded"
-                                >
-                                  {allergen}
-                                </span>
-                              ))}
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      <div className="text-right">
-                        <span className="text-sm text-text-primary opacity-60">
-                          {item.category}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div className="card stats-card text-center py-8">
-                <h3 className="text-xl mb-2">No menu items found</h3>
-                <p>
-                  {selectedCategory 
-                    ? `There are no items in the ${selectedCategory} category today.` 
-                    : 'The menu for today is not available yet.'}
-                </p>
-              </div>
-            )}
-          </div>
+          {getCurrentMealtimeItemCount() === 0 && (
+            <div className="card stats-card text-center py-8 mt-6">
+              <h3 className="text-xl mb-2">No menu items found</h3>
+              <p>
+                {selectedMealtime === 'lunch' 
+                  ? "The lunch menu for today is not available yet."
+                  : "The dinner menu for today is not available yet."
+                }
+              </p>
+              <button 
+                className="btn-primary mt-4"
+                onClick={() => setSelectedMealtime(selectedMealtime === 'lunch' ? 'dinner' : 'lunch')}
+              >
+                Switch to {selectedMealtime === 'lunch' ? 'Dinner' : 'Lunch'}
+              </button>
+            </div>
+          )}
         </div>
       )}
       

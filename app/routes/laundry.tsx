@@ -61,6 +61,7 @@ export default function Laundry() {
     const [activeTab, setActiveTab] = useState<'all' | 'washers' | 'dryers'>('all');
     const [refreshing, setRefreshing] = useState(false);
     const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
+    const [addedTestMachine, setAddedTestMachine] = useState(false);
 
     const triggerConfetti = (machineNumber: number) => {
         setShowConfetti(machineNumber);
@@ -312,6 +313,28 @@ export default function Laundry() {
         machineRefs.current[machineNumber] = el;
     };
 
+    // Function to add a test machine with 1 minute remaining
+    const addTestMachine = () => {
+        if (localData && !addedTestMachine) {
+            const newData = JSON.parse(JSON.stringify(localData));
+            
+            // Add a test washer with 1 minute remaining
+            newData.washing_machine.push({
+                number: 999,
+                available: false,
+                time_left: 10
+            });
+            newData.dryer.push({
+                number: -1,
+                available: false,
+                time_left: 400
+            });
+            
+            setLocalData(newData);
+            setAddedTestMachine(true);
+        }
+    };
+
     return (
         <Container className="max-w-5xl py-8">
             <div className="flex flex-col gap-8 max-w-[800px] mx-auto">
@@ -392,15 +415,26 @@ export default function Laundry() {
                     </CardContent>
 
                     <CardFooter className="justify-center pt-4 border-t border-zinc-800">
-                        <Button
-                            variant="primary"
-                            onClick={handleRefresh}
-                            disabled={refreshing || loading}
-                            isLoading={refreshing}
-                            className="px-6 bg-[#0049a8] hover:bg-[#0062e1]"
-                        >
-                            {refreshing ? 'Refreshing...' : 'Refresh Data'}
-                        </Button>
+                        <div className="flex flex-wrap gap-3 justify-center">
+                            <Button
+                                variant="primary"
+                                onClick={handleRefresh}
+                                disabled={refreshing || loading}
+                                isLoading={refreshing}
+                                className="px-6 bg-[#0049a8] hover:bg-[#0062e1]"
+                            >
+                                {refreshing ? 'Refreshing...' : 'Refresh Data'}
+                            </Button>
+                            
+                            <Button
+                                variant="secondary"
+                                onClick={addTestMachine}
+                                disabled={addedTestMachine || !localData}
+                                className="px-6 bg-[#ec7f32] hover:bg-[#f08c47]"
+                            >
+                                Add Test Machine (1 min)
+                            </Button>
+                        </div>
                     </CardFooter>
                 </Card>
 
@@ -500,7 +534,6 @@ export default function Laundry() {
                                                     status={getMachineStatus(machine)}
                                                     timeRemaining={machine.time_left}
                                                     animate
-                                                    animationDelay={machine.number * 100}
                                                     view={viewMode}
                                                 />
                                             </div>
@@ -521,7 +554,6 @@ export default function Laundry() {
                                                     status={getMachineStatus(machine)}
                                                     timeRemaining={machine.time_left}
                                                     animate
-                                                    animationDelay={machine.number * 100}
                                                     view={viewMode}
                                                 />
                                             </div>

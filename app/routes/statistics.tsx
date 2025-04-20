@@ -204,7 +204,7 @@ export default function Statistics() {
 
     return (
         <Container className="max-w-5xl py-8">
-            <div className="flex flex-col gap-8">
+            <div className="flex flex-col gap-8 max-w-[800px] mx-auto">
                 {/* Error display */}
                 {error && (
                     <Card className="border-l-4 border-error animate-fadeIn">
@@ -222,7 +222,7 @@ export default function Statistics() {
 
                 {/* Server Status Card */}
                 <Card
-                    className="bg-zinc-900  animate-fadeIn max-w-[1000px] mx-auto"
+                    className="bg-zinc-900 animate-fadeIn w-full mx-auto"
                     style={{boxShadow: "0 4px 12px rgba(0,0,0,0.2)"}}
                 >
                     <CardHeader className="pb-3">
@@ -290,7 +290,7 @@ export default function Statistics() {
 
                 {/* Loading indicator */}
                 {loading && (
-                    <Card className="bg-zinc-900 animate-fadeIn max-w-[1000px] mx-auto">
+                    <Card className="bg-zinc-900 animate-fadeIn w-full mx-auto">
                         <CardContent className="py-12 flex flex-col items-center justify-center">
                             <Spinner size="lg" color="primary" className="mb-4"/>
                             <Text color="muted">Loading statistics...</Text>
@@ -302,7 +302,7 @@ export default function Statistics() {
                 {/* Global Statistics Card */}
                 {!loading && globalStats && (
                     <Card
-                        className="bg-zinc-900 animate-fadeIn max-w-[1000px] mx-auto"
+                        className="bg-zinc-900 animate-fadeIn w-full mx-auto"
                         style={{boxShadow: "0 4px 12px rgba(0,0,0,0.2)"}}
                     >
                         <CardHeader className="pb-3">

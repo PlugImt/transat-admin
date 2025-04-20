@@ -1,7 +1,9 @@
 import {useEffect, useRef, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {GiClothes, GiWashingMachine} from 'react-icons/gi';
+import {BsGridFill, BsListUl} from 'react-icons/bs';
 import confetti from 'canvas-confetti';
+import {cn} from "../lib/utils";
 
 import type {Route} from "../+types/root";
 import {
@@ -58,6 +60,7 @@ export default function Laundry() {
     const machineRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
     const [activeTab, setActiveTab] = useState<'all' | 'washers' | 'dryers'>('all');
     const [refreshing, setRefreshing] = useState(false);
+    const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
 
     const triggerConfetti = (machineNumber: number) => {
         setShowConfetti(machineNumber);
@@ -68,12 +71,69 @@ export default function Laundry() {
             const x = (rect.left + rect.width / 2) / window.innerWidth;
             const y = (rect.top + rect.height / 2) / window.innerHeight;
 
-            confetti({
-                particleCount: 100,
-                spread: 70,
+            // Create multiple confetti bursts for fullscreen effect
+            const createConfetti = (options: any) => {
+                confetti({
+                    particleCount: 100,
+                    spread: 70,
+                    origin: options.origin,
+                    colors: [BRAND_COLORS.primary, BRAND_COLORS.secondary, "#ffe6cc"],
+                    zIndex: 9999,
+                    ...options
+                });
+            };
+
+            // Main burst from the machine
+            createConfetti({
                 origin: {x, y: y - 0.1},
-                colors: [BRAND_COLORS.primary, BRAND_COLORS.secondary, "#ffe6cc"],
+                particleCount: 150,
+                spread: 80,
             });
+
+            // Additional bursts from different screen positions for fullscreen effect
+            setTimeout(() => {
+                createConfetti({
+                    origin: {x: 0.2, y: 0.3},
+                    particleCount: 80,
+                    spread: 100,
+                });
+            }, 150);
+
+            setTimeout(() => {
+                createConfetti({
+                    origin: {x: 0.8, y: 0.2},
+                    particleCount: 80,
+                    spread: 100,
+                });
+            }, 300);
+
+            setTimeout(() => {
+                createConfetti({
+                    origin: {x: 0.5, y: 0.5},
+                    particleCount: 100,
+                    angle: 90,
+                    spread: 180,
+                    gravity: 0.7,
+                });
+            }, 450);
+
+            setTimeout(() => {
+                createConfetti({
+                    origin: {x: 0.2, y: 0.8},
+                    particleCount: 60,
+                    angle: 120,
+                    spread: 50,
+                });
+            }, 600);
+
+            setTimeout(() => {
+                createConfetti({
+                    origin: {x: 0.8, y: 0.8},
+                    particleCount: 60,
+                    angle: 60,
+                    spread: 50,
+                });
+            }, 750);
         }
 
         setTimeout(() => setShowConfetti(null), 3000);
@@ -361,8 +421,37 @@ export default function Laundry() {
                         style={{boxShadow: "0 4px 12px rgba(0,0,0,0.2)"}}
                     >
                         <CardHeader className="pb-3">
-                            <CardTitle className="text-2xl font-bold">Laundry <span
-                                className="text-[#ec7f32]">Machines</span></CardTitle>
+                            <div className="flex items-center justify-between">
+                                <CardTitle className="text-2xl font-bold">Laundry <span
+                                    className="text-[#ec7f32]">Machines</span>
+                                </CardTitle>
+                                
+                                {/* View toggle */}
+                                <div className="flex items-center space-x-2">
+                                    <Button 
+                                        variant="ghost" 
+                                        className={cn(
+                                            "w-9 h-9 p-0 rounded-full", 
+                                            viewMode === 'list' && "bg-zinc-800 text-[#ec7f32]"
+                                        )}
+                                        aria-label="List view"
+                                        onClick={() => setViewMode('list')}
+                                    >
+                                        <BsListUl className="w-4 h-4" />
+                                    </Button>
+                                    <Button 
+                                        variant="ghost" 
+                                        className={cn(
+                                            "w-9 h-9 p-0 rounded-full", 
+                                            viewMode === 'grid' && "bg-zinc-800 text-[#ec7f32]"
+                                        )}
+                                        aria-label="Grid view"
+                                        onClick={() => setViewMode('grid')}
+                                    >
+                                        <BsGridFill className="w-4 h-4" />
+                                    </Button>
+                                </div>
+                            </div>
                         </CardHeader>
                         <CardContent className="py-4">
                             <Stack direction="horizontal" spacing="sm" justify="center" className="mb-6">
@@ -391,9 +480,12 @@ export default function Laundry() {
                                 </Button>
                             </Stack>
 
-                            {/* Machines grid */}
+                            {/* Machines container */}
                             {localData && (
-                                <Grid cols={{sm: 1, md: 2, lg: 3}} gap="md">
+                                <div className={cn(
+                                    viewMode === 'list' ? 'flex flex-col' : 'grid gap-4',
+                                    viewMode === 'grid' && 'grid-cols-1 md:grid-cols-2 lg:grid-cols-3'
+                                )}>
                                     {/* Washing machines */}
                                     {(activeTab === 'all' || activeTab === 'washers') &&
                                         localData.washing_machine.map(machine => (
@@ -409,6 +501,7 @@ export default function Laundry() {
                                                     timeRemaining={machine.time_left}
                                                     animate
                                                     animationDelay={machine.number * 100}
+                                                    view={viewMode}
                                                 />
                                             </div>
                                         ))
@@ -429,11 +522,12 @@ export default function Laundry() {
                                                     timeRemaining={machine.time_left}
                                                     animate
                                                     animationDelay={machine.number * 100}
+                                                    view={viewMode}
                                                 />
                                             </div>
                                         ))
                                     }
-                                </Grid>
+                                </div>
                             )}
                         </CardContent>
                     </Card>

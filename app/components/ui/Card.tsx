@@ -9,6 +9,7 @@ export interface CardProps {
     elevated?: boolean;
     padding?: 'none' | 'sm' | 'md' | 'lg';
     style?: React.CSSProperties;
+    bgColor?: string;
 }
 
 const Card: React.FC<CardProps> = ({
@@ -20,6 +21,7 @@ const Card: React.FC<CardProps> = ({
                                        elevated = false,
                                        padding = 'md',
                                        style,
+                                        bgColor = 'bg-card',
                                    }) => {
     // Padding classes
     const paddingClasses = {
@@ -35,7 +37,7 @@ const Card: React.FC<CardProps> = ({
 
     return (
         <div
-            className={`bg-card ${borderClass} ${shadowClass} ${className}`}
+            className={`${bgColor} ${borderClass} ${shadowClass} ${className}`}
             style={style}
         >
             {header && (

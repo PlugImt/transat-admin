@@ -23,8 +23,8 @@ const PageLayout: React.FC<PageLayoutProps> = ({
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       {withHeader && <Header {...headerProps} />}
       
-      {/* Account for the fixed header height */}
-      <main className={`flex-grow ${withHeader ? 'pt-16' : ''} ${className}`}>
+      {/* Account for the fixed header height plus margin for floating navbar */}
+      <main className={`flex-grow ${withHeader ? 'pt-24' : ''} ${className}`}>
         {children}
       </main>
       

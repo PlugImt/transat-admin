@@ -150,15 +150,54 @@ const LaundryMachine: React.FC<LaundryMachineProps> = ({
                     {statusLabel}
                 </div>
 
-                {/* Content container with proper z-index */}
-                <div className={cn(
-                    "relative z-10 flex",
-                    isListView 
-                        ? "flex-row items-center w-full px-4" 
-                        : "flex-col p-5 h-full justify-between"
-                )}>
-                    {/* Top section (Grid view) */}
-                    {!isListView && (
+                {/* Content */}
+                {isListView ? (
+                    // List view - Three column layout with fixed widths
+                    <div className="relative z-10 flex w-full items-center px-4">
+                        {/* 1. Left column - Machine icon and info */}
+                        <div className="flex items-center w-1/3">
+                            <div className={cn(
+                                "flex items-center justify-center text-xl rounded-full w-12 h-12 mr-4 flex-shrink-0",
+                                isWasher ? "bg-blue-500/10" : "bg-orange-500/10"
+                            )}>
+                                {typeIcon}
+                            </div>
+
+                            <div>
+                                <CardTitle className="text-base font-bold mb-0.5 text-white">
+                                    {name}
+                                </CardTitle>
+                                <Text className="text-xs text-zinc-400">
+                                    ID: {id}
+                                </Text>
+                            </div>
+                        </div>
+                        
+                        {/* 2. Center column - Time left */}
+                        <div className="flex justify-center items-center w-1/3">
+                            {!isAvailable && timeRemaining !== undefined && (
+                                <div className="flex flex-col items-center">
+                                    <Text className="text-xs text-zinc-400 mb-0.5">
+                                        Time Left:
+                                    </Text>
+                                    <Text
+                                        className={cn(
+                                            "font-mono text-xl font-bold tabular-nums tracking-tight",
+                                            isWasher ? "text-blue-400" : "text-orange-400"
+                                        )}
+                                    >
+                                        {formatTime(timeRemaining)}
+                                    </Text>
+                                </div>
+                            )}
+                        </div>
+                        
+                        {/* 3. Right column - Empty space */}
+                        <div className="w-1/3"></div>
+                    </div>
+                ) : (
+                    // Grid view layout
+                    <div className="relative z-10 flex flex-col p-5 h-full justify-between">
                         <div className="flex items-start mb-4 w-full">
                             {/* Machine icon */}
                             <div className={cn(
@@ -177,87 +216,41 @@ const LaundryMachine: React.FC<LaundryMachineProps> = ({
                                 </Text>
                             </div>
                         </div>
-                    )}
-                    
-                    {/* List view content */}
-                    {isListView && (
-                        <>
-                            {/* Machine icon */}
-                            <div className={cn(
-                                "flex items-center justify-center text-xl rounded-full w-12 h-12 mr-4 flex-shrink-0",
-                                isWasher ? "bg-blue-500/10" : "bg-orange-500/10"
-                            )}>
-                                {typeIcon}
-                            </div>
 
-                            {/* Machine info */}
-                            <div className="flex-grow">
-                                <CardTitle className="text-base font-bold mb-0.5 text-white">
-                                    {name}
-                                </CardTitle>
-                                <Text className="text-xs text-zinc-400">
-                                    ID: {id}
+                        {/* Time remaining for grid view */}
+                        {!isAvailable && timeRemaining !== undefined && (
+                            <div className="w-full">
+                                <div className="flex justify-between items-center mb-2">
+                                    <Text className="text-xs text-zinc-400">
+                                        Time Remaining:
+                                    </Text>
+                                    <Text className="text-xs text-zinc-500">
+                                        {Math.round(progressPercentage)}% complete
+                                    </Text>
+                                </div>
+                                
+                                <Text
+                                    className={cn(
+                                        "font-mono text-2xl font-bold tabular-nums tracking-tight mb-2",
+                                        isWasher ? "text-blue-400" : "text-orange-400"
+                                    )}
+                                >
+                                    {formatTime(timeRemaining)}
                                 </Text>
+
+                                <div className="w-full h-2 bg-zinc-800/60 rounded-full overflow-hidden backdrop-blur-sm">
+                                    <div
+                                        className={cn(
+                                            "h-full rounded-full",
+                                            isWasher ? "bg-blue-500" : "bg-orange-500"
+                                        )}
+                                        style={{ width: `${progressPercentage}%` }}
+                                    />
+                                </div>
                             </div>
-                        </>
-                    )}
-
-                    {/* Time remaining and progress info for in-use machines */}
-                    {!isAvailable && timeRemaining !== undefined && (
-                        <div className={cn(
-                            "flex flex-col",
-                            isListView ? "ml-auto" : "w-full"
-                        )}>
-                            {isListView ? (
-                                // List view time display - centered
-                                <div className="flex flex-col items-center">
-                                    <Text className="text-xs text-zinc-400 mb-0.5">
-                                        Time Left:
-                                    </Text>
-                                    <Text
-                                        className={cn(
-                                            "font-mono text-xl font-bold tabular-nums tracking-tight",
-                                            isWasher ? "text-blue-400" : "text-orange-400"
-                                        )}
-                                    >
-                                        {formatTime(timeRemaining)}
-                                    </Text>
-                                </div>
-                            ) : (
-                                // Grid view time display
-                                <div className="w-full">
-                                    <div className="flex justify-between items-center mb-2">
-                                        <Text className="text-xs text-zinc-400">
-                                            Time Remaining:
-                                        </Text>
-                                        <Text className="text-xs text-zinc-500">
-                                            {Math.round(progressPercentage)}% complete
-                                        </Text>
-                                    </div>
-                                    
-                                    <Text
-                                        className={cn(
-                                            "font-mono text-2xl font-bold tabular-nums tracking-tight mb-2",
-                                            isWasher ? "text-blue-400" : "text-orange-400"
-                                        )}
-                                    >
-                                        {formatTime(timeRemaining)}
-                                    </Text>
-
-                                    <div className="w-full h-2 bg-zinc-800/60 rounded-full overflow-hidden backdrop-blur-sm">
-                                        <div
-                                            className={cn(
-                                                "h-full rounded-full",
-                                                isWasher ? "bg-blue-500" : "bg-orange-500"
-                                            )}
-                                            style={{ width: `${progressPercentage}%` }}
-                                        />
-                                    </div>
-                                </div>
-                            )}
-                        </div>
-                    )}
-                </div>
+                        )}
+                    </div>
+                )}
             </Card>
         </div>
     );

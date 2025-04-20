@@ -27,7 +27,7 @@ const Card: React.FC<CardProps> = ({
     const paddingClasses = {
         none: 'p-0',
         sm: 'p-2',
-        md: 'p-4',
+        md: 'p-4 w-full',
         lg: 'p-6',
     };
 

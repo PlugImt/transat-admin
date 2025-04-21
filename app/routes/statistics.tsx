@@ -12,6 +12,7 @@ import {
     Stack,
     Text
 } from "../components";
+import {t} from "i18next";
 
 // Types for the statistics data
 interface EndpointStatistic {
@@ -66,6 +67,10 @@ export default function Statistics() {
     const [initialLoadTime] = useState(new Date().toISOString());
     const [globalStats, setGlobalStats] = useState<GlobalStatistic | null>(null);
     const [endpointStats, setEndpointStats] = useState<EndpointStatistic[]>([]);
+    const [sortConfig, setSortConfig] = useState<{key: keyof EndpointStatistic, direction: 'asc' | 'desc'}>({
+        key: 'request_count',
+        direction: 'desc'
+    });
     const [serverStatus, setServerStatus] = useState<ServerStatus>({
         status: "offline",
         latency: 0,
@@ -364,6 +369,119 @@ export default function Statistics() {
                                     </Text>
                                 </div>
                             </div>
+
+                            {/* Endpoint Statistics */}
+                            {/*<Card className="bg-zinc-900">*/}
+                            {/*    <CardHeader>*/}
+                            {/*        <CardTitle>{t('statistics.endpoints.title')}</CardTitle>*/}
+                            {/*    </CardHeader>*/}
+                            {/*    <CardContent>*/}
+                            {/*        {endpointStats.length > 0 ? (*/}
+                            {/*            <div className="overflow-x-auto">*/}
+                            {/*                <table className="min-w-full divide-y divide-zinc-800">*/}
+                            {/*                    <thead>*/}
+                            {/*                    <tr>*/}
+                            {/*                        {[*/}
+                            {/*                            { key: 'endpoint', label: t('statistics.endpoints.endpoint') },*/}
+                            {/*                            { key: 'method', label: t('statistics.endpoints.method') },*/}
+                            {/*                            { key: 'request_count', label: t('statistics.endpoints.count') },*/}
+                            {/*                            { key: 'success_rate_percent', label: t('statistics.endpoints.successRate') },*/}
+                            {/*                            { key: 'avg_duration_ms', label: t('statistics.endpoints.avgTime') }*/}
+                            {/*                        ].map(column => (*/}
+                            {/*                            <th*/}
+                            {/*                                key={column.key}*/}
+                            {/*                                className="px-4 py-3 text-left text-xs font-medium text-zinc-400 uppercase tracking-wider cursor-pointer hover:text-zinc-100"*/}
+                            {/*                                onClick={() => {*/}
+                            {/*                                    setEndpointStats(prevStats => {*/}
+                            {/*                                        const newStats = [...prevStats];*/}
+                            {/*                                        // If already sorting by this column, reverse order*/}
+                            {/*                                        const isSameColumn = sortConfig.key === column.key;*/}
+                            {/*                                        const newDirection = isSameColumn && sortConfig.direction === 'asc' ? 'desc' : 'asc';*/}
+
+                            {/*                                        setSortConfig({ key: column.key, direction: newDirection });*/}
+
+                            {/*                                        return newStats.sort((a, b) => {*/}
+                            {/*                                            if (a[column.key] < b[column.key]) {*/}
+                            {/*                                                return newDirection === 'asc' ? -1 : 1;*/}
+                            {/*                                            }*/}
+                            {/*                                            if (a[column.key] > b[column.key]) {*/}
+                            {/*                                                return newDirection === 'asc' ? 1 : -1;*/}
+                            {/*                                            }*/}
+                            {/*                                            return 0;*/}
+                            {/*                                        });*/}
+                            {/*                                    });*/}
+                            {/*                                }}*/}
+                            {/*                            >*/}
+                            {/*                                <div className="flex items-center">*/}
+                            {/*                                    {column.label}*/}
+                            {/*                                    {sortConfig.key === column.key && (*/}
+                            {/*                                        <span className="ml-1">*/}
+                            {/*                {sortConfig.direction === 'asc' ? '↑' : '↓'}*/}
+                            {/*            </span>*/}
+                            {/*                                    )}*/}
+                            {/*                                </div>*/}
+                            {/*                            </th>*/}
+                            {/*                        ))}*/}
+                            {/*                    </tr>*/}
+                            {/*                    </thead>*/}
+                            {/*                    <tbody className="divide-y divide-zinc-800">*/}
+                            {/*                    {endpointStats.map((stat, index) => (*/}
+                            {/*                        <tr key={index} className="hover:bg-zinc-800/50 transition-colors">*/}
+                            {/*                            <td className="px-4 py-3 whitespace-nowrap text-sm font-medium">*/}
+                            {/*                                {stat.endpoint}*/}
+                            {/*                            </td>*/}
+                            {/*                            <td className="px-4 py-3 whitespace-nowrap text-sm">*/}
+                            {/*    <span*/}
+                            {/*        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${*/}
+                            {/*            stat.method === 'GET'*/}
+                            {/*                ? 'bg-blue-100 text-blue-800'*/}
+                            {/*                : stat.method === 'POST'*/}
+                            {/*                    ? 'bg-green-100 text-green-800'*/}
+                            {/*                    : stat.method === 'PUT'*/}
+                            {/*                        ? 'bg-yellow-100 text-yellow-800'*/}
+                            {/*                        : 'bg-red-100 text-red-800'*/}
+                            {/*        }`}*/}
+                            {/*    >*/}
+                            {/*        {stat.method}*/}
+                            {/*    </span>*/}
+                            {/*                            </td>*/}
+                            {/*                            <td className="px-4 py-3 whitespace-nowrap text-sm">*/}
+                            {/*                                {stat.request_count}*/}
+                            {/*                            </td>*/}
+                            {/*                            <td className="px-4 py-3 whitespace-nowrap text-sm">*/}
+                            {/*                                <div className="flex items-center">*/}
+                            {/*                                    <div className="w-16 bg-zinc-700 rounded-full h-2 mr-2">*/}
+                            {/*                                        <div*/}
+                            {/*                                            className="h-2 rounded-full"*/}
+                            {/*                                            style={{*/}
+                            {/*                                                width: `${stat.success_rate_percent}%`,*/}
+                            {/*                                                backgroundColor:*/}
+                            {/*                                                    stat.success_rate_percent > 90*/}
+                            {/*                                                        ? '#10b981'*/}
+                            {/*                                                        : stat.success_rate_percent > 75*/}
+                            {/*                                                            ? '#f59e0b'*/}
+                            {/*                                                            : '#ef4444',*/}
+                            {/*                                            }}*/}
+                            {/*                                        ></div>*/}
+                            {/*                                    </div>*/}
+                            {/*                                    <span>{stat.success_rate_percent.toFixed(1)}%</span>*/}
+                            {/*                                </div>*/}
+                            {/*                            </td>*/}
+                            {/*                            <td className="px-4 py-3 whitespace-nowrap text-sm">*/}
+                            {/*                                {stat.avg_duration_ms.toFixed(2)} ms*/}
+                            {/*                            </td>*/}
+                            {/*                        </tr>*/}
+                            {/*                    ))}*/}
+                            {/*                    </tbody>*/}
+                            {/*                </table>*/}
+                            {/*            </div>*/}
+                            {/*        ) : (*/}
+                            {/*            <Text className="text-center py-4 text-zinc-400">*/}
+                            {/*                {t('statistics.noEndpointData')}*/}
+                            {/*            </Text>*/}
+                            {/*        )}*/}
+                            {/*    </CardContent>*/}
+                            {/*</Card>*/}
 
                             {/* First Request */}
                             <div className="flex flex-col items-center mt-6 text-center">

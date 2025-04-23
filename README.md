@@ -52,7 +52,7 @@ Pour participer au design de l'application, faites une demande pour modifier le 
 <img src="https://skillicons.dev/icons?i=react" alt="Les technologies utilisées" />
 
 ## 👋 Nous contacter
-<!-- Rejoignez le groupe Whatsapp de [Transat](https://chat.whatsapp.com/Hu2SjIL3ROx9y3BDcKNCyY) -->
+ Rejoignez le groupe Whatsapp de [Transat](https://chat.whatsapp.com/Hu2SjIL3ROx9y3BDcKNCyY) 
 
             
 <!-- ## 🫶 Soutenir l'association

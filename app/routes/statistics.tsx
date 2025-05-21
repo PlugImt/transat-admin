@@ -181,12 +181,12 @@ export default function Statistics() {
         // Set up periodic refresh intervals
         const statsRefreshInterval = setInterval(() => {
             fetchStatistics();
-        }, 5000); // Refresh stats every 5 seconds
+        }, 500000000); // Refresh stats every 5 seconds
 
         // Set up periodic status checks
         const statusCheckInterval = setInterval(() => {
             checkServerStatus();
-        }, 5000); // Check every 5 seconds
+        }, 500000000); // Check every 5 seconds
 
         return () => {
             clearInterval(statsRefreshInterval);

@@ -36,7 +36,7 @@ const Hero: React.FC<HeroProps> = ({
 
     return (
         <div
-            className={`relative py-20 min-h-[60vh] flex items-center bg-cover bg-center bg-no-repeat ${className}`}
+            className={`relative py-20 min-h-[30vh] flex items-center bg-cover bg-center bg-no-repeat ${className}`}
             style={bgStyle}
         >
             {/* Background overlay */}
@@ -82,6 +82,7 @@ const Hero: React.FC<HeroProps> = ({
                                 <Button
                                     variant="primary"
                                     size="lg"
+                                    className="bg-orange-400 hover:bg-orange-900 text-white px-8 py-3 rounded-lg flex items-center gap-2 transition-colors"
                                     onClick={() => {
                                         if (ctaLink.startsWith('#')) {
                                             const element = document.querySelector(ctaLink);

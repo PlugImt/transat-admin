@@ -1,4 +1,4 @@
-import {FaChartLine, FaCouch, FaShip, FaTree} from 'react-icons/fa';
+import {FaChartLine, FaCouch, FaShip, FaTree, FaMobile} from 'react-icons/fa';
 import {useTranslation} from 'react-i18next';
 
 import type {Route} from "../+types/root";
@@ -76,9 +76,8 @@ export default function Home() {
             <Hero
                 title={t('home.welcome')}
                 subtitle={t('home.description')}
-                ctaText={t('home.getStarted')}
-                ctaLink="#services"
-                bgImage="https://epsbubz.stripocdn.email/content/guids/CABINET_882ea3df7cd154211d1b97eac5876cf77c8c0bab12620e24b042e4c3c07d9421/images/ship.jpg"
+                ctaText="Download Mobile App"
+                ctaLink="/download"
                 overlayOpacity={0.7}
             />
 
@@ -101,6 +100,24 @@ export default function Home() {
                             animationDelay={index * 100}
                         />
                     ))}
+                </Grid>
+            </Section>
+
+            {/* Mobile App Download Section */}
+            <Section
+                title="Get the Mobile App"
+                subtitle="Access all services on your phone with the official Transat app"
+                spacing="xl"
+            >
+                <Grid cols={{sm: 1, md: 1}} gap="lg">
+                    <ServiceCard
+                        title="Download Transat App"
+                        description="Available for iOS and Android. Get real-time updates, check laundry status, view restaurant menus, and more!"
+                        icon={<FaMobile className="w-6 h-6" />}
+                        linkTo="/download"
+                        linkText="Download Now"
+                        animationDelay={0}
+                    />
                 </Grid>
             </Section>
 

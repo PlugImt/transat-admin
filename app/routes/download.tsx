@@ -28,6 +28,13 @@ const detectOS = (): 'ios' | 'android' | 'other' => {
     return 'other';
 };
 
+// Check if URL contains QR code parameter
+const isFromQRCode = (): boolean => {
+    if (typeof window === 'undefined') return false;
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('source') === 'qrcode';
+};
+
 // Auto-redirect utility
 const redirectToStore = (os: 'ios' | 'android') => {
     const storeUrls = {
@@ -42,17 +49,22 @@ export default function Download() {
     const { t } = useTranslation();
     const [detectedOS, setDetectedOS] = useState<'ios' | 'android' | 'other'>('other');
     const [autoRedirected, setAutoRedirected] = useState(false);
+    const [isQRCode, setIsQRCode] = useState(false);
 
     useEffect(() => {
         const os = detectOS();
+        const fromQR = isFromQRCode();
         setDetectedOS(os);
+        setIsQRCode(fromQR);
         
-        // Auto-redirect after a short delay if on mobile
+        // Auto-redirect logic
         if ((os === 'ios' || os === 'android') && !autoRedirected) {
+            const redirectDelay = fromQR ? 0 : 3000; // Immediate redirect for QR codes, 3s for others
+            
             const timer = setTimeout(() => {
                 setAutoRedirected(true);
                 redirectToStore(os);
-            }, 4000); // 4 second delay to show the page briefly
+            }, redirectDelay);
             
             return () => clearTimeout(timer);
         }
@@ -64,7 +76,6 @@ export default function Download() {
 
     return (
         <div>
-
             {/* Auto-redirect notice for mobile users */}
             {(detectedOS === 'ios' || detectedOS === 'android') && !autoRedirected && (
                 <Section spacing="sm" className="min-h-[100vh]">
@@ -73,16 +84,23 @@ export default function Download() {
                             <Stack align="center" spacing="sm">
                                 <FaMobile className="w-8 h-8 text-blue-600" />
                                 <Text as="h3" size="lg" weight="bold" className="text-blue-800">
-                                    {detectedOS === 'ios' ? 'iOS Device Detected' : 'Android Device Detected'}
+                                    {detectedOS === 'ios' ? t('download.detection.ios') : t('download.detection.android')}
                                 </Text>
                                 <Text className="text-blue-700">
-                                    You will be automatically redirected to the {detectedOS === 'ios' ? 'App Store' : 'Google Play Store'} in a few seconds...
+                                    {isQRCode 
+                                        ? t('download.redirecting.immediate', { 
+                                            store: detectedOS === 'ios' ? t('download.stores.appStore') : t('download.stores.googlePlay')
+                                          })
+                                        : t('download.redirecting.delayed', { 
+                                            store: detectedOS === 'ios' ? t('download.stores.appStore') : t('download.stores.googlePlay')
+                                          })
+                                    }
                                 </Text>
                                 <div className="flex items-center gap-2 text-blue-600">
                                     <div className="animate-spin">
                                         <FaDownload className="w-4 h-4" />
                                     </div>
-                                    <Text size="sm">Redirecting...</Text>
+                                    <Text size="sm">{t('download.redirecting.status')}</Text>
                                 </div>
                             </Stack>
                         </Card>
@@ -90,22 +108,20 @@ export default function Download() {
                 </Section>
             )}
 
-
             {/* Hero section */}
             <Hero
-                title="Download Transat"
-                subtitle="Get the official Transat app and access all campus services on your mobile device"
-                ctaText="View Download Options"
+                title={t('download.hero.title')}
+                subtitle={t('download.hero.subtitle')}
+                ctaText={t('download.hero.cta')}
                 ctaLink="#download-options"
                 overlayOpacity={0.8}
             />
 
-
             {/* Download options section */}
             <Section
                 id="download-options"
-                title="Choose Your Platform"
-                subtitle="Available on both iOS and Android devices"
+                title={t('download.options.title')}
+                subtitle={t('download.options.subtitle')}
                 spacing="xl"
             >
                 <Container>
@@ -117,9 +133,11 @@ export default function Download() {
                                     <FaApple className="w-12 h-12 text-white" />
                                 </div>
                                 <div>
-                                    <Text as="h3" size="lg" weight="bold" className="mb-2">Download for iOS</Text>
+                                    <Text as="h3" size="lg" weight="bold" className="mb-2">
+                                        {t('download.ios.title')}
+                                    </Text>
                                     <Text className="text-gray-600 mb-4">
-                                        Available on iPhone and iPad running iOS 13.4 or later
+                                        {t('download.ios.description')}
                                     </Text>
                                 </div>
                                 <Button
@@ -127,11 +145,11 @@ export default function Download() {
                                     className="bg-gray-900 hover:bg-gray-800 text-white px-8 py-3 rounded-lg flex items-center gap-2 transition-colors"
                                 >
                                     <FaApple className="w-5 h-5" />
-                                    Download on App Store
+                                    {t('download.ios.button')}
                                 </Button>
                                 {detectedOS === 'ios' && (
                                     <Text size="sm" className="text-green-600 font-medium">
-                                        ✓ Recommended for your device
+                                        ✓ {t('download.recommended')}
                                     </Text>
                                 )}
                             </Stack>
@@ -144,9 +162,11 @@ export default function Download() {
                                     <FaGooglePlay className="w-12 h-12 text-white" />
                                 </div>
                                 <div>
-                                    <Text as="h3" size="lg" weight="bold" className="mb-2">Download for Android</Text>
+                                    <Text as="h3" size="lg" weight="bold" className="mb-2">
+                                        {t('download.android.title')}
+                                    </Text>
                                     <Text className="text-gray-600 mb-4">
-                                        Available on Android devices running Android 5.0 or later
+                                        {t('download.android.description')}
                                     </Text>
                                 </div>
                                 <Button
@@ -154,11 +174,11 @@ export default function Download() {
                                     className="bg-green-600 hover:bg-green-700 text-white px-8 py-3 rounded-lg flex items-center gap-2 transition-colors"
                                 >
                                     <FaGooglePlay className="w-5 h-5" />
-                                    Get it on Google Play
+                                    {t('download.android.button')}
                                 </Button>
                                 {detectedOS === 'android' && (
                                     <Text size="sm" className="text-green-600 font-medium">
-                                        ✓ Recommended for your device
+                                        ✓ {t('download.recommended')}
                                     </Text>
                                 )}
                             </Stack>
@@ -169,8 +189,8 @@ export default function Download() {
 
             {/* Features section */}
             <Section 
-                title="What's in the App?" 
-                subtitle="Everything you need for campus life at IMT Atlantique"
+                title={t('download.features.title')}
+                subtitle={t('download.features.subtitle')}
                 spacing="xl"
             >
                 <Container>
@@ -182,9 +202,9 @@ export default function Download() {
                                     alt="Restaurant"
                                     className="w-12 h-12 object-contain"
                                 />
-                                <Text as="h4" size="md" weight="medium">Restaurant Menu</Text>
+                                <Text as="h4" size="md" weight="medium">{t('download.features.restaurant.title')}</Text>
                                 <Text className="text-gray-600">
-                                    Check the daily menu and never miss your favorite dishes
+                                    {t('download.features.restaurant.description')}
                                 </Text>
                             </Stack>
                         </Card>
@@ -196,9 +216,9 @@ export default function Download() {
                                     alt="Laundry"
                                     className="w-12 h-12 object-contain"
                                 />
-                                <Text as="h4" size="md" weight="medium">Laundry Status</Text>
+                                <Text as="h4" size="md" weight="medium">{t('download.features.laundry.title')}</Text>
                                 <Text className="text-gray-600">
-                                    Get real-time updates on washing machine availability
+                                    {t('download.features.laundry.description')}
                                 </Text>
                             </Stack>
                         </Card>
@@ -206,9 +226,9 @@ export default function Download() {
                         <Card className="text-center">
                             <Stack align="center" spacing="sm">
                                 <FaMobile className="w-12 h-12 text-blue-600" />
-                                <Text as="h4" size="md" weight="medium">Campus Services</Text>
+                                <Text as="h4" size="md" weight="medium">{t('download.features.services.title')}</Text>
                                 <Text className="text-gray-600">
-                                    Access all campus services and stay connected with your community
+                                    {t('download.features.services.description')}
                                 </Text>
                             </Stack>
                         </Card>
@@ -218,16 +238,14 @@ export default function Download() {
 
             {/* About section */}
             <Section 
-                title="Made by Students, for Students" 
-                subtitle="By the Atlantes, for the Atlantes 🐙"
+                title={t('download.about.title')}
+                subtitle={t('download.about.subtitle')}
                 spacing="lg"
             >
                 <Container>
                     <div className="max-w-3xl mx-auto text-center">
                         <Text className="text-gray-700 leading-relaxed">
-                            Transat is developed by Plug'IMT, a student association at IMT Atlantique. 
-                            Our goal is to improve the daily life of students on campus by providing 
-                            easy access to essential services through a modern, intuitive mobile application.
+                            {t('download.about.description')}
                         </Text>
                     </div>
                 </Container>

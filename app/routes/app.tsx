@@ -3,6 +3,11 @@ import type { LoaderFunctionArgs } from 'react-router';
 
 export async function loader({ request }: LoaderFunctionArgs) {
     const userAgent = request.headers.get('User-Agent') || '';
+    const url = new URL(request.url);
+    const source = url.searchParams.get('source');
+    
+    // If coming from QR code or from mobile device, redirect immediately
+    const isFromQRCode = source === 'qrcode';
     
     // Detect iOS devices
     if (/iPhone|iPad|iPod/i.test(userAgent)) {
@@ -15,7 +20,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
     }
     
     // For desktop or unknown devices, redirect to the download page
-    return redirect('/download');
+    // Pass along the source parameter if it exists
+    const downloadUrl = isFromQRCode ? '/download?source=qrcode' : '/download';
+    return redirect(downloadUrl);
 }
 
 export default function App() {

@@ -9,6 +9,62 @@
     "statistics": "Statistiques",
     "laundry": "Laverie"
   },
+  "download": {
+    "detection": {
+      "ios": "Appareil iOS détecté",
+      "android": "Appareil Android détecté"
+    },
+    "redirecting": {
+      "immediate": "Redirection vers l'{{store}} en cours...",
+      "delayed": "Vous allez être automatiquement redirigé(e) vers l'{{store}} dans quelques secondes...",
+      "status": "Redirection..."
+    },
+    "stores": {
+      "appStore": "App Store",
+      "googlePlay": "Google Play Store"
+    },
+    "hero": {
+      "title": "Télécharger Transat",
+      "subtitle": "Obtenez l'application officielle Transat et accédez à tous les services du campus sur votre appareil mobile",
+      "cta": "Voir les options de téléchargement"
+    },
+    "options": {
+      "title": "Choisissez votre plateforme",
+      "subtitle": "Disponible sur iOS et Android"
+    },
+    "ios": {
+      "title": "Télécharger pour iOS",
+      "description": "Disponible sur iPhone et iPad avec iOS 13.4 ou ultérieur",
+      "button": "Télécharger sur l'App Store"
+    },
+    "android": {
+      "title": "Télécharger pour Android",
+      "description": "Disponible sur les appareils Android avec Android 5.0 ou ultérieur",
+      "button": "Télécharger sur Google Play"
+    },
+    "recommended": "Recommandé pour votre appareil",
+    "features": {
+      "title": "Qu'y a-t-il dans l'application ?",
+      "subtitle": "Tout ce dont vous avez besoin pour la vie de campus à l'IMT Atlantique",
+      "restaurant": {
+        "title": "Menu du restaurant",
+        "description": "Consultez le menu du jour et ne ratez jamais vos plats préférés"
+      },
+      "laundry": {
+        "title": "État de la laverie",
+        "description": "Recevez des mises à jour en temps réel sur la disponibilité des machines à laver"
+      },
+      "services": {
+        "title": "Services du campus",
+        "description": "Accédez à tous les services du campus et restez connecté(e) avec votre communauté"
+      }
+    },
+    "about": {
+      "title": "Fait par les étudiants, pour les étudiants",
+      "subtitle": "Par les Atlantes, pour les Atlantes 🐙",
+      "description": "Transat est développé par Plug'IMT, une association étudiante de l'IMT Atlantique. Notre objectif est d'améliorer la vie quotidienne des étudiants sur le campus en fournissant un accès facile aux services essentiels grâce à une application mobile moderne et intuitive."
+    }
+  },
   "home": {
     "welcome": "Bienvenue sur Transat",
     "description": "Transat est votre plateforme de référence pour accéder à divers services à l'IMT Atlantique. Que ce soit pour vérifier la disponibilité des machines à laver ou consulter le menu du restaurant, nous avons tout ce qu'il vous faut.",

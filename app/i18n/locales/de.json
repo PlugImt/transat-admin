@@ -1,0 +1,180 @@
+{
+  "app": {
+    "title": "Transat",
+    "slogan": "Ihre All-in-One-Plattform für Campus-Services am IMT Atlantique"
+  },
+  "nav": {
+    "home": "Startseite",
+    "restaurant": "Restaurant",
+    "statistics": "Statistiken",
+    "laundry": "Waschsalon"
+  },
+  "download": {
+    "detection": {
+      "ios": "iOS-Gerät erkannt",
+      "android": "Android-Gerät erkannt"
+    },
+    "redirecting": {
+      "immediate": "Weiterleitung zum {{store}} erfolgt jetzt...",
+      "delayed": "Sie werden in wenigen Sekunden automatisch zum {{store}} weitergeleitet...",
+      "status": "Weiterleitung läuft..."
+    },
+    "stores": {
+      "appStore": "App Store",
+      "googlePlay": "Google Play Store"
+    },
+    "hero": {
+      "title": "Transat herunterladen",
+      "subtitle": "Laden Sie die offizielle Transat-App herunter und greifen Sie auf alle Campus-Services auf Ihrem Mobilgerät zu",
+      "cta": "Download-Optionen anzeigen"
+    },
+    "options": {
+      "title": "Wählen Sie Ihre Plattform",
+      "subtitle": "Verfügbar für iOS und Android"
+    },
+    "ios": {
+      "title": "Für iOS herunterladen",
+      "description": "Verfügbar auf iPhone und iPad mit iOS 13.4 oder neuer",
+      "button": "Im App Store herunterladen"
+    },
+    "android": {
+      "title": "Für Android herunterladen",
+      "description": "Verfügbar auf Android-Geräten mit Android 5.0 oder neuer",
+      "button": "Bei Google Play herunterladen"
+    },
+    "recommended": "Empfohlen für Ihr Gerät",
+    "features": {
+      "title": "Was ist in der App?",
+      "subtitle": "Alles was Sie für das Campus-Leben am IMT Atlantique brauchen",
+      "restaurant": {
+        "title": "Restaurant-Menü",
+        "description": "Überprüfen Sie das Tagesmenü und verpassen Sie nie Ihre Lieblingsgerichte"
+      },
+      "laundry": {
+        "title": "Waschsalon-Status",
+        "description": "Erhalten Sie Echtzeit-Updates zur Verfügbarkeit der Waschmaschinen"
+      },
+      "services": {
+        "title": "Campus-Services",
+        "description": "Greifen Sie auf alle Campus-Services zu und bleiben Sie mit Ihrer Gemeinschaft verbunden"
+      }
+    },
+    "about": {
+      "title": "Von Studenten, für Studenten gemacht",
+      "subtitle": "Von den Atlantes, für die Atlantes 🐙",
+      "description": "Transat wird von Plug'IMT entwickelt, einer Studentenvereinigung am IMT Atlantique. Unser Ziel ist es, das tägliche Leben der Studenten auf dem Campus zu verbessern, indem wir einfachen Zugang zu wichtigen Services durch eine moderne, intuitive mobile Anwendung bieten."
+    }
+  },
+  "home": {
+    "welcome": "Willkommen bei Transat",
+    "description": "Transat ist Ihre Anlaufstelle für den Zugang zu verschiedenen Services am IMT Atlantique. Vom Überprüfen der Waschsalon-Verfügbarkeit bis hin zum Betrachten der Restaurant-Speisekarte - wir haben alles für Sie.",
+    "services": {
+      "explore": "Mehr entdecken",
+      "title": "Services",
+      "comingSoon": "Demnächst verfügbar",
+      "laundry": {
+        "title": "Waschsalon",
+        "description": "Überprüfen Sie den Status der Waschmaschinen und Trockner auf dem Campus.",
+        "action": "Status überprüfen"
+      },
+      "restaurant": {
+        "title": "Restaurant",
+        "description": "Sehen Sie das heutige Menü und kommende Mahlzeiten im Campus-Restaurant.",
+        "action": "Menü anzeigen"
+      },
+      "statistics": {
+        "title": "Statistiken",
+        "description": "Sehen Sie Nutzungsstatistiken für Transat-Services und API-Performance.",
+        "action": "Statistiken anzeigen"
+      }
+    },
+    "comingSoon": {
+      "title": "Demnächst verfügbar",
+      "description": "Wir arbeiten kontinuierlich daran, Transat mit neuen Funktionen zu verbessern. Bleiben Sie dran für kommende Services und Verbesserungen!"
+    }
+  },
+  "laundry": {
+    "title": "Waschsalon-Service",
+    "description": "Überprüfen Sie die Echtzeit-Verfügbarkeit von Waschmaschinen und Trocknern auf dem Campus.",
+    "washingMachines": "Waschmaschinen",
+    "dryers": "Trockner",
+    "available": "Verfügbar",
+    "inUse": "In Benutzung",
+    "finished": "Fertig",
+    "timeLeft": "Verbleibende Zeit",
+    "refresh": "Aktualisieren",
+    "refreshing": "Wird aktualisiert...",
+    "lastUpdated": "Zuletzt aktualisiert",
+    "tryAgain": "Erneut versuchen"
+  },
+  "restaurant": {
+    "title": "Heutiges Menü",
+    "menuFor": "Menü vom {{date}}",
+    "lunch": "Mittagessen",
+    "dinner": "Abendessen",
+    "vegetarian": "Vegetarisch",
+    "categories": {
+      "grillades": "Grillgerichte",
+      "accompagnements": "Beilagen",
+      "migrateurs": "Migrateurs",
+      "cibo": "Vegetarisch"
+    },
+    "noMenu": {
+      "lunch": "Das Mittagsmenü für heute ist noch nicht verfügbar.",
+      "dinner": "Das Abendmenü für heute ist noch nicht verfügbar.",
+      "switchTo": "Wechseln zu {{mealtime}}"
+    },
+    "providedBy": "Menüdaten bereitgestellt von RU IMT Atlantique"
+  },
+  "statistics": {
+    "title": "API-Statistiken",
+    "serverStatus": {
+      "title": "Server-Status",
+      "status": "Status",
+      "latency": "Latenz",
+      "lastChecked": "Zuletzt überprüft",
+      "online": "Online",
+      "offline": "Offline",
+      "refreshData": "Daten aktualisieren",
+      "refreshing": "Wird aktualisiert..."
+    },
+    "error": "Fehler",
+    "loading": "Statistiken werden geladen...",
+    "globalStats": {
+      "title": "Globale Statistiken",
+      "totalRequests": "Gesamte Anfragen",
+      "successRate": "Erfolgsrate",
+      "avgResponse": "Durchschn. Antwortzeit",
+      "maxResponse": "Max. Antwortzeit",
+      "successful": "Erfolgreiche Anfragen",
+      "errors": "Fehlerhafte Anfragen",
+      "firstRequest": "Erste Anfrage"
+    },
+    "endpoints": {
+      "title": "Endpoint-Statistiken",
+      "endpoint": "Endpoint",
+      "method": "Methode",
+      "count": "Anzahl",
+      "successRate": "Erfolgsrate",
+      "avgTime": "Durchschn. Zeit"
+    },
+    "lastLoaded": "Statistiken zuletzt geladen: {{date}}"
+  },
+  "footer": {
+    "links": {
+      "about": "Über uns",
+      "privacy": "Datenschutzrichtlinie",
+      "terms": "Nutzungsbedingungen",
+      "contact": "Kontakt"
+    },
+    "language": "Sprache",
+    "copyright": "© 2025 Transat - IMT Atlantique",
+    "allRightsReserved": "Alle Rechte vorbehalten."
+  },
+  "errors": {
+    "404": "404",
+    "pageNotFound": "Die angeforderte Seite konnte nicht gefunden werden.",
+    "unexpectedError": "Ein unerwarteter Fehler ist aufgetreten.",
+    "returnHome": "Zurück zur Startseite"
+  }
+} 

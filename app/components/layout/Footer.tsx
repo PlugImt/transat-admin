@@ -75,7 +75,7 @@ const Footer: React.FC<FooterProps> = ({className = ''}) => {
                                             alt="App Store" className="w-36 object-contain"/>
                                     </a>
                                     <a
-                                        href="https://play.google.com/store/apps/details?id=com.Transat"
+                                        href="https://play.google.com/store/apps/details?id=com.yohann69.transat2_0"
                                         aria-label="{social.name} "
                                         className="text-foreground hover:text-primary transition-colors"
                                     >

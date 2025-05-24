@@ -52,7 +52,7 @@ export default function Download() {
             const timer = setTimeout(() => {
                 setAutoRedirected(true);
                 redirectToStore(os);
-            }, 2000); // 2 second delay to show the page briefly
+            }, 4000); // 4 second delay to show the page briefly
             
             return () => clearTimeout(timer);
         }
@@ -64,18 +64,10 @@ export default function Download() {
 
     return (
         <div>
-            {/* Hero section */}
-            <Hero
-                title="Download Transat"
-                subtitle="Get the official Transat app and access all campus services on your mobile device"
-                ctaText="View Download Options"
-                ctaLink="#download-options"
-                overlayOpacity={0.8}
-            />
 
             {/* Auto-redirect notice for mobile users */}
             {(detectedOS === 'ios' || detectedOS === 'android') && !autoRedirected && (
-                <Section spacing="sm">
+                <Section spacing="sm" className="min-h-[100vh]">
                     <Container>
                         <Card>
                             <Stack align="center" spacing="sm">
@@ -97,6 +89,17 @@ export default function Download() {
                     </Container>
                 </Section>
             )}
+
+
+            {/* Hero section */}
+            <Hero
+                title="Download Transat"
+                subtitle="Get the official Transat app and access all campus services on your mobile device"
+                ctaText="View Download Options"
+                ctaLink="#download-options"
+                overlayOpacity={0.8}
+            />
+
 
             {/* Download options section */}
             <Section

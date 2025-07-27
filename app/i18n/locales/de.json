@@ -1,13 +1,13 @@
 {
   "app": {
     "title": "Transat",
-    "slogan": "Ihre All-in-One-Plattform für Campus-Services am IMT Atlantique"
+    "slogan": "Ihre All-in-One-Plattform für Campus-Services an der IMT Atlantique"
   },
   "nav": {
     "home": "Startseite",
     "restaurant": "Restaurant",
     "statistics": "Statistiken",
-    "laundry": "Waschsalon"
+    "download": "Herunterladen"
   },
   "download": {
     "detection": {
@@ -15,9 +15,9 @@
       "android": "Android-Gerät erkannt"
     },
     "redirecting": {
-      "immediate": "Weiterleitung zum {{store}} erfolgt jetzt...",
-      "delayed": "Sie werden in wenigen Sekunden automatisch zum {{store}} weitergeleitet...",
-      "status": "Weiterleitung läuft..."
+      "immediate": "Weiterleitung zum {{store}}...",
+      "delayed": "Sie werden automatisch zum {{store}} in wenigen Sekunden weitergeleitet...",
+      "status": "Weiterleitung..."
     },
     "stores": {
       "appStore": "App Store",
@@ -25,7 +25,7 @@
     },
     "hero": {
       "title": "Transat herunterladen",
-      "subtitle": "Laden Sie die offizielle Transat-App herunter und greifen Sie auf alle Campus-Services auf Ihrem Mobilgerät zu",
+      "subtitle": "Holen Sie sich die offizielle Transat-App und greifen Sie auf alle Campus-Services auf Ihrem Mobilgerät zu",
       "cta": "Download-Optionen anzeigen"
     },
     "options": {
@@ -34,49 +34,41 @@
     },
     "ios": {
       "title": "Für iOS herunterladen",
-      "description": "Verfügbar auf iPhone und iPad mit iOS 13.4 oder neuer",
+      "description": "Verfügbar für iPhone und iPad mit iOS 13.4 oder höher",
       "button": "Im App Store herunterladen"
     },
     "android": {
       "title": "Für Android herunterladen",
-      "description": "Verfügbar auf Android-Geräten mit Android 5.0 oder neuer",
+      "description": "Verfügbar für Android-Geräte mit Android 5.0 oder höher",
       "button": "Bei Google Play herunterladen"
     },
     "recommended": "Empfohlen für Ihr Gerät",
     "features": {
       "title": "Was ist in der App?",
-      "subtitle": "Alles was Sie für das Campus-Leben am IMT Atlantique brauchen",
+      "subtitle": "Alles, was Sie für das Campus-Leben an der IMT Atlantique brauchen",
       "restaurant": {
         "title": "Restaurant-Menü",
-        "description": "Überprüfen Sie das Tagesmenü und verpassen Sie nie Ihre Lieblingsgerichte"
-      },
-      "laundry": {
-        "title": "Waschsalon-Status",
-        "description": "Erhalten Sie Echtzeit-Updates zur Verfügbarkeit der Waschmaschinen"
+        "description": "Prüfen Sie das Tagesmenü und verpassen Sie nie Ihre Lieblingsgerichte"
       },
       "services": {
         "title": "Campus-Services",
-        "description": "Greifen Sie auf alle Campus-Services zu und bleiben Sie mit Ihrer Gemeinschaft verbunden"
+        "description": "Greifen Sie auf alle Campus-Services zu und bleiben Sie mit Ihrer Community verbunden"
       }
     },
     "about": {
-      "title": "Von Studenten, für Studenten gemacht",
-      "subtitle": "Von den Atlantes, für die Atlantes 🐙",
-      "description": "Transat wird von Plug'IMT entwickelt, einer Studentenvereinigung am IMT Atlantique. Unser Ziel ist es, das tägliche Leben der Studenten auf dem Campus zu verbessern, indem wir einfachen Zugang zu wichtigen Services durch eine moderne, intuitive mobile Anwendung bieten."
+      "title": "Von Studenten für Studenten",
+      "subtitle": "Von den Atlantes für die Atlantes 🐙",
+      "description": "Transat wird von Plug'IMT entwickelt, einer Studentenvereinigung an der IMT Atlantique. Unser Ziel ist es, das tägliche Leben der Studenten auf dem Campus zu verbessern, indem wir einfachen Zugang zu wichtigen Services durch eine moderne, intuitive mobile Anwendung bieten."
     }
   },
   "home": {
     "welcome": "Willkommen bei Transat",
-    "description": "Transat ist Ihre Anlaufstelle für den Zugang zu verschiedenen Services am IMT Atlantique. Vom Überprüfen der Waschsalon-Verfügbarkeit bis hin zum Betrachten der Restaurant-Speisekarte - wir haben alles für Sie.",
+    "description": "Transat ist Ihre Anlaufstelle für verschiedene Services an der IMT Atlantique. Von der Überprüfung von Restaurant-Menüs bis zur Anzeige von Statistiken - wir haben alles für Sie.",
     "services": {
-      "explore": "Mehr entdecken",
+      "explore": "Mehr erkunden",
       "title": "Services",
+      "subtitle": "Entdecken Sie alle auf dem Campus verfügbaren Services",
       "comingSoon": "Demnächst verfügbar",
-      "laundry": {
-        "title": "Waschsalon",
-        "description": "Überprüfen Sie den Status der Waschmaschinen und Trockner auf dem Campus.",
-        "action": "Status überprüfen"
-      },
       "restaurant": {
         "title": "Restaurant",
         "description": "Sehen Sie das heutige Menü und kommende Mahlzeiten im Campus-Restaurant.",
@@ -84,39 +76,32 @@
       },
       "statistics": {
         "title": "Statistiken",
-        "description": "Sehen Sie Nutzungsstatistiken für Transat-Services und API-Performance.",
+        "description": "Sehen Sie Nutzungsstatistiken für Transat-Services und API-Leistung.",
         "action": "Statistiken anzeigen"
       }
     },
     "comingSoon": {
       "title": "Demnächst verfügbar",
-      "description": "Wir arbeiten kontinuierlich daran, Transat mit neuen Funktionen zu verbessern. Bleiben Sie dran für kommende Services und Verbesserungen!"
+      "description": "Wir arbeiten ständig daran, Transat mit neuen Funktionen zu verbessern. Bleiben Sie dran für kommende Services und Verbesserungen!",
+      "entertainment": "Unterhaltung",
+      "entertainmentDescription": "Zugang zu Campus-Unterhaltung und Veranstaltungen",
+      "excursions": "Exkursionen",
+      "excursionsDescription": "Planen und buchen Sie Campus-Exkursionen und Reisen",
+      "shipInfo": "Einrichtungsinformationen",
+      "shipInfoDescription": "Erhalten Sie detaillierte Informationen über Campus-Einrichtungen",
+      "learnMore": "Mehr erfahren"
     }
-  },
-  "laundry": {
-    "title": "Waschsalon-Service",
-    "description": "Überprüfen Sie die Echtzeit-Verfügbarkeit von Waschmaschinen und Trocknern auf dem Campus.",
-    "washingMachines": "Waschmaschinen",
-    "dryers": "Trockner",
-    "available": "Verfügbar",
-    "inUse": "In Benutzung",
-    "finished": "Fertig",
-    "timeLeft": "Verbleibende Zeit",
-    "refresh": "Aktualisieren",
-    "refreshing": "Wird aktualisiert...",
-    "lastUpdated": "Zuletzt aktualisiert",
-    "tryAgain": "Erneut versuchen"
   },
   "restaurant": {
     "title": "Heutiges Menü",
-    "menuFor": "Menü vom {{date}}",
+    "menuFor": "Menü für {{date}}",
     "lunch": "Mittagessen",
     "dinner": "Abendessen",
     "vegetarian": "Vegetarisch",
     "categories": {
-      "grillades": "Grillgerichte",
+      "grillades": "Gegrillte Gerichte",
       "accompagnements": "Beilagen",
-      "migrateurs": "Migrateurs",
+      "migrateurs": "Migrateure",
       "cibo": "Vegetarisch"
     },
     "noMenu": {
@@ -132,22 +117,22 @@
       "title": "Server-Status",
       "status": "Status",
       "latency": "Latenz",
-      "lastChecked": "Zuletzt überprüft",
+      "lastChecked": "Zuletzt geprüft",
       "online": "Online",
       "offline": "Offline",
       "refreshData": "Daten aktualisieren",
-      "refreshing": "Wird aktualisiert..."
+      "refreshing": "Aktualisierung..."
     },
     "error": "Fehler",
     "loading": "Statistiken werden geladen...",
     "globalStats": {
       "title": "Globale Statistiken",
-      "totalRequests": "Gesamte Anfragen",
+      "totalRequests": "Gesamtanfragen",
       "successRate": "Erfolgsrate",
-      "avgResponse": "Durchschn. Antwortzeit",
-      "maxResponse": "Max. Antwortzeit",
+      "avgResponse": "Durchschnittliche Antwortzeit",
+      "maxResponse": "Maximale Antwortzeit",
       "successful": "Erfolgreiche Anfragen",
-      "errors": "Fehlerhafte Anfragen",
+      "errors": "Fehleranfragen",
       "firstRequest": "Erste Anfrage"
     },
     "endpoints": {
@@ -156,7 +141,7 @@
       "method": "Methode",
       "count": "Anzahl",
       "successRate": "Erfolgsrate",
-      "avgTime": "Durchschn. Zeit"
+      "avgTime": "Durchschnittliche Zeit"
     },
     "lastLoaded": "Statistiken zuletzt geladen: {{date}}"
   },

@@ -194,11 +194,11 @@ export default function Download() {
                 spacing="xl"
             >
                 <Container>
-                    <Grid cols={{ sm: 1, md: 3 }} gap="lg">
+                    <Grid cols={{ sm: 1, md: 2 }} gap="lg">
                         <Card className="text-center">
                             <Stack align="center" spacing="sm">
                                 <img
-                                    src="https://epsbubz.stripocdn.email/content/guids/CABINET_882ea3df7cd154211d1b97eac5876cf77c8c0bab12620e24b042e4c3c07d9421/images/restaurant.png"
+                                    src="/restaurant_icon.png"
                                     alt="Restaurant"
                                     className="w-12 h-12 object-contain"
                                 />
@@ -212,23 +212,13 @@ export default function Download() {
                         <Card className="text-center">
                             <Stack align="center" spacing="sm">
                                 <img
-                                    src="https://epsbubz.stripocdn.email/content/guids/CABINET_882ea3df7cd154211d1b97eac5876cf77c8c0bab12620e24b042e4c3c07d9421/images/machine.png"
-                                    alt="Laundry"
+                                    src="/laundry_logo.png"
+                                    alt="Restaurant"
                                     className="w-12 h-12 object-contain"
                                 />
                                 <Text as="h4" size="md" weight="medium">{t('download.features.laundry.title')}</Text>
                                 <Text className="text-gray-600">
                                     {t('download.features.laundry.description')}
-                                </Text>
-                            </Stack>
-                        </Card>
-
-                        <Card className="text-center">
-                            <Stack align="center" spacing="sm">
-                                <FaMobile className="w-12 h-12 text-blue-600" />
-                                <Text as="h4" size="md" weight="medium">{t('download.features.services.title')}</Text>
-                                <Text className="text-gray-600">
-                                    {t('download.features.services.description')}
                                 </Text>
                             </Stack>
                         </Card>

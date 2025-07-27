@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 @theme {
-    --font-sans: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --font-sans: "Inter", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 html,
 body {
     background-color: #0D0505;
     color: #ffe6cc;
-    font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-family: "Inter", "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
     color-scheme: dark;
     scroll-behavior: smooth;
 }
@@ -118,7 +118,7 @@ select,
         box-shadow: 0 0 0 rgba(236, 127, 50, 0);
     }
     50% {
-        box-shadow: 0 0 20px rgba(78, 236, 50, 0.5);
+        box-shadow: 0 0 20px rgba(236, 127, 50, 0.5);
     }
 }
 
@@ -137,6 +137,27 @@ select,
 @keyframes shimmer {
     100% {
         transform: translateX(100%);
+    }
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
     }
 }
 
@@ -168,6 +189,15 @@ select,
 
 .animate-pulseGlow {
     animation: pulseGlow 2s ease-in-out infinite;
+}
+
+.animate-float {
+    animation: float 3s ease-in-out infinite;
+}
+
+.animate-gradient {
+    background-size: 200% 200%;
+    animation: gradient 3s ease infinite;
 }
 
 /* Helper animations for sequencing */
@@ -219,7 +249,7 @@ select,
 /* Skeleton loading effect */
 .skeleton-loader {
     background-color: rgba(255, 230, 204, 0.1);
-    border-radius: 0.25rem;
+    border-radius: 0.375rem;
     animation: skeletonPulse 1.5s ease-in-out infinite;
     position: relative;
     overflow: hidden;
@@ -242,6 +272,36 @@ select,
             rgba(255, 230, 204, 0)
     );
     animation: shimmer 2s infinite;
+}
+
+/* Modern card styling */
+.modern-card {
+    background: linear-gradient(135deg, rgba(255, 230, 204, 0.1) 0%, rgba(255, 230, 204, 0.05) 100%);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 230, 204, 0.1);
+    border-radius: 1rem;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.modern-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-color: rgba(236, 127, 50, 0.3);
+}
+
+/* Glass morphism effect */
+.glass {
+    background: linear-gradient(135deg, rgba(255, 230, 204, 0.1) 0%, rgba(255, 230, 204, 0.05) 100%);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 230, 204, 0.1);
+}
+
+/* Gradient text */
+.gradient-text {
+    background: linear-gradient(135deg, #ec7f32 0%, #d06a1f 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* Home page card specific styling */
@@ -274,281 +334,90 @@ select,
     .home-card, .stats-card {
         width: 100%;
     }
+    
+    .modern-card {
+        margin: 0.5rem;
+    }
 }
 
 .bg-card {
     background-color: #181010;
 }
 
-/* Laundry Machine Component Styles */
-
-/* Animation keyframes */
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes pulse {
-    0% { opacity: 0.6; }
-    50% { opacity: 1; }
-    100% { opacity: 0.6; }
-}
-
-@keyframes progress-pulse {
-    0% { opacity: 0.7; }
-    50% { opacity: 0.9; }
-    100% { opacity: 0.7; }
-}
-
-@keyframes celebrate {
-    0% { transform: scale(1); box-shadow: 0 0 0 rgba(236, 127, 50, 0); }
-    25% { transform: scale(1.03); box-shadow: 0 0 30px rgba(236, 127, 50, 0.5); }
-    50% { transform: scale(1); box-shadow: 0 0 15px rgba(236, 127, 50, 0.3); }
-    75% { transform: scale(1.02); box-shadow: 0 0 20px rgba(236, 127, 50, 0.4); }
-    100% { transform: scale(1); box-shadow: 0 0 0 rgba(236, 127, 50, 0); }
-}
-
-/* Common styles */
-.laundry-machine-card {
-    transition: all 0.3s ease;
-    border-radius: 8px;
-    overflow: hidden;
-    will-change: transform, box-shadow;
-}
-
-.laundry-machine-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-}
-
-/* Status-specific styles */
-.machine-available {
-    border-left: 4px solid #0049a8; /* Success green */
-    background: linear-gradient(to right, rgba(16, 44, 185, 0.05), transparent 20%);
-}
-
-.machine-in-use {
+/* Modern button styles */
+.btn-modern {
+    background: linear-gradient(135deg, #ec7f32 0%, #d06a1f 100%);
+    border: none;
+    border-radius: 0.75rem;
+    padding: 0.75rem 1.5rem;
+    color: white;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
     overflow: hidden;
 }
 
-/* List view specific styles */
-.machine-list-view {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    height: 88px;
-    margin-bottom: 12px;
+.btn-modern:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 }
 
-.machine-list-view .machine-icon {
-    flex-shrink: 0;
-    width: 50px;
-    height: 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1.5rem;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
-    margin-right: 16px;
-}
-
-.machine-list-view .machine-info {
-    flex-grow: 1;
-}
-
-.machine-list-view .progress-container {
+.btn-modern::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
     height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s;
+}
+
+.btn-modern:hover::before {
+    left: 100%;
+}
+
+/* Modern navigation */
+.nav-modern {
+    background: linear-gradient(135deg, rgba(255, 230, 204, 0.1) 0%, rgba(255, 230, 204, 0.05) 100%);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 230, 204, 0.1);
+    border-radius: 1rem;
+}
+
+.hero-modern::before {
+    content: '';
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
-    z-index: 0;
-}
-
-.machine-list-view .machine-progress {
-    height: 100%;
-    transition: width 1s linear;
-}
-
-/* Washer specific styles */
-.washer-progress {
-    background: linear-gradient(to right, rgba(0, 73, 168, 0.1), rgba(0, 73, 168, 0.15));
-}
-
-.washer-progress-indicator {
-    background-color: #0049a8; /* Secondary color */
-}
-
-/* Dryer specific styles */
-.dryer-progress {
-    background: linear-gradient(to right, rgba(236, 127, 50, 0.1), rgba(236, 127, 50, 0.15));
-}
-
-.dryer-progress-indicator {
-    background-color: #ec7f32; /* Primary color */
-}
-
-/* Progress indicator (the thin line at the right edge) */
-.progress-indicator {
-    position: absolute;
     right: 0;
-    top: 0;
-    width: 4px;
-    height: 100%;
-    animation: pulse 2s infinite;
+    bottom: 0;
+    background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="50" cy="50" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+    opacity: 0.3;
 }
 
-/* Confetti overlay */
-.confetti-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    z-index: 9999;
+/* Improved responsive utilities */
+@media (max-width: 640px) {
+    .container {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .hero-modern {
+        padding: 2rem 1rem;
+    }
 }
 
-/* Machine celebration animation */
-.machine-celebrate {
-    animation: celebrate 2s ease-in-out;
-    z-index: 10;
+@media (min-width: 641px) and (max-width: 1024px) {
+    .container {
+        padding-left: 2rem;
+        padding-right: 2rem;
+    }
 }
 
-/* Time countdown styling */
-.time-remaining {
-    font-variant-numeric: tabular-nums;
-    letter-spacing: -0.5px;
-}
-
-/* Status badge */
-.status-badge {
-    position: absolute;
-    top: 12px;
-    right: 12px;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    z-index: 5;
-}
-
-.status-available {
-    background-color: rgba(13, 54, 140, 0.2);
-    color: #0049a8;
-}
-
-.status-in-use {
-    background-color: rgba(236, 127, 50, 0.2);
-    color: #ec7f32;
-}
-
-/* View transition animations */
-.view-transition {
-    transition: all 0.3s ease-in-out;
-}
-
-.view-transition-enter {
-    opacity: 0;
-    transform: scale(0.95);
-}
-
-.view-transition-enter-active {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.view-transition-exit {
-    opacity: 1;
-    transform: scale(1);
-}
-
-.view-transition-exit-active {
-    opacity: 0;
-    transform: scale(0.95);
-}
-
-/* Grid view specific styles */
-.machine-grid-view {
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-}
-
-.machine-grid-view .machine-icon {
-    width: 40px;
-    height: 40px;
-    font-size: 1.25rem;
-    margin-bottom: 12px;
-}
-
-.machine-grid-view .machine-progress-bar {
-    height: 6px;
-    width: 100%;
-    background-color: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-    overflow: hidden;
-    margin-top: 8px;
-}
-
-.machine-grid-view .machine-progress-fill {
-    height: 100%;
-    transition: width 1s linear;
-}
-
-/* Animation classes */
-.animate-fadeIn {
-    animation: fadeIn 0.5s ease-out forwards;
-}
-
-.animate-pulse {
-    animation: pulse 2s infinite;
-}
-
-/* Tab navigation */
-.laundry-tabs {
-    display: flex;
-    margin-bottom: 20px;
-    background-color: rgba(0, 0, 0, 0.05);
-    border-radius: 8px;
-    padding: 4px;
-}
-
-.laundry-tab {
-    flex: 1;
-    padding: 10px;
-    text-align: center;
-    cursor: pointer;
-    border-radius: 6px;
-    font-weight: 500;
-    transition: all 0.2s ease;
-}
-
-.laundry-tab-active {
-    background-color: white;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* View toggle button */
-.view-toggle {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.1);
-    cursor: pointer;
-    transition: all 0.2s ease;
-}
-
-.view-toggle:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-}
-
-.view-toggle-active {
-    background-color: #ec7f32;
-    color: white;
+@media (min-width: 1025px) {
+    .container {
+        padding-left: 4rem;
+        padding-right: 4rem;
+    }
 }

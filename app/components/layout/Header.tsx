@@ -18,9 +18,7 @@ const Header: React.FC<HeaderProps> = ({className = ''}) => {
 
     // Navigation items
     const navItems: NavItem[] = [
-        {label: t('nav.laundry'), path: '/laundry'},
-        {label: t('nav.restaurant'), path: '/restaurant'},
-        {label: t('nav.statistics'), path: '/statistics'},
+        {label: t('nav.download'), path: '/download'},
     ];
 
     // Handle scroll effect
@@ -41,15 +39,15 @@ const Header: React.FC<HeaderProps> = ({className = ''}) => {
     return (
         <header
             className={`
-       w-full max-w-screen-xl px-4 mx-auto 
-        fixed z-sticky px-4 py-3 mx-4 my-2 rounded-lg z-50
-        transition-all duration-normal backdrop-blur-2xl
-        ${isScrolled
-                ? 'bg-[#181010]/60 shadow-lg'
-                : 'bg-[#181010]/20'
-            }
-        ${className}
-      `}
+                w-full max-w-screen-xl px-4 mx-auto 
+                fixed z-sticky px-4 py-4 mx-4 my-2 rounded-2xl z-50
+                transition-all duration-300 backdrop-blur-xl
+                ${isScrolled
+                    ? 'bg-black/20 shadow-xl border border-white/10'
+                    : 'bg-white/5 border border-white/5'
+                }
+                ${className}
+            `}
             style={{
                 left: '0',
                 right: '0'
@@ -57,26 +55,26 @@ const Header: React.FC<HeaderProps> = ({className = ''}) => {
         >
             <div className="flex justify-between items-center">
                 {/* Logo */}
-                <NavLink to="/" className="text-2xl font-bold text-foreground flex items-center">
+                <NavLink to="/" className="text-2xl font-bold text-foreground flex items-center group">
                     <img
-                        src="https://epsbubz.stripocdn.email/content/guids/CABINET_882ea3df7cd154211d1b97eac5876cf77c8c0bab12620e24b042e4c3c07d9421/images/icon.png"
+                        src="/logo.png"
                         alt="Transat Logo"
-                        className="w-8 h-8 mr-2"
+                        className="w-8 h-8 mr-3 transition-transform duration-300 group-hover:scale-110"
                     />
-                    {t('app.title')}
+                    <span className="gradient-text">{t('app.title')}</span>
                 </NavLink>
 
                 {/* Desktop Navigation */}
                 <nav className="hidden md:block">
-                    <ul className="flex space-x-6">
+                    <ul className="flex space-x-8">
                         {navItems.map((item) => (
                             <li key={item.path}>
                                 <NavLink
                                     to={item.path}
                                     className={({isActive}) =>
                                         isActive
-                                            ? "text-primary font-medium"
-                                            : "text-foreground hover:text-primary transition-colors"
+                                            ? "text-primary font-semibold relative after:absolute after:bottom-0 after:left-0 after:w-full after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-secondary"
+                                            : "text-foreground hover:text-primary transition-colors duration-300 relative after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-gradient-to-r after:from-primary after:to-secondary hover:after:w-full after:transition-all after:duration-300"
                                     }
                                 >
                                     {item.label}
@@ -89,7 +87,7 @@ const Header: React.FC<HeaderProps> = ({className = ''}) => {
                 {/* Mobile menu button */}
                 <button
                     onClick={toggleMobileMenu}
-                    className="md:hidden text-foreground p-2"
+                    className="md:hidden text-foreground p-2 rounded-lg hover:bg-white/10 transition-colors duration-300"
                     aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
                 >
                     <svg
@@ -120,16 +118,16 @@ const Header: React.FC<HeaderProps> = ({className = ''}) => {
 
             {/* Mobile Navigation */}
             {isMobileMenuOpen && (
-                <div className="md:hidden mt-4 pt-4 border-t border-primary/20 animate-fadeIn">
-                    <ul className="space-y-3">
+                <div className="md:hidden mt-6 pt-6 border-t border-white/10 animate-fadeIn">
+                    <ul className="space-y-4">
                         {navItems.map((item) => (
                             <li key={item.path}>
                                 <NavLink
                                     to={item.path}
                                     className={({isActive}) =>
                                         isActive
-                                            ? "text-primary font-medium block py-1"
-                                            : "text-foreground hover:text-primary transition-colors block py-1"
+                                            ? "text-primary font-semibold block py-3 px-4 rounded-lg bg-white/10 backdrop-blur-sm"
+                                            : "text-foreground hover:text-primary transition-colors block py-3 px-4 rounded-lg hover:bg-white/5"
                                     }
                                     onClick={() => setIsMobileMenuOpen(false)}
                                 >

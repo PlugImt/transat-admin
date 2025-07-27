@@ -6,8 +6,6 @@ export * from './layout';
 
 // Export specialized components
 export * from './stats';
-export * from './restaurant';
-export * from './laundry';
 export * from './home';
 
 // Export other components

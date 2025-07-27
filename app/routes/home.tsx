@@ -7,7 +7,7 @@ import {Grid, Hero, Section, ServiceCard} from "../components";
 export const meta: Route.MetaFunction = () => {
     return [
         {title: "Transat - Home"},
-        {name: "description", content: "Welcome to Transat, your ultimate cruise companion."},
+        {name: "description", content: "Welcome to Transat, your ultimate campus companion."},
     ];
 };
 
@@ -16,32 +16,25 @@ export default function Home() {
 
     const services = [
         {
-            title: t('home.services.laundry.title'),
-            description: t('home.services.laundry.description'),
-            icon: <img
-                src="https://epsbubz.stripocdn.email/content/guids/CABINET_882ea3df7cd154211d1b97eac5876cf77c8c0bab12620e24b042e4c3c07d9421/images/machine.png"
-                alt="Laundry icon"
-                className="w-6 h-6 object-contain"
-            />,
-            linkTo: '/laundry',
-            linkText: t('home.services.explore'),
-        },
-        {
             title: t('home.services.restaurant.title'),
             description: t('home.services.restaurant.description'),
             icon: <img
-                src="https://epsbubz.stripocdn.email/content/guids/CABINET_882ea3df7cd154211d1b97eac5876cf77c8c0bab12620e24b042e4c3c07d9421/images/restaurant.png"
+                src="/restaurant_icon.png"
                 alt="Restaurant icon"
                 className="w-6 h-6 object-contain"
             />,
-            linkTo: '/restaurant',
+            linkTo: '#',
             linkText: t('home.services.explore'),
         },
         {
-            title: t('home.services.statistics.title'),
-            description: t('home.services.statistics.description'),
-            icon: <FaChartLine className="w-5 h-5"/>,
-            linkTo: '/statistics',
+            title: t('download.features.laundry.title'),
+            description: t('download.features.laundry.description'),
+            icon: <img
+                src="/laundry_logo.png"
+                alt="Laudry icon"
+                className="w-6 h-6 object-contain"
+            />,
+            linkTo: '#',
             linkText: t('home.services.explore'),
         },
     ];
@@ -88,7 +81,7 @@ export default function Home() {
                 subtitle={t('home.services.subtitle')}
                 spacing="xl"
             >
-                <Grid cols={{sm: 1, md: 3}} gap="lg">
+                <Grid cols={{sm: 1, md: 2}} gap="lg">
                     {services.map((service, index) => (
                         <ServiceCard
                             key={service.linkTo}
@@ -112,7 +105,7 @@ export default function Home() {
                 <Grid cols={{sm: 1, md: 1}} gap="lg">
                     <ServiceCard
                         title="Download Transat App"
-                        description="Available for iOS and Android. Get real-time updates, check laundry status, view restaurant menus, and more!"
+                        description="Available for iOS and Android. Get real-time updates, check restaurant menus, view statistics, and more!"
                         icon={<FaMobile className="w-6 h-6" />}
                         linkTo="/download"
                         linkText="Download Now"

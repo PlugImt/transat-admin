@@ -31,12 +31,12 @@ const Hero: React.FC<HeroProps> = ({
 
     // Calculate overlay opacity style
     const overlayStyle = {
-        backgroundColor: `rgba(7, 4, 2, ${overlayOpacity})`
+        backgroundColor: `rgba(0, 0, 0, ${overlayOpacity})`
     };
 
     return (
         <div
-            className={`relative py-20 min-h-[30vh] flex items-center bg-cover bg-center bg-no-repeat ${className}`}
+            className={`relative py-24 min-h-[60vh] flex items-center bg-cover bg-center bg-no-repeat ${className}`}
             style={bgStyle}
         >
             {/* Background overlay */}
@@ -55,7 +55,7 @@ const Hero: React.FC<HeroProps> = ({
                             as="h1"
                             size="3xl"
                             weight="bold"
-                            className="mb-4"
+                            className="mb-6 gradient-text text-5xl"
                         >
                             {title}
                         </Text>
@@ -66,7 +66,7 @@ const Hero: React.FC<HeroProps> = ({
                             <Text
                                 size="xl"
                                 color="muted"
-                                className="mb-8 max-w-2xl mx-auto"
+                                className="mb-10 max-w-3xl mx-auto leading-relaxed"
                             >
                                 {subtitle}
                             </Text>
@@ -75,14 +75,14 @@ const Hero: React.FC<HeroProps> = ({
 
                     {(ctaText || ctaSecondaryText) && (
                         <div
-                            className="flex flex-col sm:flex-row gap-4 justify-center mt-8 animate-fadeIn"
+                            className="flex flex-col sm:flex-row gap-6 justify-center mt-12 animate-fadeIn"
                             style={{animationDelay: '600ms'}}
                         >
                             {ctaText && (
                                 <Button
                                     variant="primary"
                                     size="lg"
-                                    className="bg-orange-400 hover:bg-orange-900 text-white px-8 py-3 rounded-lg flex items-center gap-2 transition-colors"
+                                    className="btn-modern px-10 py-4 text-lg font-semibold"
                                     onClick={() => {
                                         if (ctaLink.startsWith('#')) {
                                             const element = document.querySelector(ctaLink);
@@ -100,6 +100,7 @@ const Hero: React.FC<HeroProps> = ({
                                 <Button
                                     variant="outline"
                                     size="lg"
+                                    className="px-10 py-4 text-lg font-semibold border-2 border-white/20 hover:border-white/40 transition-colors duration-300"
                                     onClick={() => {
                                         if (ctaSecondaryLink.startsWith('#')) {
                                             const element = document.querySelector(ctaSecondaryLink);

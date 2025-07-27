@@ -21,23 +21,24 @@ const Card: React.FC<CardProps> = ({
                                        elevated = false,
                                        padding = 'md',
                                        style,
-                                        bgColor = 'bg-card',
+                                       bgColor = 'bg-card',
                                    }) => {
     // Padding classes
     const paddingClasses = {
         none: 'p-0',
-        sm: 'p-2',
-        md: 'p-4 w-full',
-        lg: 'p-6',
+        sm: 'p-4',
+        md: 'p-6 w-full',
+        lg: 'p-8',
     };
 
     // Border and shadow classes
-    const borderClass = bordered ? 'border border-primary/20 rounded-lg' : 'rounded-lg';
-    const shadowClass = elevated ? 'shadow-md' : '';
+    const borderClass = bordered ? 'border border-primary/20 rounded-xl' : 'rounded-xl';
+    const shadowClass = elevated ? 'shadow-xl hover:shadow-2xl' : 'shadow-lg hover:shadow-xl';
+    const glassClass = 'backdrop-blur-xl bg-white/5 border border-white/10';
 
     return (
         <div
-            className={`${bgColor} ${borderClass} ${shadowClass} ${className}`}
+            className={`${glassClass} ${borderClass} ${shadowClass} transition-all duration-300 hover:transform hover:-translate-y-1 ${className}`}
             style={style}
         >
             {header && (
@@ -67,7 +68,7 @@ export const CardHeader: React.FC<{
           className = ''
       }) => {
     return (
-        <div className={`mb-4 ${className}`}>
+        <div className={`mb-6 ${className}`}>
             {children}
         </div>
     );
@@ -81,7 +82,7 @@ export const CardTitle: React.FC<{
           className = ''
       }) => {
     return (
-        <h3 className={`text-3xl font-bold text-foreground text-center ${className}`}>
+        <h3 className={`text-3xl font-bold text-foreground text-center gradient-text ${className}`}>
             {children}
         </h3>
     );
@@ -123,7 +124,7 @@ export const CardFooter: React.FC<{
           className = ''
       }) => {
     return (
-        <div className={`mt-4 flex items-center ${className}`}>
+        <div className={`mt-6 flex items-center ${className}`}>
             {children}
         </div>
     );

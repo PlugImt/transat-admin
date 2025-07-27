@@ -22,7 +22,7 @@ const Footer: React.FC<FooterProps> = ({className = ''}) => {
             <Container>
                 <div className="flex items-end px-2 md:px-10">
                     <img
-                        src="https://transat.destimt.fr/api/data/New_Project_943f029163e65ef3.png"
+                        src="/logo_footer.png"
                         className="max-h-52 mr-4"
                         alt="footer logo"
                     />
@@ -31,7 +31,7 @@ const Footer: React.FC<FooterProps> = ({className = ''}) => {
                         <div
                             className="flex flex-row gap-3 items-baseline md:justify-evenly pb-2 flex-wrap align-baseline">
                             <div className="mb-4">
-                                <Text as="h3" size="lg" weight="bold" className="md:mb-4">
+                                <Text as="h3" size="lg" weight="bold" className="md:mb-4 gradient-text">
                                     {t('footer.links.about')}
                                 </Text>
                                 <ul className="space-y-2">
@@ -49,7 +49,7 @@ const Footer: React.FC<FooterProps> = ({className = ''}) => {
                             </div>
 
                             <div className="mb-4">
-                                <Text as="h3" size="lg" weight="bold" className="md:mb-4">
+                                <Text as="h3" size="lg" weight="bold" className="md:mb-4 gradient-text">
                                     Contact
                                 </Text>
                                 <address className="not-italic text-sm">
@@ -61,34 +61,34 @@ const Footer: React.FC<FooterProps> = ({className = ''}) => {
                             </div>
 
                             <div className="mb-4">
-                                <Text as="h3" size="lg" weight="bold" className="md:mb-4">
+                                <Text as="h3" size="lg" weight="bold" className="md:mb-4 gradient-text">
                                     Download the app
                                 </Text>
                                 <div className="flex space-x-4 flex-col">
                                     <a
                                         href="https://apps.apple.com/fr/app/transat/id6602883801"
-                                        aria-label="{social.name} "
+                                        aria-label="App Store"
                                         className="text-foreground hover:text-primary transition-colors"
                                     >
                                         <img
-                                            src="https://icon-library.com/images/app-store-icon-png/app-store-icon-png-14.jpg"
-                                            alt="App Store" className="w-36 object-contain"/>
+                                            src="/app_store.jpg"
+                                            alt="App Store" className="w-36 object-contain rounded-lg"/>
                                     </a>
                                     <a
                                         href="https://play.google.com/store/apps/details?id=com.yohann69.transat2_0"
-                                        aria-label="{social.name} "
+                                        aria-label="Google Play Store"
                                         className="text-foreground hover:text-primary transition-colors"
                                     >
                                         <img
-                                            src="https://icon-library.com/images/app-store-icon-png/app-store-icon-png-5.jpg"
-                                            alt="App Store" className="w-36 object-contain"/>
+                                            src="/play_store.jpg"
+                                            alt="Google Play Store" className="w-36 object-contain rounded-lg"/>
                                     </a>
 
                                 </div>
                             </div>
                         </div>
 
-                        <div className="flex items-center pl-10 pr-10 flex-col border-t pt-2 border-amber-50/10 mb-4">
+                        <div className="flex items-center pl-10 pr-10 flex-col border-t pt-2 border-white/10 mb-4">
                             <Text color="muted" size="sm" className="text-center">
                                 {t('footer.copyright', {year: currentYear})} <span role="img"
                                                                                    aria-label="Sun emoji">☀️</span>

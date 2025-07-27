@@ -7,7 +7,7 @@
     "home": "Inicio",
     "restaurant": "Restaurante",
     "statistics": "Estadísticas",
-    "laundry": "Lavandería"
+    "download": "Descargar"
   },
   "download": {
     "detection": {
@@ -50,10 +50,6 @@
         "title": "Menú del restaurante",
         "description": "Consulta el menú diario y nunca te pierdas tus platos favoritos"
       },
-      "laundry": {
-        "title": "Estado de la lavandería",
-        "description": "Recibe actualizaciones en tiempo real sobre la disponibilidad de las máquinas"
-      },
       "services": {
         "title": "Servicios del campus",
         "description": "Accede a todos los servicios del campus y mantente conectado con tu comunidad"
@@ -67,16 +63,12 @@
   },
   "home": {
     "welcome": "Bienvenido a Transat",
-    "description": "Transat es tu plataforma de referencia para acceder a varios servicios en IMT Atlantique. Desde verificar la disponibilidad de lavandería hasta ver el menú del restaurante, te tenemos cubierto.",
+    "description": "Transat es tu plataforma de referencia para acceder a varios servicios en IMT Atlantique. Desde ver los menús del restaurante hasta ver estadísticas, te tenemos cubierto.",
     "services": {
       "explore": "Explorar más",
       "title": "Servicios",
+      "subtitle": "Descubre todos los servicios disponibles en el campus",
       "comingSoon": "Próximamente",
-      "laundry": {
-        "title": "Lavandería",
-        "description": "Verifica el estado de las máquinas de lavar y secadoras en el campus.",
-        "action": "Verificar estado"
-      },
       "restaurant": {
         "title": "Restaurante",
         "description": "Ve el menú de hoy y las comidas próximas en el restaurante del campus.",
@@ -90,22 +82,15 @@
     },
     "comingSoon": {
       "title": "Próximamente",
-      "description": "Trabajamos constantemente para mejorar Transat con nuevas funciones. ¡Mantente atento a los próximos servicios y mejoras!"
+      "description": "Trabajamos constantemente para mejorar Transat con nuevas funciones. ¡Mantente atento a los próximos servicios y mejoras!",
+      "entertainment": "Entretenimiento",
+      "entertainmentDescription": "Acceso a entretenimiento y eventos del campus",
+      "excursions": "Excursiones",
+      "excursionsDescription": "Planifica y reserva excursiones y viajes del campus",
+      "shipInfo": "Información de instalaciones",
+      "shipInfoDescription": "Obtén información detallada sobre las instalaciones del campus",
+      "learnMore": "Saber más"
     }
-  },
-  "laundry": {
-    "title": "Servicio de lavandería",
-    "description": "Verifica la disponibilidad en tiempo real de las máquinas de lavar y secadoras en el campus.",
-    "washingMachines": "Máquinas de lavar",
-    "dryers": "Secadoras",
-    "available": "Disponible",
-    "inUse": "En uso",
-    "finished": "Terminado",
-    "timeLeft": "Tiempo restante",
-    "refresh": "Actualizar",
-    "refreshing": "Actualizando...",
-    "lastUpdated": "Última actualización",
-    "tryAgain": "Intentar de nuevo"
   },
   "restaurant": {
     "title": "Menú de hoy",

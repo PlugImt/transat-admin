@@ -1,58 +1,54 @@
 {
   "app": {
     "title": "Transat",
-    "slogan": "您在 IMT Atlantique 校园服务的一站式平台"
+    "slogan": "您的IMT Atlantique校园服务一体化平台"
   },
   "nav": {
     "home": "首页",
     "restaurant": "餐厅",
     "statistics": "统计",
-    "laundry": "洗衣房"
+    "download": "下载"
   },
   "download": {
     "detection": {
-      "ios": "检测到 iOS 设备",
-      "android": "检测到 Android 设备"
+      "ios": "检测到iOS设备",
+      "android": "检测到Android设备"
     },
     "redirecting": {
-      "immediate": "正在跳转到{{store}}...",
-      "delayed": "几秒钟后将自动跳转到{{store}}...",
-      "status": "跳转中..."
+      "immediate": "正在重定向到{{store}}...",
+      "delayed": "您将在几秒钟内自动重定向到{{store}}...",
+      "status": "重定向中..."
     },
     "stores": {
       "appStore": "App Store",
-      "googlePlay": "Google Play 商店"
+      "googlePlay": "Google Play商店"
     },
     "hero": {
-      "title": "下载 Transat",
-      "subtitle": "获取官方 Transat 应用，在您的移动设备上访问所有校园服务",
+      "title": "下载Transat",
+      "subtitle": "获取官方Transat应用，在您的移动设备上访问所有校园服务",
       "cta": "查看下载选项"
     },
     "options": {
       "title": "选择您的平台",
-      "subtitle": "适用于 iOS 和 Android 设备"
+      "subtitle": "适用于iOS和Android设备"
     },
     "ios": {
-      "title": "下载 iOS 版本",
-      "description": "适用于运行 iOS 13.4 或更高版本的 iPhone 和 iPad",
-      "button": "在 App Store 下载"
+      "title": "下载iOS版本",
+      "description": "适用于运行iOS 13.4或更高版本的iPhone和iPad",
+      "button": "在App Store下载"
     },
     "android": {
-      "title": "下载 Android 版本",
-      "description": "适用于运行 Android 5.0 或更高版本的 Android 设备",
-      "button": "在 Google Play 下载"
+      "title": "下载Android版本",
+      "description": "适用于运行Android 5.0或更高版本的Android设备",
+      "button": "在Google Play下载"
     },
-    "recommended": "推荐用于您的设备",
+    "recommended": "推荐给您的设备",
     "features": {
-      "title": "应用中有什么？",
-      "subtitle": "IMT Atlantique 校园生活所需的一切",
+      "title": "应用里有什么？",
+      "subtitle": "IMT Atlantique校园生活所需的一切",
       "restaurant": {
         "title": "餐厅菜单",
         "description": "查看每日菜单，不错过您喜爱的菜品"
-      },
-      "laundry": {
-        "title": "洗衣房状态",
-        "description": "获取洗衣机可用性的实时更新"
       },
       "services": {
         "title": "校园服务",
@@ -60,63 +56,52 @@
       }
     },
     "about": {
-      "title": "由学生制作，为学生服务",
-      "subtitle": "由 Atlantes 为 Atlantes 制作 🐙",
-      "description": "Transat 由 Plug'IMT（IMT Atlantique 的学生社团）开发。我们的目标是通过提供现代、直观的移动应用程序来改善校园内学生的日常生活，让他们能够轻松访问基本服务。"
+      "title": "由学生，为学生制作",
+      "subtitle": "由Atlantes，为Atlantes 🐙",
+      "description": "Transat由Plug'IMT开发，这是IMT Atlantique的一个学生协会。我们的目标是通过现代、直观的移动应用程序提供对基本服务的轻松访问，从而改善校园学生的日常生活。"
     }
   },
   "home": {
-    "welcome": "欢迎使用 Transat",
-    "description": "Transat 是您在 IMT Atlantique 访问各种服务的首选平台。从检查洗衣房的可用性到查看餐厅菜单，我们为您提供全面服务。",
+    "welcome": "欢迎使用Transat",
+    "description": "Transat是您访问IMT Atlantique各种服务的首选平台。从查看餐厅菜单到查看统计数据，我们为您提供一切服务。",
     "services": {
-      "explore": "了解更多",
+      "explore": "探索更多",
       "title": "服务",
+      "subtitle": "发现校园内所有可用的服务",
       "comingSoon": "即将推出",
-      "laundry": {
-        "title": "洗衣房",
-        "description": "检查校园内洗衣机和烘干机的状态。",
-        "action": "检查状态"
-      },
       "restaurant": {
         "title": "餐厅",
-        "description": "查看今日菜单和校园餐厅即将推出的餐食。",
+        "description": "查看今日菜单和校园餐厅即将推出的餐点。",
         "action": "查看菜单"
       },
       "statistics": {
         "title": "统计",
-        "description": "查看 Transat 服务使用统计和 API 性能。",
+        "description": "查看Transat服务的使用统计数据和API性能。",
         "action": "查看统计"
       }
     },
     "comingSoon": {
       "title": "即将推出",
-      "description": "我们不断努力通过新功能改进 Transat。敬请期待即将推出的服务和改进！"
+      "description": "我们不断努力通过新功能改进Transat。敬请期待即将推出的服务和增强功能！",
+      "entertainment": "娱乐",
+      "entertainmentDescription": "访问校园娱乐和活动",
+      "excursions": "短途旅行",
+      "excursionsDescription": "规划和预订校园短途旅行和旅行",
+      "shipInfo": "设施信息",
+      "shipInfoDescription": "获取校园设施的详细信息",
+      "learnMore": "了解更多"
     }
-  },
-  "laundry": {
-    "title": "洗衣房服务",
-    "description": "实时检查校园内洗衣机和烘干机的可用性。",
-    "washingMachines": "洗衣机",
-    "dryers": "烘干机",
-    "available": "可用",
-    "inUse": "使用中",
-    "finished": "已完成",
-    "timeLeft": "剩余时间",
-    "refresh": "刷新",
-    "refreshing": "刷新中...",
-    "lastUpdated": "最后更新",
-    "tryAgain": "重试"
   },
   "restaurant": {
     "title": "今日菜单",
-    "menuFor": "{{date}} 的菜单",
+    "menuFor": "{{date}}的菜单",
     "lunch": "午餐",
     "dinner": "晚餐",
     "vegetarian": "素食",
     "categories": {
-      "grillades": "烧烤菜品",
+      "grillades": "烧烤菜",
       "accompagnements": "配菜",
-      "migrateurs": "Migrateurs",
+      "migrateurs": "迁移者",
       "cibo": "素食"
     },
     "noMenu": {
@@ -124,10 +109,10 @@
       "dinner": "今日晚餐菜单尚未提供。",
       "switchTo": "切换到{{mealtime}}"
     },
-    "providedBy": "菜单数据由 RU IMT Atlantique 提供"
+    "providedBy": "菜单数据由RU IMT Atlantique提供"
   },
   "statistics": {
-    "title": "API 统计",
+    "title": "API统计",
     "serverStatus": {
       "title": "服务器状态",
       "status": "状态",
@@ -139,7 +124,7 @@
       "refreshing": "刷新中..."
     },
     "error": "错误",
-    "loading": "正在加载统计...",
+    "loading": "加载统计中...",
     "globalStats": {
       "title": "全局统计",
       "totalRequests": "总请求数",
@@ -158,18 +143,18 @@
       "successRate": "成功率",
       "avgTime": "平均时间"
     },
-    "lastLoaded": "统计最后加载时间：{{date}}"
+    "lastLoaded": "统计最后加载：{{date}}"
   },
   "footer": {
     "links": {
       "about": "关于",
       "privacy": "隐私政策",
       "terms": "服务条款",
-      "contact": "联系我们"
+      "contact": "联系"
     },
     "language": "语言",
     "copyright": "© 2025 Transat - IMT Atlantique",
-    "allRightsReserved": "版权所有。"
+    "allRightsReserved": "保留所有权利。"
   },
   "errors": {
     "404": "404",

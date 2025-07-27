@@ -7,7 +7,7 @@
     "home": "Home",
     "restaurant": "Restaurant",
     "statistics": "Statistics",
-    "laundry": "Laundry"
+    "download": "Download"
   },
   "download": {
     "detection": {
@@ -50,14 +50,14 @@
         "title": "Restaurant Menu",
         "description": "Check the daily menu and never miss your favorite dishes"
       },
-      "laundry": {
-        "title": "Laundry Status",
-        "description": "Get real-time updates on washing machine availability"
-      },
       "services": {
         "title": "Campus Services",
         "description": "Access all campus services and stay connected with your community"
-      }
+      },
+        "laundry": {
+            "title": "Laundry Services",
+            "description": "Check laundry machine availability and monitor your laundry status"
+        }
     },
     "about": {
       "title": "Made by Students, for Students",
@@ -67,16 +67,12 @@
   },
   "home": {
     "welcome": "Welcome to Transat",
-    "description": "Transat is your go-to platform for accessing various services at IMT Atlantique. From checking laundry availability to viewing the restaurant menu, we've got you covered.",
+    "description": "Transat is your go-to platform for accessing various services at IMT Atlantique. From checking restaurant menus to viewing statistics, we've got you covered.",
     "services": {
       "explore": "Explore More",
       "title": "Services",
+      "subtitle": "Discover all the services available on campus",
       "comingSoon": "Coming Soon",
-      "laundry": {
-        "title": "Laundry",
-        "description": "Check the status of washing machines and dryers on campus.",
-        "action": "Check Status"
-      },
       "restaurant": {
         "title": "Restaurant",
         "description": "View today's menu and upcoming meals at the campus restaurant.",
@@ -90,22 +86,15 @@
     },
     "comingSoon": {
       "title": "Coming Soon",
-      "description": "We're constantly working to improve Transat with new features. Stay tuned for upcoming services and enhancements!"
+      "description": "We're constantly working to improve Transat with new features. Stay tuned for upcoming services and enhancements!",
+      "entertainment": "Entertainment",
+      "entertainmentDescription": "Access to campus entertainment and events",
+      "excursions": "Excursions",
+      "excursionsDescription": "Plan and book campus excursions and trips",
+      "shipInfo": "Ship Information",
+      "shipInfoDescription": "Get detailed information about campus facilities",
+      "learnMore": "Learn More"
     }
-  },
-  "laundry": {
-    "title": "Laundry Service",
-    "description": "Check real-time availability of washing machines and dryers on campus.",
-    "washingMachines": "Washing Machines",
-    "dryers": "Dryers",
-    "available": "Available",
-    "inUse": "In Use",
-    "finished": "Finished",
-    "timeLeft": "Time Left",
-    "refresh": "Refresh",
-    "refreshing": "Refreshing...",
-    "lastUpdated": "Last updated",
-    "tryAgain": "Try Again"
   },
   "restaurant": {
     "title": "Today's Menu",

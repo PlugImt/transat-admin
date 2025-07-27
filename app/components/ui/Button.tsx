@@ -26,20 +26,20 @@ const Button: React.FC<ButtonProps> = ({
                                            ...props
                                        }) => {
     // Base classes
-    const baseClasses = 'inline-flex items-center justify-center font-medium transition-all duration-normal rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary';
+    const baseClasses = 'inline-flex items-center justify-center font-semibold transition-all duration-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary relative overflow-hidden';
 
     // Size classes
     const sizeClasses = {
-        sm: 'text-sm px-3 py-1.5',
-        md: 'text-md px-4 py-2',
-        lg: 'text-lg px-6 py-3',
+        sm: 'text-sm px-4 py-2',
+        md: 'text-md px-6 py-3',
+        lg: 'text-lg px-8 py-4',
     };
 
     // Variant classes
     const variantClasses = {
-        primary: 'bg-primary text-foreground hover:bg-primary-hover focus:ring-primary',
-        secondary: 'bg-secondary text-foreground hover:bg-secondary-hover focus:ring-secondary',
-        outline: 'bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-foreground focus:ring-primary',
+        primary: 'bg-gradient-to-r from-primary to-primary-hover text-white hover:from-primary-hover hover:to-primary focus:ring-primary shadow-lg hover:shadow-xl transform hover:-translate-y-0.5',
+        secondary: 'bg-gradient-to-r from-secondary to-secondary-hover text-white hover:from-secondary-hover hover:to-secondary focus:ring-secondary shadow-lg hover:shadow-xl transform hover:-translate-y-0.5',
+        outline: 'bg-transparent border-2 border-primary text-primary hover:bg-primary hover:text-white focus:ring-primary hover:shadow-lg transform hover:-translate-y-0.5',
         ghost: 'bg-transparent text-primary hover:bg-primary/10 focus:ring-primary',
         link: 'bg-transparent text-primary underline hover:text-primary-hover p-0 focus:ring-0',
     };
@@ -53,6 +53,11 @@ const Button: React.FC<ButtonProps> = ({
             disabled={disabled || isLoading}
             {...props}
         >
+            {/* Shimmer effect for primary and secondary buttons */}
+            {(variant === 'primary' || variant === 'secondary') && (
+                <div className="absolute inset-0 -translate-x-full bg-gradient-to-r from-transparent via-white/20 to-transparent group-hover:translate-x-full transition-transform duration-1000" />
+            )}
+
             {isLoading && (
                 <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-current" xmlns="http://www.w3.org/2000/svg"
                      fill="none" viewBox="0 0 24 24">

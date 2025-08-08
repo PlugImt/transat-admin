@@ -11,7 +11,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     
     // Detect iOS devices
     if (/iPhone|iPad|iPod/i.test(userAgent)) {
-        return redirect('https://apps.apple.com/fr/app/transat/id6602883801?l=en-GB');
+        return redirect('https://apps.apple.com/app/apple-store/id6602883801?pt=127246943&ct=qrcode&mt=8');
     }
     
     // Detect Android devices

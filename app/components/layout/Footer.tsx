@@ -66,7 +66,7 @@ const Footer: React.FC<FooterProps> = ({className = ''}) => {
                                 </Text>
                                 <div className="flex space-x-4 flex-col">
                                     <a
-                                        href="https://apps.apple.com/fr/app/transat/id6602883801"
+                                        href="https://apps.apple.com/app/apple-store/id6602883801?pt=127246943&ct=qrcode&mt=8"
                                         aria-label="App Store"
                                         className="text-foreground hover:text-primary transition-colors"
                                     >

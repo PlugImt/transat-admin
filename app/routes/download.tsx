@@ -38,7 +38,7 @@ const isFromQRCode = (): boolean => {
 // Auto-redirect utility
 const redirectToStore = (os: 'ios' | 'android') => {
     const storeUrls = {
-        ios: 'https://apps.apple.com/fr/app/transat/id6602883801?l=en-GB',
+        ios: 'https://apps.apple.com/app/apple-store/id6602883801?pt=127246943&ct=qrcode&mt=8',
         android: 'https://play.google.com/store/apps/details?id=com.yohann69.transat2_0'
     };
     
